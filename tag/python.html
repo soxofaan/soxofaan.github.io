@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>python - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Articles tagged<br />&ldquo;python&rdquo;</h1>
+    </header>
+
+    <main class="content">
+    <ul id="article-list">
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/quick-and-easy-tag-cloud-in-pelican.html"
+                               title="link to Quick and easy tag cloud in Pelican">Quick and easy tag cloud in Pelican</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2026-09-28T00:00:00+02:00"> on 2026/09/28</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Here's a quick trick to create a tag cloud in <a href="http://getpelicam.com">Pelican</a>
+without plugings and minimal amount of code.</p>
+<p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag count
+to a CSS <code>font-size</code> value, for example like this:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="n">JINJA_FILTERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># ...</span>
+    <span class="s1">&#39;tag_count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%.1f%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">math ...</span></pre></div> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/get-stacktracetracebackbacktrace-in-python-catch-body.html"
+                               title="link to Get stacktrace/traceback/backtrace in Python catch body">Get stacktrace/traceback/backtrace in Python catch body</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2013-02-14T00:00:00+01:00"> on 2013/02/14</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>So you have some Python code in a try-catch, and you want the
+typical Python stacktrace (aka traceback, aka backtrace)
+in a way you can manipulate?</p>
+<p>Here are some ways to handle it:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">try</span><span class="p">:</span>
+     <span class="n">stuff</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+     <span class="c1"># Just print traceback</span>
+     <span class="k">print</span> <span class="s2">&quot;something went wrong, here is ...</span></pre></div> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/check-itunes-library-for-inexistent-files-and-broken-links-with-python-and-pyobjc.html"
+                               title="link to Check iTunes library for inexistent files and broken links with Python and PyObjC">Check iTunes library for inexistent files and broken links with Python and PyObjC</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2013-01-24T00:00:00+01:00"> on 2013/01/24</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Music files come, music files go. And after some time your iTunes library is sprinkled with cases of </p>
+<blockquote>
+<p>The song “Monsieur Cannibale” could not be used because the original file could not be found. Would you like to locate it?</p>
+</blockquote>
+<p>Being annoyed by this and having no idea how "healthy ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/unicode-fun-in-python.html"
+                               title="link to Unicode Fun in Python">Unicode Fun in Python</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-12-30T00:00:00+01:00"> on 2012/12/30</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Here is some Python powered unicode fun (command line oneliner version):</p>
+<div class="highlight"><pre><span></span>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
+</pre></div>
+
+
+<p>result:</p>
+<p><img alt="Unicode fun" src="/articles/from-drupal-blog/images/python-unicode-fun.png" /></p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/python-determine-installation-prefix.html"
+                               title="link to Python: determine installation prefix">Python: determine installation prefix</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-04-18T00:00:00+02:00"> on 2012/04/18</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
+<div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;import sys;print(&quot;</span><span class="se">\n</span><span class="s1">&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;</span>
+</pre></div>
+
+
+<p>(Replace "python" with the actual python executable you want to ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/python-trick-asynchronously-reading-subprocess-pipes.html"
+                               title="link to Python trick: asynchronously reading subprocess pipes">Python trick: asynchronously reading subprocess pipes</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-03-09T00:00:00+01:00"> on 2012/03/09</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p><em>Update:</em> I reworked the code below a bit and put it on 
+<a href="https://github.com/soxofaan/asynchronousfilereader">github</a> and 
+<a href="https://pypi.python.org/pypi/asynchronousfilereader">pypi</a> to make it
+pip installable</p>
+<p>As its name suggests, the Python
+ <a href="http://docs.python.org/library/subprocess.html">subprocess</a> allows you 
+ to spawn a child/sub process and keep an eye on its standard output 
+ through a pipe for example. Very handy ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/duviz-command-line-tool-for-disk-usage-visualization.html"
+                               title="link to Duviz: command line tool for disk usage visualization">Duviz: command line tool for disk usage visualization</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-03-06T00:00:00+01:00"> on 2012/03/06</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>duviz.py is a simple UNIX command line utility written in Python to visualize disk space usage. See it in action here:</p>
+<p><a href="http://soxofaan.github.com/duviz" title="Duviz tool for disk usage visualization"><img alt="Duviz in action" src="/articles/from-drupal-blog/images/duviz.png" /></a>.</p>
+<p>I started writing it a couple of years ago (2009 according to the git commit log), but I just recently decided to make it more public. As a ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/simple-and-quick-command-line-argument-handling-in-python.html"
+                               title="link to Simple and quick command line argument handling in Python">Simple and quick command line argument handling in Python</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-01-17T00:00:00+01:00"> on 2012/01/17</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>When creating a command line tool, you quickly are faced with the burden of handling command line arguments (parsing options, arguments, flags, etc).
+In Python, the <a href="http://docs.python.org/library/optparse.html" title="Optparse Python module">optparse module</a> or, its newer version, the <a href="http://docs.python.org/library/argparse.html" title="Argparse Python module">argparse module</a> are very nice solutions to build powerful command line interfaces, completely with automatically generated help ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/handy-python-profiling-analysis-with-pstats-interactive-browser.html"
+                               title="link to Handy Python profiling analysis with pstats' interactive browser">Handy Python profiling analysis with pstats' interactive browser</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2010-01-21T00:00:00+01:00"> on 2010/01/21</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>If you want to profile a Python application, you can get some basic 
+functionality with the cProfile and pstats modules, as described in the 
+<a href="http://docs.python.org/library/profile.html">Python Profilers documentation</a>. 
+After some curious experimenting, I discovered that the pstats module 
+provides a handy interactive mode. To my surprising, I didn't found any ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Python: hiding attribute getters and setters behind standard attribute access</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-22T00:00:00+02:00"> on 2009/09/22</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Look at this small snippet of Python code:</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+
+<p>Seems like nothing special, but look what it spits out:</p>
+<div class="highlight"><pre><span></span>20
+foofoo
+[1, 2, 3, 1, 2, 3]
+</pre></div>
+
+
+<p>Oh my ...</p> </div>
+                </article>
+            </li>
+    </ul>
+
+<p class="paginator">
+
+    Page 1 / 3
+
+        <a href="/tag/python2.html">&raquo;</a>
+</p>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

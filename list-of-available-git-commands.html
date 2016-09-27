@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>List of available git commands - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="git"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>List of available git commands</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2011-12-21T00:00:00+01:00"> on 2011/12/21</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/git.html">git</a>,                    <a href="/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Git comes with a massive bunch of (sub)commands and even if you're dealing with git on a daily basis, you might not always remember every single one you need along the way. Having bash completion for git is already a good start (type <code>git</code>, a space and then tab), but this is only a subset with the higher level commands.</p>
+<p>If you also need lower level commands (or don't have bash completion), try </p>
+<div class="highlight"><pre><span></span>git help --all
+</pre></div>
+
+
+<p>which will render a list of available commands, like:</p>
+<div class="highlight"><pre><span></span><span class="n">available</span> <span class="n">git</span> <span class="n">commands</span> <span class="ow">in</span> <span class="s1">&#39;/opt/local/libexec/git-core&#39;</span>
+<span class="o">-------------------------------------------------------</span>
+  <span class="n">add</span>                <span class="n">fast</span><span class="o">-</span><span class="kn">import</span>        <span class="nn">merge</span><span class="o">-</span><span class="n">recursive</span>    <span class="n">reset</span>
+  <span class="n">add</span><span class="o">--</span><span class="n">interactive</span>   <span class="n">fetch</span>              <span class="n">merge</span><span class="o">-</span><span class="n">resolve</span>      <span class="n">rev</span><span class="o">-</span><span class="nb">list</span>
+  <span class="n">am</span>                 <span class="n">fetch</span><span class="o">-</span><span class="n">pack</span>         <span class="n">merge</span><span class="o">-</span><span class="n">subtree</span>      <span class="n">rev</span><span class="o">-</span><span class="n">parse</span>
+  <span class="n">annotate</span>           <span class="nb">filter</span><span class="o">-</span><span class="n">branch</span>      <span class="n">merge</span><span class="o">-</span><span class="n">tree</span>         <span class="n">revert</span>
+  <span class="nb">apply</span>              <span class="n">fmt</span><span class="o">-</span><span class="n">merge</span><span class="o">-</span><span class="n">msg</span>      <span class="n">mergetool</span>          <span class="n">rm</span>
+  <span class="n">archimport</span>         <span class="k">for</span><span class="o">-</span><span class="n">each</span><span class="o">-</span><span class="n">ref</span>       <span class="n">mktag</span>              <span class="n">send</span><span class="o">-</span><span class="n">email</span>
+  <span class="n">archive</span>            <span class="n">format</span><span class="o">-</span><span class="n">patch</span>       <span class="n">mktree</span>             <span class="n">send</span><span class="o">-</span><span class="n">pack</span>
+  <span class="n">bisect</span>             <span class="n">fsck</span>               <span class="n">mv</span>                 <span class="n">sh</span><span class="o">-</span><span class="n">i18n</span><span class="o">--</span><span class="n">envsubst</span>
+  <span class="n">bisect</span><span class="o">--</span><span class="n">helper</span>     <span class="n">fsck</span><span class="o">-</span><span class="n">objects</span>       <span class="n">name</span><span class="o">-</span><span class="n">rev</span>           <span class="n">shell</span>
+  <span class="n">blame</span>              <span class="n">gc</span>                 <span class="n">notes</span>              <span class="n">shortlog</span>
+  <span class="n">branch</span>             <span class="n">get</span><span class="o">-</span><span class="n">tar</span><span class="o">-</span><span class="n">commit</span><span class="o">-</span><span class="nb">id</span>  <span class="n">pack</span><span class="o">-</span><span class="n">objects</span>       <span class="n">show</span>
+  <span class="n">bundle</span>             <span class="n">grep</span>               <span class="n">pack</span><span class="o">-</span><span class="n">redundant</span>     <span class="n">show</span><span class="o">-</span><span class="n">branch</span>
+  <span class="n">cat</span><span class="o">-</span><span class="nb">file</span>           <span class="n">gui</span>                <span class="n">pack</span><span class="o">-</span><span class="n">refs</span>          <span class="n">show</span><span class="o">-</span><span class="n">index</span>
+  <span class="n">check</span><span class="o">-</span><span class="n">attr</span>         <span class="n">gui</span><span class="o">--</span><span class="n">askpass</span>       <span class="n">patch</span><span class="o">-</span><span class="nb">id</span>           <span class="n">show</span><span class="o">-</span><span class="n">ref</span>
+  <span class="n">check</span><span class="o">-</span><span class="n">ref</span><span class="o">-</span><span class="n">format</span>   <span class="nb">hash</span><span class="o">-</span><span class="nb">object</span>        <span class="n">peek</span><span class="o">-</span><span class="n">remote</span>        <span class="n">stage</span>
+  <span class="n">checkout</span>           <span class="n">help</span>               <span class="n">prune</span>              <span class="n">stash</span>
+  <span class="n">checkout</span><span class="o">-</span><span class="n">index</span>     <span class="n">http</span><span class="o">-</span><span class="n">backend</span>       <span class="n">prune</span><span class="o">-</span><span class="n">packed</span>       <span class="n">status</span>
+  <span class="n">cherry</span>             <span class="n">http</span><span class="o">-</span><span class="n">fetch</span>         <span class="n">pull</span>               <span class="n">stripspace</span>
+  <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span>        <span class="n">http</span><span class="o">-</span><span class="n">push</span>          <span class="n">push</span>               <span class="n">submodule</span>
+  <span class="n">citool</span>             <span class="n">imap</span><span class="o">-</span><span class="n">send</span>          <span class="n">quiltimport</span>        <span class="n">svn</span>
+  <span class="n">clean</span>              <span class="n">index</span><span class="o">-</span><span class="n">pack</span>         <span class="n">read</span><span class="o">-</span><span class="n">tree</span>          <span class="n">symbolic</span><span class="o">-</span><span class="n">ref</span>
+  <span class="n">clone</span>              <span class="n">init</span>               <span class="n">rebase</span>             <span class="n">tag</span>
+  <span class="n">commit</span>             <span class="n">init</span><span class="o">-</span><span class="n">db</span>            <span class="n">receive</span><span class="o">-</span><span class="n">pack</span>       <span class="n">tar</span><span class="o">-</span><span class="n">tree</span>
+  <span class="n">commit</span><span class="o">-</span><span class="n">tree</span>        <span class="n">instaweb</span>           <span class="n">reflog</span>             <span class="n">unpack</span><span class="o">-</span><span class="nb">file</span>
+  <span class="n">config</span>             <span class="n">log</span>                <span class="n">relink</span>             <span class="n">unpack</span><span class="o">-</span><span class="n">objects</span>
+  <span class="n">count</span><span class="o">-</span><span class="n">objects</span>      <span class="n">lost</span><span class="o">-</span><span class="n">found</span>         <span class="n">remote</span>             <span class="n">update</span><span class="o">-</span><span class="n">index</span>
+  <span class="n">cvsexportcommit</span>    <span class="n">ls</span><span class="o">-</span><span class="n">files</span>           <span class="n">remote</span><span class="o">-</span><span class="n">ext</span>         <span class="n">update</span><span class="o">-</span><span class="n">ref</span>
+  <span class="n">cvsimport</span>          <span class="n">ls</span><span class="o">-</span><span class="n">remote</span>          <span class="n">remote</span><span class="o">-</span><span class="n">fd</span>          <span class="n">update</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">info</span>
+  <span class="n">cvsserver</span>          <span class="n">ls</span><span class="o">-</span><span class="n">tree</span>            <span class="n">remote</span><span class="o">-</span><span class="n">ftp</span>         <span class="n">upload</span><span class="o">-</span><span class="n">archive</span>
+  <span class="n">daemon</span>             <span class="n">mailinfo</span>           <span class="n">remote</span><span class="o">-</span><span class="n">ftps</span>        <span class="n">upload</span><span class="o">-</span><span class="n">pack</span>
+  <span class="n">describe</span>           <span class="n">mailsplit</span>          <span class="n">remote</span><span class="o">-</span><span class="n">http</span>        <span class="n">var</span>
+  <span class="n">diff</span>               <span class="n">merge</span>              <span class="n">remote</span><span class="o">-</span><span class="n">https</span>       <span class="n">verify</span><span class="o">-</span><span class="n">pack</span>
+  <span class="n">diff</span><span class="o">-</span><span class="n">files</span>         <span class="n">merge</span><span class="o">-</span><span class="n">base</span>         <span class="n">remote</span><span class="o">-</span><span class="n">testgit</span>     <span class="n">verify</span><span class="o">-</span><span class="n">tag</span>
+  <span class="n">diff</span><span class="o">-</span><span class="n">index</span>         <span class="n">merge</span><span class="o">-</span><span class="nb">file</span>         <span class="n">repack</span>             <span class="n">web</span><span class="o">--</span><span class="n">browse</span>
+  <span class="n">diff</span><span class="o">-</span><span class="n">tree</span>          <span class="n">merge</span><span class="o">-</span><span class="n">index</span>        <span class="n">replace</span>            <span class="n">whatchanged</span>
+  <span class="n">difftool</span>           <span class="n">merge</span><span class="o">-</span><span class="n">octopus</span>      <span class="n">repo</span><span class="o">-</span><span class="n">config</span>        <span class="n">write</span><span class="o">-</span><span class="n">tree</span>
+  <span class="n">difftool</span><span class="o">--</span><span class="n">helper</span>   <span class="n">merge</span><span class="o">-</span><span class="n">one</span><span class="o">-</span><span class="nb">file</span>     <span class="n">request</span><span class="o">-</span><span class="n">pull</span>
+  <span class="n">fast</span><span class="o">-</span><span class="n">export</span>        <span class="n">merge</span><span class="o">-</span><span class="n">ours</span>         <span class="n">rerere</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>An audio conversion use case: comparison of execution speed between SoX, FFmpeg and MPlayer - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="sox"/>
+        <meta name="tags" contents="ffmpeg"/>
+        <meta name="tags" contents="music"/>
+        <meta name="tags" contents="mplayer"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="audio"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>An audio conversion use case: comparison of execution speed between SoX, FFmpeg and MPlayer</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-12-04T00:00:00+01:00"> on 2009/12/04</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/sox.html">sox</a>,                    <a href="/tag/ffmpeg.html">ffmpeg</a>,                    <a href="/tag/music.html">music</a>,                    <a href="/tag/mplayer.html">mplayer</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/audio.html">audio</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>In <a href="/audio-format-conversion-cheat-sheet-aka-how-to.html">a previous post</a>
+I listed some options for audio data manipulation (conversion of format, 
+sample rate, bitrate, trimming, etc), with 
+<a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX</a>, 
+<a href="http://www.mplayerhq.hu" title="MPlayer homepage">MPlayer</a> and 
+<a href="http://ffmpeg.org/" title="FFmpeg homepage">FFmpeg</a>. 
+The obvious question is now: which one is best?</p>
+<p>The obvious answer is: it depends. Several factors play a role in defining "the best": what audio formats do you want to convert from/to (e.g. FFmpeg and MPlayer support the typical patent/license encumbered audio and video formats like MP3 out of the box, while SoX is more conservative on this point), do you want more filtering options (SoX offers significantly more than the others), etc. </p>
+<p>In this post we'll only look at the execution time as metric to determine "the best". Another metric could be "audio quality" but that was not important for my use case (I couldn't hear differences anyway).</p>
+<h3>Execution time experiment</h3>
+<p>I set up a small experiment to compare the three:
+- Input: normal MP3 file (290 seconds audio, 128 kpbs, 44kHz, stereo)
+- Desired output: fragment of certain length (at an offset of 60 seconds) in WAV format, mono, 22050 Hz sample frequency.
+- Which one is the fastest?</p>
+<p>The three commands I used were:</p>
+<div class="highlight"><pre><span></span><span class="c1"># FFmpeg</span>
+ffmpeg -i <span class="nv">$input_file</span> -y <span class="se">\</span>
+    -ac <span class="m">1</span> -ar <span class="m">22050</span> -ss <span class="m">60</span> -t <span class="nv">$fragment_length</span> output-ffmpeg.wav
+
+<span class="c1"># MPlayer</span>
+mplayer -ao pcm:fast:waveheader:file<span class="o">=</span>output-mplayer.wav <span class="se">\</span>
+    -af <span class="nv">resample</span><span class="o">=</span>22050,pan<span class="o">=</span>1:0.5:0.5 <span class="se">\</span>
+    -vo null -vc null <span class="se">\</span>
+    -ss <span class="m">60</span> -endpos <span class="nv">$fragment_length</span> <span class="se">\</span>
+    <span class="nv">$input_file</span>
+
+<span class="c1"># SoX</span>
+sox <span class="nv">$input_file</span> -c <span class="m">1</span> -r <span class="m">22050</span> output-sox.wav trim <span class="m">60</span> <span class="nv">$fragment_length</span>
+</pre></div>
+
+
+<p>I tried this with fragment lengths of 5, 10, 20, 30 and 60 seconds. I ran each command several times for each fragment length, timed the execution (the "user time" reported by the command line tool "<code>time</code>") and calculated the average execution time (the standard deviation was small enough to only consider the average execution time). </p>
+<h3>The result (lower is better)</h3>
+<p><img alt="None" src="/articles/from-drupal-blog/images/cahors.png" /></p>
+<p>MPlayer is clearly fastest option for this use case. For 30 second fragments, FFmpeg is 1.8 times slower and SoX is 2.4 times slower. For smaller fragments, the speed difference is even larger. Also note that the execution time with MPlayer is almost proportional to the desired fragment length. SoX and FFmpeg on the other hand suffer from a non neglectable "startup" time, which disfavors small fragment lengths. However, the proportional part of FFmpeg's "curve" is less inclined than MPlayer's and for larger fragment lengths FFmpeg becomes more interesting. The crossing point is at a fragment length of roughly 2 minutes.</p>
+<h3>Setup info</h3>
+<p>Used hardware: dual core Intel Xeon, 3 GHz. Used software: FFmpeg 0.5, SoX v14.2.0 and MPlayer 1.0rc2-4.3.3 (default packages on Ubuntu 9.04).</p>
+<p>I also did the same experiment on other computers with different hardware and different software version, and the relative results were pretty much the same. However, one significant deviation happened on a setup with Ubuntu 8.04 (LTS, Hardy Heron): SoX v14.0.0 performed roughly 8 times slower than FFmpeg and even more than 25 slower than MPlayer for the short fragment lengths.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

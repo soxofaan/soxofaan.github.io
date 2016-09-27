@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Subversion: undo committed changes - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="howto"/>
+        <meta name="tags" contents="subversion"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Subversion: undo committed changes</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-12T00:00:00+02:00"> on 2009/05/12</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/howto.html">howto</a>,                    <a href="/tag/subversion.html">subversion</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>How to undo/rollback a Subversion commit? A fairly basic question, but every time I need the answer, I can't manage to remember it from the previous time I did it. Asking Google helps eventually, but the signal to noise ratio of the top hits is a bit disappointing. This time I couldn't resist the urge to throw my own bot snack in the intertubes.</p>
+<p>Say you just made a commit (revision 123 for file <code>apple.py</code>), you discovered (after the fact) that it was just crap and you want the previous version (revision 122) back. </p>
+<p>The <a href="http://svnbook.red-bean.com/en/1.0/ch04s04.html#svn-ch-4-sect-4.2">common way</a> to do it is with a merge of a reverse changeset (or something):</p>
+<div class="highlight"><pre><span></span>svn merge -r 123:122 apple.py
+</pre></div>
+
+
+<p>If your Subversion setup is recent enough (I successfully tried 
+with version 1.5.1 for example) it is also possible to use the
+<code>--change</code> (<code>-c</code> in short) argument to <a href="http://svnbook.red-bean.com/en/1.5/svn.branchmerge.basicmerging.html#svn.branchmerge.basicmerging.undo">specify the changeset</a>:</p>
+<div class="highlight"><pre><span></span>svn merge -c -123 apple.py
+</pre></div>
+
+
+<p>The <code>-c -ARG</code> in this construct translates to <code>-r ARG:ARG-1</code>. Note the minus in front of the <code>ARG</code>: <code>-c ARG</code> translates to <code>-r ARG-1:ARG</code>, which is not what we need here.</p>
+<p>Another possibility is using <a href="http://svnbook.red-bean.com/en/1.5/svn.tour.revs.specifiers.html#svn.tour.revs.keywords">revision keywords</a>:</p>
+<div class="highlight"><pre><span></span>svn merge -r COMMITTED:PREV apple.py
+</pre></div>
+
+
+<p>Note that this undoes the last commit, while the previous commands let you specify the changeset you want to undo.</p>
+<p>One final note: this merging stuff only affects your working copy, you still have to commit the changes (after reviewing them of course) to the repository, e.g. as revision 124. The repository will still contain the crap version (revision 123), but this is generally preferred over trying to rewrite history in the repository.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

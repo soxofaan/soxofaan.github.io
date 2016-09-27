@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>LaTeX trick: putting the subversion revision number on every page - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="subversion"/>
+        <meta name="tags" contents="trick"/>
+        <meta name="tags" contents="latex"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>LaTeX trick: putting the subversion revision number on every page</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2008-02-08T00:00:00+01:00"> on 2008/02/08</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/subversion.html">subversion</a>,                    <a href="/tag/trick.html">trick</a>,                    <a href="/tag/latex.html">latex</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>I mostly use LaTeX for writing documents (<a href="http://www.lyx.org/" title="LyX, WYSIWYM document processor">LyX</a> actually, but that doesn't matter here) and use <a href="http://subversion.tigris.org/">Subversion</a> for the version control. For managing the revision info of a source code file I use Subversion's built in feature <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html" title="Subversion - Keyword Substitution">Keyword Substitution</a> which  expands some special keyword (like <code>$Date$</code> or <code>$Revision$</code>) in the source code to their current values.</p>
+<p>Now two questions arise here:
+- How to get the Subversion keywords nicely into LaTeX? Note that the 
+    <code>$</code> character used for the Subversion keywords is already a 
+    reserved LaTeX control character and make things messy.
+- How to get the version info on every page (e.g. as a footer)?</p>
+<p>For the first problem there exists different latex packages: e.g. 
+<a href="http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=svn">svn</a>, 
+<a href="http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=svninfo">svninfo</a> 
+and <a href="http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=svn-multi">svn-multi</a>.
+I chose to go for svn-multi because it supports the use of different 
+files for one LaTeX document (e.g. a master file and several subfiles). </p>
+<p>Usage is simple:</p>
+<div class="highlight"><pre><span></span><span class="k">\usepackage</span><span class="nb">{</span>svn-multi<span class="nb">}</span>
+<span class="k">\svnid</span><span class="nb">{</span><span class="s">$</span><span class="nb">Id</span><span class="s">$</span><span class="nb">}</span>
+</pre></div>
+
+
+<p>The first line is obvious. The second line contains the Subversion 
+keyword <code>$Id$</code>, so you need to set the subversion keyword property
+to at least <code>Id</code> on the file(s) (e.g. with 
+<code>svn propset svn:keywords "Id" document.tex</code>) for expanding it to 
+something like <code>$Id: document.tex 1980 2008-01-28 17:49:28Z mickeymouse $</code>. 
+The <code>\svnid{}</code>  call makes the svn-multi package parse the expanded Id. 
+After this point, you can use several macros like <code>\svnrev</code>, 
+<code>\svndate</code> and <code>\svnauthor</code> to insert the subversion information you 
+need. When working with a multi-file document, the <code>\svnid{$Id$}</code> 
+can be put in every file, while <code>\usepackage{svn-multi}</code> only needs
+to be in the preamble of the main document.</p>
+<p>The second problem can be solved with for example 
+<a href="http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=prelim2e">the prelim2e package</a>, 
+which let you put text below the normal page content (even below footnotes). 
+To put for example the complete Subversion Id (with <code>\svnkw{Id}</code>) there:</p>
+<div class="highlight"><pre><span></span><span class="k">\usepackage</span><span class="nb">{</span>prelim2e<span class="nb">}</span>
+<span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\PrelimWords</span><span class="nb">}{</span><span class="k">\svnkw</span><span class="nb">{</span>Id<span class="nb">}}</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

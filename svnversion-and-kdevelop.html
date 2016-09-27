@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>svnversion and Kdevelop - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="kdevelop"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="programming"/>
+        <meta name="tags" contents="subversion"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>svnversion and Kdevelop</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2007-06-08T00:00:00+02:00"> on 2007/06/08</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/kdevelop.html">kdevelop</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/programming.html">programming</a>,                    <a href="/tag/subversion.html">subversion</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p><a href="http://svnbook.red-bean.com/en/1.2/svn.advanced.props.html#svn.advanced.props.special.keywords">Subversion  keyword substitution</a> is a nice concept, but the revision number refers to the revision the file was last changed, not the current version of the file. If you have for example a project with several files (e.g. <code>main.c</code>, <code>pol.c</code>, <code>mol.s</code>) and in <code>main.c</code> you have code that should render the current version of the program (like <code>printf("Revision: $Revision$");</code>). That revision keyword in <code>main.c</code> will not be expanded if you change and commit <code>pol.c</code> or <code>mol.c</code>, so the rendered revision will be wrong in that case.</p>
+<p>With the Subversion tool <code>svnversion</code> it is possible to get more usable version information about your working copy. With <a href="http://subversion.tigris.org/faq.html#version-value-in-source">this trick involving some Makefile magick</a> it is possible to use it in your source code.</p>
+<p>It got even messier when I tried to do this within <a href="http://www.kdevelop.org/">Kdevelop</a>. It involved a lot of trial and error, but I obtained a solution.</p>
+<ol>
+<li>
+<p>Add the following line to the file <code>Makefile.am</code> of each  directory 
+    where you want to use the svn version string:</p>
+<div class="highlight"><pre><span></span>SVNREV = $(shell svnversion -n $(srcdir))
+</pre></div>
+
+
+<p>This will create a variable <code>$SVNREV</code> with as value the current 
+revision of the src directory at build (make) time.</p>
+</li>
+<li>
+<p>This variable has to be available to the compile command as compiler 
+    flag <code>-DSVNREV="$SVNREV"</code>. 
+    Go to</p>
+<blockquote>
+<p>Menu "Project" &gt; "Project options" &gt; "Configure options", </p>
+</blockquote>
+<p>and add under the "C" and "C++" tab the following compiler flag
+(Those extra escape  thingies are needed to counter string
+ parsing/expanding during the <code>configure</code> stage.)</p>
+<div class="highlight"><pre><span></span><span class="nv">-DSVNREV</span><span class="o">=</span><span class="se">\\\&quot;\$</span><span class="o">(</span>SVNREV<span class="o">)</span><span class="se">\\\&quot;</span>
+</pre></div>
+
+
+<p>Like so:</p>
+<p><img alt="kdevelop screenshot" src="/articles/from-drupal-blog/images/kdev-svnversion.png" /></p>
+</li>
+<li>
+<p>Use the svn version string in your code. e.g.:</p>
+<div class="highlight"><pre><span></span><span class="cp">#ifdef SVNREV</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Version: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">SVNREV</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="cp">#endif</span>
+</pre></div>
+
+
+</li>
+</ol>
+<p>Fhew.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

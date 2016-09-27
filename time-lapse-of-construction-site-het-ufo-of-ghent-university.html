@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Time-lapse of construction site "Het Ufo" of Ghent University - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="video"/>
+        <meta name="tags" contents="ugent"/>
+        <meta name="tags" contents="gent"/>
+        <meta name="tags" contents="linux"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Time-lapse of construction site "Het Ufo" of Ghent University</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-10-01T00:00:00+02:00"> on 2009/10/01</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/video.html">video</a>,                    <a href="/tag/ugent.html">ugent</a>,                    <a href="/tag/gent.html">gent</a>,                    <a href="/tag/linux.html">linux</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>In front of the place I work, Ghent University is constructing a new building with two large auditoria and office space, called "Het Ufo" (Universiteitsforum). Being in the digital age, there was of course a webcam pointing at the construction site. Since 21 September 2007, I had a cron job running to capture a photo each day. Apparently, the cron job died on 18 august 2009 for some reason, so my pile of daily photo's stopped growing. Time to put them together in a time-lapse video:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tyREnyNq2yU" frameborder="0" allowfullscreen></iframe>
+
+<p>Update: Michiel Ronsse (see comments below) also had a cron job running 
+and kindly provided me with extra frames from July 2007 to September 2007. 
+This is the part when there is no concrete yet.</p>
+<h3>Making of</h3>
+<p>For more nerdiness, a bit of making-of info (all on Linux of course).</p>
+<p>The bash script to capture a frame from the publicly accessible webcam (which I won't disclose) was:</p>
+<div class="highlight"><pre><span></span><span class="nv">filename</span><span class="o">=</span>~/ufo-webcam/frame-<span class="k">$(</span>date +<span class="s2">&quot;%Y&quot;</span><span class="k">)</span>/frame-<span class="k">$(</span>date +<span class="s2">&quot;%Y-%m-%d-%H-%M-%S&quot;</span><span class="k">)</span>.jpg
+
+wget -O <span class="nv">$filename</span> --timeout<span class="o">=</span><span class="m">60</span>  http://webcamurl 2&gt;<span class="p">&amp;</span>1
+</pre></div>
+
+
+<p>With cron, I executed this script once a day, generating  files like <code>frame-2008/frame-2008-02-20-12-27-00.jpg</code></p>
+<p>To generate a video from this, I used the command line tool <a href="http://www.transcoding.org/transcode">transcode</a>. First I had to generate a list with the filenames of the frames:</p>
+<div class="highlight"><pre><span></span>ls */frame-200?-??-??-12-??-??.jpg <span class="p">|</span> sort &gt; framelist.txt
+</pre></div>
+
+
+<p>And then "convert" this list file <code>framelist.txt</code> to a real video:</p>
+<div class="highlight"><pre><span></span>transcode -i framelist.txt -x imlist,null -g640x480 --use_rgb -z -y xvid,null -f5 -o frames.avi -H 0
+</pre></div>
+
+
+<p>I don't remember what all the options are for, but they were needed to make it work on my setup.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

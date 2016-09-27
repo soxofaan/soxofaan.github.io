@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Gearman (job queue manager) command line tool: routing the workload to the worker process arguments with xargs - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="command line"/>
+        <meta name="tags" contents="parallelization"/>
+        <meta name="tags" contents="gearman"/>
+        <meta name="tags" contents="howto"/>
+        <meta name="tags" contents="linux"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Gearman (job queue manager) command line tool: routing the workload to the worker process arguments with xargs</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2010-04-27T00:00:00+02:00"> on 2010/04/27</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/command-line.html">command line</a>,                    <a href="/tag/parallelization.html">parallelization</a>,                    <a href="/tag/gearman.html">gearman</a>,                    <a href="/tag/howto.html">howto</a>,                    <a href="/tag/linux.html">linux</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <h3>Abstract</h3>
+<p>Gearman provides a basic command line tool that helps to distribute work from clients to worker processes/machines. By default the worker process can only receive data from its standard input. With the <code>xargs</code> tool we can circumvent this and route data to the process arguments of the worker process.</p>
+<h3>Introduction</h3>
+<p>At work, I regularly have to run several longer running processes, like neural network training. Most processes are independent and running them one after the other on same core of the same machine is obviously a big waste of time as we have several number crunching machines with several cores here at the lab.</p>
+<p>I'm investigating some job queue/load balancing tools to parallelize my work and currently I'm looking into <a href="http://gearman.org">Gearman</a>, a generic framework for distributing work to other machines or processes and seems to fit most of my needs. Its core is written in C, but it provides an API for several languages, so you can write your client processes (which define the work to do) and worker processes (which do the real work) in for example Python, PHP or Perl.</p>
+<p>However, I don't want to depend heavily on Gearman as a framework, because I want to be able to run my applications and scripts also without the Gearman framework. Therefore, I'm trying to limit myself to the Gearman command line tool to run clients and workers, so I don't depend on Gearman in my source code, but only use it when launching scripts and jobs.</p>
+<h3>Gearman command line tool example</h3>
+<p>The <a href="http://gearman.org/index.php?id=getting_started#gearman_command_line_tool" title="Gearman manual about the Gearman command line tools">Gearman manual</a> describes how to use the command line tool <code>gearman</code>. For the sake of discussion I'll adapt the example given there (counting words with the <code>wc</code> tool). The worker, which registers the function 'wordcount', is started with</p>
+<div class="highlight"><pre><span></span>$ gearman -w -f wordcount wc
+</pre></div>
+
+
+<p>The worker runs in foreground here (and keeps running until we kill it with CTRL-C for example), so for the remainder of the experiment we have to open a new shell.</p>
+<p>You can then consume the 'wordcount' service as a client with</p>
+<div class="highlight"><pre><span></span>$ gearman -f wordcount &lt; /etc/passwd
+     <span class="m">62</span>     <span class="m">114</span>    3306
+</pre></div>
+
+
+<p>Note that the gearman command line workflow employs the standard input and output to communicate: the worker process receives its input through the standard input, generates "results" on its standard output, which is redirected to the client. In the example given above we also used the standard input of the client to provide the data to the client. We can also provide data to the client as command line arguments, but note how it will launch a job for each argument separately (also note that the jobs will not be run in parallel this way):</p>
+<div class="highlight"><pre><span></span>$ gearman -f wordcount foo barr <span class="s2">&quot;a string with spaces&quot;</span>
+      <span class="m">0</span>       <span class="m">1</span>       3
+      <span class="m">0</span>       <span class="m">1</span>       4
+      <span class="m">0</span>       <span class="m">4</span>      20
+</pre></div>
+
+
+<h3>Can I haz procezz argumentz?</h3>
+<p>In my case however, I typically want to run jobs with commands like</p>
+<div class="highlight"><pre><span></span>some_script.py --option=A /path/to/file
+some_script.py --option=B /path/to/other/file
+</pre></div>
+
+
+<p>But with the gearman command line tool I can't set the arguments (like <code>--option=A</code> and <code>/path/to/other/file</code>) of the worker process, as I only have access to its standard input. I could of course rewrite <code>some_script.py</code> to get its settings from the standard input, but that breaks my workflow when I don't want/have to use the Gearman framework.</p>
+<h3>Xargs to the rescue!</h3>
+<p>A workaround is to use <a href="http://en.wikipedia.org/wiki/xargs">Xargs</a> for routing the standard input to process arguments. To illustrate this, consider this small Python script <code>show_input.py</code>, which shows the input data it received from the process arguments and the standard input:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">print</span> <span class="s2">&quot;sys.argv:&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+<span class="k">print</span> <span class="s2">&quot;sys.stdin:&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+</pre></div>
+
+
+<p>For example:</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> foo bar <span class="p">|</span> ./show_input.py baz
+sys.argv: <span class="o">[</span><span class="s1">&#39;./show_input.py&#39;</span>, <span class="s1">&#39;baz&#39;</span><span class="o">]</span>
+sys.stdin: <span class="o">[</span><span class="s1">&#39;foo bar\n&#39;</span><span class="o">]</span>
+</pre></div>
+
+
+<p>and with <code>xargs</code>:</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> foo bar <span class="p">|</span> xargs ./show_input.py baz
+sys.argv: <span class="o">[</span><span class="s1">&#39;./show_input.py&#39;</span>, <span class="s1">&#39;baz&#39;</span>, <span class="s1">&#39;foo&#39;</span>, <span class="s1">&#39;bar&#39;</span><span class="o">]</span>
+sys.stdin: <span class="o">[]</span>
+</pre></div>
+
+
+<p>Now, let's start a Gearman worker with <code>xargs</code> and this script:</p>
+<div class="highlight"><pre><span></span>$ gearman -w -f show_input xargs ./show_input.py additional_argument
+</pre></div>
+
+
+<p>And consume the service:</p>
+<div class="highlight"><pre><span></span>$ gearman -f show_input foo bar
+sys.argv: <span class="o">[</span><span class="s1">&#39;./show_input.py&#39;</span>, <span class="s1">&#39;additional_argument&#39;</span>, <span class="s1">&#39;foo&#39;</span><span class="o">]</span>
+sys.stdin: <span class="o">[]</span>
+sys.argv: <span class="o">[</span><span class="s1">&#39;./show_input.py&#39;</span>, <span class="s1">&#39;additional_argument&#39;</span>, <span class="s1">&#39;bar&#39;</span><span class="o">]</span>
+sys.stdin: <span class="o">[]</span>
+</pre></div>
+
+
+<p>Note again how a separate job is created for each argument. To group arguments, we can use quotes. </p>
+<div class="highlight"><pre><span></span>$ gearman -f show_input <span class="s2">&quot;foo bar baz&quot;</span>
+sys.argv: <span class="o">[</span><span class="s1">&#39;./show_input.py&#39;</span>, <span class="s1">&#39;additional_argument&#39;</span>, <span class="s1">&#39;foo&#39;</span>, <span class="s1">&#39;bar&#39;</span>, <span class="s1">&#39;baz&#39;</span><span class="o">]</span>
+sys.stdin: <span class="o">[]</span>
+</pre></div>
+
+
+<p>When arguments should have spaces, we have to escape them too or use other quotes (this works for me in Bash at least). Also, when the first argument starts with a dash, add a <code>--</code> to the mix, so gearman does not try to consume it himself.</p>
+<div class="highlight"><pre><span></span>$ gearman -f show_input -- <span class="s2">&quot;-a foo bar\ baz &#39;one two three&#39;&quot;</span>
+sys.argv: <span class="o">[</span><span class="s1">&#39;./show_input.py&#39;</span>, <span class="s1">&#39;additional_argument&#39;</span>, <span class="s1">&#39;-a&#39;</span>, <span class="s1">&#39;foo&#39;</span>, <span class="s1">&#39;bar baz&#39;</span>, <span class="s1">&#39;one two three&#39;</span><span class="o">]</span>
+sys.stdin: <span class="o">[]</span>
+</pre></div>
+
+
+<h3>Conclusion</h3>
+<p>Gearman provides a basic command line tool that helps to distribute work from clients to worker processes/machines. By default the worker process can only receive data from its standard input. If we want to set the process arguments of the worker process instead, e.g. as if we would invoke the worker process with</p>
+<div class="highlight"><pre><span></span><span class="c1"># Without Gearman: directly running the job.</span>
+$ worker_command -a foo <span class="s2">&quot;bar baz&quot;</span>
+</pre></div>
+
+
+<p>we can use a <code>xargs</code> workaround when launching the worker:</p>
+<div class="highlight"><pre><span></span><span class="c1"># With Gearman: launch worker.</span>
+$ gearman -w -f name xargs worker_command
+</pre></div>
+
+
+<p>and consume it as a client with</p>
+<div class="highlight"><pre><span></span><span class="c1"># With Gearman: client consumes service.</span>
+$ gearman -f name -- <span class="s1">&#39;-a foo &quot;bar baz&quot;&#39;</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

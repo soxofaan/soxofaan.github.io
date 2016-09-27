@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>misc - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Category<br />&ldquo;misc&rdquo;</h1>
+    </header>
+
+    <main class="content">
+    <ul id="article-list">
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/c-mex-files-compilation-problems-under-ubuntu-804-hardy.html"
+                               title="link to C++-MEX files compilation problems under Ubuntu 8.04 (Hardy)">C++-MEX files compilation problems under Ubuntu 8.04 (Hardy)</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-23T00:00:00+02:00"> on 2009/09/23</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>How unpleasant I may find it, sometimes I have to use some tools in Matlab at work. Today I stumbled on a problem with compiling MEX-files written in C++ on my Ubuntu 8.04 (Hardy Heron) box. To illustrate, I'll use the example C++ MEX file <code>mexcpp.cpp</code> provided ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Python: hiding attribute getters and setters behind standard attribute access</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-22T00:00:00+02:00"> on 2009/09/22</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Look at this small snippet of Python code:</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+
+<p>Seems like nothing special, but look what it spits out:</p>
+<div class="highlight"><pre><span></span>20
+foofoo
+[1, 2, 3, 1, 2, 3]
+</pre></div>
+
+
+<p>Oh my ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/how-to-find-out-which-version-of-ubuntu-you-are-running.html"
+                               title="link to How to find out which version of Ubuntu you are running?">How to find out which version of Ubuntu you are running?</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-11T00:00:00+02:00"> on 2009/09/11</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>How to find out which version of Ubuntu you are running?</p>
+<p>Use one of the commands below:</p>
+<div class="highlight"><pre><span></span>lsb_release -a
+cat /etc/lsb-release
+cat /etc/issue
+</pre></div>
+
+
+<p>kthxbye </p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/jython-and-pythonpath.html"
+                               title="link to Jython and PYTHONPATH">Jython and PYTHONPATH</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-09T00:00:00+02:00"> on 2009/09/09</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>For some small tools or jobs I use <a href="http://jython.org">Jython</a> so I can (re)use some existing Java code, while still writing in <a href="http://python.org">Python</a>. I also have various custom Python modules, of which I put the paths in my <code>PYTHONPATH</code> environment variable, so those modules are easily available in Python scripts ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/eclipse-tptp-woes-in-ubuntu-and-how-to-solve-it-as-non-root.html"
+                               title="link to Eclipse TPTP woes in Ubuntu and how to solve it as non-root">Eclipse TPTP woes in Ubuntu and how to solve it as non-root</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-08-19T00:00:00+02:00"> on 2009/08/19</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Today, I wanted to do some profiling of a Java application in Eclipse (3.4 aka Ganymede) on my Ubuntu 8.10 box at work. Google pointed me to the Eclipse <a href="http://www.eclipse.org/tptp/">TPTP (Test &amp; Performance Tools)</a> platform, which I installed through the Eclipse plug-in installer thingy, that weird acting constantly blocking ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/latex-inline-bibtex-entries-with-the-bibentry-package.html"
+                               title="link to LaTeX: inline BibTeX entries with the bibentry package">LaTeX: inline BibTeX entries with the bibentry package</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-07-17T00:00:00+02:00"> on 2009/07/17</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>In the introduction chapter of my PhD dissertation, I had to make a listing of my publications. The obvious brain dead way to achieve this is just typing everything manually in a list. But this feels just so wrong when you're already using BibTeX for managing references and bibliographical ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/reading-mp3-files-in-java.html"
+                               title="link to Reading MP3 files in Java">Reading MP3 files in Java</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-07-15T00:00:00+02:00"> on 2009/07/15</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>At work, I'm trying out <a href="http://www.elec.qmul.ac.uk/people/simond/beatroot/">BeatRoot</a>, an application written in Java, for its BPM estimation capabilities. The data set I'm working with is encoded in MP3 format and getting this Java tool to work with the MP3 data was not an easy ride.</p>
+<p>Java does not support MP3 ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/showing-the-running-command-in-a-bash-script-with-set-x.html"
+                               title="link to Showing the running command in a bash script with "set -x"">Showing the running command in a bash script with "set -x"</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-29T00:00:00+02:00"> on 2009/05/29</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Bash scripts are handy for putting a bunch of longer running jobs in one batch. In some occasions it can be useful to know which command is running at the moment, especially when the commands do not generate output themselves or this output is redirected to files. </p>
+<p>Bash has a ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/working-with-a-subversion-repository-through-git.html"
+                               title="link to Working with a Subversion repository through Git">Working with a Subversion repository through Git</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-25T00:00:00+02:00"> on 2009/05/25</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>I'm experimenting with using a Subversion repository through Git. That way I can keep better track of my own (experimental) work, without polluting/destabilizing the central Subversion repository with small incremental commits. Git comes with a <code>svn</code> sub-tool that takes care of all the interfacing between the local git ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/ignore-whitespace-in-subversion-diffs.html"
+                               title="link to Ignore whitespace in Subversion diffs">Ignore whitespace in Subversion diffs</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-20T00:00:00+02:00"> on 2009/05/20</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>When you're working on a software development project where not all parties use the same code style conventions or editor setting (like tabs vs. spaces, removing trailing spaces, etc), the signal to noise ratio of a source code diff can be a bit frustrating. Luckily, most diff programs have ...</p> </div>
+                </article>
+            </li>
+    </ul>
+
+<p class="paginator">
+        <a href="/category/misc3.html">&laquo;</a>
+
+    Page 4 / 11
+
+        <a href="/category/misc5.html">&raquo;</a>
+</p>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

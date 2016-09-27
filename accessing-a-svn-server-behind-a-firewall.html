@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Accessing a svn server behind a firewall - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="network"/>
+        <meta name="tags" contents="ssh"/>
+        <meta name="tags" contents="command line"/>
+        <meta name="tags" contents="stickeenote"/>
+        <meta name="tags" contents="subversion"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Accessing a svn server behind a firewall</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2007-02-05T00:00:00+01:00"> on 2007/02/05</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/network.html">network</a>,                    <a href="/tag/ssh.html">ssh</a>,                    <a href="/tag/command-line.html">command line</a>,                    <a href="/tag/stickeenote.html">stickeenote</a>,                    <a href="/tag/subversion.html">subversion</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Disclaimer: this entry is mainly a reminder to myself (the stuff you would write on a post-it), but maybe it's useful to someone else.</p>
+<p>The subversion server at my work is (currently) only accessible from 
+within the LAN, not directly reachable from the outside evil internet. T
+his makes it a bit difficult to access the subversion server when 
+working from home. SSH Tunneling to the rescue!</p>
+<p>To setup an SSH tunnel (on computer <code>home</code>):</p>
+<div class="highlight"><pre><span></span>ssh -l username -L 8910:svnserver:80 gateway cat -
+</pre></div>
+
+
+<p>This creates an SSH connection from computer <code>home</code> to computer 
+<code>gateway</code> and opens a listening TCP-port 8910 on the the computer <code>home</code>. 
+Connections to this port will be forwarded through the SSH tunnel to 
+TCP port 80 from computer <code>svnserver</code> (as seen from computer <code>gateway</code>).</p>
+<p>Now we can access the svnserver as follows (on computer <code>home</code>):</p>
+<div class="highlight"><pre><span></span>svn co http://localhost:8910/svn/repository/path
+</pre></div>
+
+
+<p>In a nice diagram:</p>
+<p><img alt="ssh tunneling" src="/articles/from-drupal-blog/images/schema_1.png" /></p>
+<p>Graphics used in diagram from <a href="http://tango.freedesktop.org/Tango_Icon_Gallery" title="Tango Icon Gallery">Tango icon gallery</a>.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

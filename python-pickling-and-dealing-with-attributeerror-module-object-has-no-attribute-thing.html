@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Python: pickling and dealing with "AttributeError: 'module' object has no attribute 'Thing'" - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="pickle"/>
+        <meta name="tags" contents="deprecated"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Python: pickling and dealing with "AttributeError: 'module' object has no attribute 'Thing'"</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-10-17T00:00:00+02:00"> on 2005/10/17</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/python.html">python</a>,                    <a href="/tag/pickle.html">pickle</a>,                    <a href="/tag/deprecated.html">deprecated</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>The <a href="http://docs.python.org/lib/module-pickle.html" title="python pickle module"><code>pickle</code> module</a> of python is a very handy module if you want to store and retrieve your python data structures to and from a file. Using that module you don't need to waste your time on writing your own export and import functions any more. </p>
+<p>We will write a simple python module <code>thing.py</code> with a very simple class <code>Thing</code>, which will have save and load functionality to and from file.  Beside the traditional import usage of this module, we also inted to use the module on its own as a standalone program, with the simple task of creating a <code>Thing</code> and saving it to a file. The module file <code>thing.py</code>:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="k">class</span> <span class="nc">Thing</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Thing: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save thing to a file.&quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a thing loaded from a file.&quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="c1"># make load a static method</span>
+    <span class="n">load</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">load</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># code for standalone use</span>
+    <span class="n">foo</span> <span class="o">=</span> <span class="n">Thing</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+    <span class="n">foo</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;foo.pickle&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>After executing <code>thing.py</code> as standalone script, we get a file <code>foo.pickle</code> in the current directory. 
+We now write a script <code>thingtest.py</code> to load the thing from this file after creating, saving and loading another thing object:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">thing</span>
+
+<span class="c1"># create another thing and save it</span>
+<span class="n">bar</span> <span class="o">=</span> <span class="n">thing</span><span class="o">.</span><span class="n">Thing</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
+<span class="n">bar</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;bar.pickle&quot;</span><span class="p">)</span>
+
+<span class="c1"># load the two things from their files</span>
+<span class="n">baz</span> <span class="o">=</span> <span class="n">thing</span><span class="o">.</span><span class="n">Thing</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;bar.pickle&quot;</span><span class="p">)</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="n">thing</span><span class="o">.</span><span class="n">Thing</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;foo.pickle&quot;</span><span class="p">)</span>
+
+<span class="c1"># show the things</span>
+<span class="k">print</span> <span class="n">foo</span>
+<span class="k">print</span> <span class="n">bar</span>
+<span class="k">print</span> <span class="n">baz</span>
+</pre></div>
+
+
+<p>This script will fail with an error message like</p>
+<div class="highlight"><pre><span></span>File &quot;./thingtest.py&quot;, line 11, in ?
+    foo = thing.Thing.load(&quot;foo.pickle&quot;)
+...
+AttributeError: &#39;module&#39; object has no attribute &#39;Thing&#39;
+</pre></div>
+
+
+<p>Apparently the loading of <code>bar.pickle</code> succeeded, but the loading of <code>foo.pickle</code> failed.  </p>
+<p>The reason for this is the following. Loading (unpickling) involves importing the module defining the object. The file <code>foo.pickle</code> states that this module is <code>__main__</code> which corresponds to <code>thing</code>, because <code>foo</code> was saved from the script defining the class <code>Thing</code>. On the other hand, <code>bar.pickle</code> states that the module is the imported module <code>thing</code> which corresponds with <code>thing.py</code>.</p>
+<p>The unpickling of <code>foo</code> in <code>thingtest.py</code> fails because python finds no class <code>Thing</code> in the module <code>__main__</code>, which corresponds now with <code>thingtest.py</code> and not with the wanted <code>thing.py</code>.</p>
+<p>Two possible solutions for this problem:</p>
+<ul>
+<li>Import <code>Thing</code> to the top level of <code>thingtest.py</code> by adding the import statement <code>from thing import Thing</code></li>
+<li>Save the right module information in the pickle file when pickling from the standalone use of the script <code>thing.py</code>. This can be done with the following change to the code block for standalone use:<div class="highlight"><pre><span></span>if __name__ == &quot;__main__&quot;:
+    # code for standalone use
+    t = Thing(&quot;foo&quot;)
+    Thing.__module__ = &quot;thing&quot;
+    t.save(&quot;foo.pickle&quot;)
+</pre></div>
+
+
+</li>
+</ul>
+<p>The last solution seems better, because the right information is now in the pickle file and it does not force the loader of the pickle file to use a workaround to read it.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

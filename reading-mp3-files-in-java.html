@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Reading MP3 files in Java - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="music"/>
+        <meta name="tags" contents="programming"/>
+        <meta name="tags" contents="mp3"/>
+        <meta name="tags" contents="java"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Reading MP3 files in Java</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-07-15T00:00:00+02:00"> on 2009/07/15</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/music.html">music</a>,                    <a href="/tag/programming.html">programming</a>,                    <a href="/tag/mp3.html">mp3</a>,                    <a href="/tag/java.html">java</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>At work, I'm trying out <a href="http://www.elec.qmul.ac.uk/people/simond/beatroot/">BeatRoot</a>, an application written in Java, for its BPM estimation capabilities. The data set I'm working with is encoded in MP3 format and getting this Java tool to work with the MP3 data was not an easy ride.</p>
+<p>Java does not support MP3 en/decoding by default, which is fine for me, I wouldn't have expected that (MP3 technology is encumbered with patents after all). However, recent versions of Java come with a <a href="http://java.sun.com/products/java-media/sound/index.jsp">Java Sound API</a> for reading and writing audio files and it supports basic audio formats like WAV, AU and AIFF. Moreover, Java Sound also provides a plug-in infrastructure for extending support to other audio formats, like MP3 and Ogg Vorbis.</p>
+<p>Luckily, BeatRoot uses the Java Sound API, so no panic on that front. The hard part was however getting a Java Sound plug-in for MP3 support and making it work. Googling for a solution was not as satisfying as I expected/hoped ("java" and "mp3" are not very obscure keywords I would think) and the documentation of the stuff I did found was - erm - not always very enlightening.</p>
+<p>In the end I found three ways/libraries/plug-ins to get MP3 decoding working and by listing them here, I hope I'll save someone else's time. The following works for me now, July 2009. If you read this from the future, some things could be different (like URLs and versions), but as you are from the future, you should be smart enough to handle this.</p>
+<ul>
+<li>The <a href="http://java.sun.com/javase/technologies/desktop/media/jmf/mp3/download.html">MP3 plugin from Sun's Java Media Framework</a>. 
+    The zip file I downloaded contained, apart from some readme and 
+    license stuff, a jar mp3plugin.jar. The documentation states that 
+    this jar should be put in a folder lib/ext under the home directory 
+    of your JREs, but I found out that putting it in my 
+    CLASSPATH variable was enough to get it working. I guess putting 
+    it in the lib/ext folder is required to make it work for the 
+    <a href="http://java.sun.com/javase/technologies/desktop/media/jmf/index.jsp">Java Media Framework</a>, 
+    but not required to make it work with the Java Sound API.</li>
+<li><a href="http://www.tritonus.org/">Tritonus</a> is an open source implementation 
+    of the Java Sound API with plug-ins for MP3 and Ogg Vorbis among 
+    others. To get MP3 support for Java Sound: go to the 
+    <a href="http://www.tritonus.org/plugins.html">plug-ins page</a>, 
+    get the jar with some general Tritonus utility stuff 
+    (<a href="http://www.tritonus.org/tritonus_share-0.3.6.jar">tritonus_share-0.3.6.jar</a> 
+    in my case) and get two jars for the MP3 decoder 
+    (<a href="http://www.tritonus.org/javalayer.jar">javalayer.jar</a> 
+    and <a href="http://www.tritonus.org/tritonus_mp3-0.3.6.jar">tritonus_mp3-0.3.6.jar</a> 
+    in my case). Put these three jars in you CLASSPATH and you should be set.</li>
+<li>The people at <a href="http://www.javazoom.net">JavaZoom</a> also maintain some 
+    <a href="http://www.javazoom.net/projects.html">open source audio processing stuff</a>, 
+    such as <a href="http://www.javazoom.net/mp3spi/mp3spi.html">MP3SPI</a>, which 
+    provides MP3 support for Java Sound. Three jars are required here: 
+    mp3spi1.9.4.jar from the <a href="http://www.javazoom.net/mp3spi/sources.html">MP3SPI download</a>, 
+    jl1.0.1.jar from the <a href="http://www.javazoom.net/javalayer/sources.html">JLayer download</a>
+    and the Tritonus utility jar (<a href="http://www.tritonus.org/tritonus_share-0.3.6.jar">tritonus_share-0.3.6.jar</a> 
+    in my case) from the Tritonus website. 
+    Putting these three in my CLASSPATH did the trick.</li>
+</ul>
+<p>I haven't really got into comparing these options, so I can't say which is the best, but at least having three options is better than none.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

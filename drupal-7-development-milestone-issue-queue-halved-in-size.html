@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Drupal 7 development milestone: issue queue halved in size - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="drupal"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Drupal 7 development milestone: issue queue halved in size</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2010-01-29T00:00:00+01:00"> on 2010/01/29</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/drupal.html">drupal</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Here's an update of the post about <a href="/how-near-is-drupal-7.html">the size tracking of the Drupal 7 issue queue</a> I made more than a month ago. January has been a pretty fruitful month for Drupal core development: we hit the point were the critical D7 issue queue halved in size. It reached its maximum around 15 October 2009 (code freeze) with 440 critical D7 issues and on Wednesday 27 January 2010, it dropped below 220. </p>
+<p>Ok, maybe you consider this is a bit cheating, as 440 is the number of critical issues just before the code freeze, which has a bit of a positive bias. After the code freeze, the maximum size was 416, so that means that 208 is threshold to consider. But hey, at the time of this writing, the critical issue queue is at 211, so we're not far from that milestone too.</p>
+<p>Below is the updated plot.</p>
+<p><img alt="Drupal 7 issue queue size overview" src="/articles/from-drupal-blog/images/d7_issue_queue_feb.png" /></p>
+<p>Note that the critical issue queue shrinking is pretty bursty and irregular, which makes it very hard to make any prediction about when it will reach zero. Also, in case you wonder: the large drop around 8 january 2010 is <a href="http://drupal.org/user/54136">sun</a>'s large critical issue cleanup (70+ issues).</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Matlab WTF: Inconsistent short-circuit behavior of logical operators - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="wtf"/>
+        <meta name="tags" contents="rant"/>
+        <meta name="tags" contents="matlab"/>
+        <meta name="tags" contents="octave"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Matlab WTF: Inconsistent short-circuit behavior of logical operators</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-24T00:00:00+02:00"> on 2009/09/24</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/wtf.html">wtf</a>,                    <a href="/tag/rant.html">rant</a>,                    <a href="/tag/matlab.html">matlab</a>,                    <a href="/tag/octave.html">octave</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>I just stumbled on another reason to dislike Matlab: the stupid inconsistency of the short-circuit behavior of the elementwise logical operators: the statement</p>
+<div class="highlight"><pre><span></span><span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">)</span>
+</pre></div>
+
+
+<p><strong>does not short-circuit</strong>, so both <code>fun(2)</code> and <code>fun(9999)</code> are executed,
+but when used in an <code>if</code> or <code>while</code> expression like</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span> <span class="k">end</span><span class="p">;</span>
+</pre></div>
+
+
+<p>the expression <strong>does short-circuit</strong>, meaning that only <code>fun(2)</code> is executed. </p>
+<p>I know, you also have the <code>||</code> and <code>&amp;&amp;</code> operators, which are defined as short circuiting operators, but the inconsistency with the <code>|</code> and <code>&amp;</code> operators is just stupid, if not evil.</p>
+<p>For example, say that function <code>fun(x)</code> is defined as </p>
+<div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>y <span class="p">=</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nb">disp</span><span class="p">(</span><span class="n">sprintf</span><span class="p">(</span><span class="s">&#39;  --&gt; called fun(%d)&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">));</span>
+    <span class="n">y</span> <span class="p">=</span> <span class="n">x</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>and we execute the script</p>
+<div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="s">&#39;fun(2) | fun(9999);&#39;</span><span class="p">)</span>
+<span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span>
+
+<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;if fun(2) | fun(9999); end;&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span> <span class="k">end</span><span class="p">;</span>
+
+<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;fun(2) || fun(9999);&#39;</span><span class="p">)</span>
+<span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">||</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span>
+
+<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;if fun(2) || fun(9999); end;&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">||</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span> <span class="k">end</span><span class="p">;</span>
+</pre></div>
+
+
+<p>In Matlab (R2007a), I get:</p>
+<div class="highlight"><pre><span></span>fun(2) | fun(9999);
+  --&gt; called fun(2)
+  --&gt; called fun(9999)
+if fun(2) | fun(9999); end;
+  --&gt; called fun(2)
+fun(2) || fun(9999);
+  --&gt; called fun(2)
+if fun(2) || fun(9999); end;
+  --&gt; called fun(2)
+</pre></div>
+
+
+<p>See? With the first <code>|</code>-statement, there are two <code>fun()</code> calls and with the second <code>|</code>-statement, there is only one. And they even dare to call this a feature in the <a href="http://www.mathworks.com/access/helpdesk/help/techdoc/matlab_prog/f0-40063.html#f0-38959">Matlab documentation</a>. Another proof that Matlab is a horrible programming environment.</p>
+<p>Funnily, the open source Matlab-replacement <a href="http://www.octave.org">Octave</a> gets it right and shows consistency:</p>
+<div class="highlight"><pre><span></span>fun(2) | fun(9999);
+  --&gt; called fun(2)
+  --&gt; called fun(9999)
+if fun(2) | fun(9999); end;
+  --&gt; called fun(2)
+  --&gt; called fun(9999)
+fun(2) || fun(9999);
+  --&gt; called fun(2)
+if fun(2) || fun(9999); end;
+  --&gt; called fun(2)
+</pre></div>
+
+
+<p>Anyway, I'm happy I decided to leave Matlab (unless forced to use it) and switched to <a href="http://www.python.org/">Python</a>+<a href="http://scipy.org/">Scipy</a>.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

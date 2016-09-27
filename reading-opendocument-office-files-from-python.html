@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Reading OpenDocument office files from Python - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="opendocument"/>
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="deprecated"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Reading OpenDocument office files from Python</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-01-20T00:00:00+01:00"> on 2006/01/20</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/opendocument.html">opendocument</a>,                    <a href="/tag/python.html">python</a>,                    <a href="/tag/deprecated.html">deprecated</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>The <a href="http://en.wikipedia.org/wiki/Opendocument">OpenDocument file format</a>  (aka "<a href="http://www.oasis-open.org">OASIS</a> Open Document Format for Office Applications"), is an open and free standard for office files. It's fairly easy to read OpenDocument files in/from <a href="http://www.python.org">Python</a>. Basicly, an OpenDocument file is just a zip archive but with another extension (".ods" spreadsheets, ".odt" for text documents, ".odg" for graphics and so on). The files in the zip file are mainly some XML files, like <code>content.xml</code>, <code>settings.xml</code> and <code>styles.xml</code>.  </p>
+<p>Basicly, we just need two standard python modules from the <a href="http://docs.python.org/lib/lib.html">nice standard Python library</a> to extract data from a OpenDocument File:  <a href="http://docs.python.org/lib/module-zipfile.html">zipfile</a> for handling the zip compression and <a href="http://docs.python.org/lib/module-xml.parsers.expat.html">xml.parsers.expat</a>  (or <a href="http://docs.python.org/lib/markup.html">another xml parser module</a>) for parsing the xml.  A possible/simple/minimal way to do read a fictional spreadsheet file <code>pelican.ods</code> is as follows:</p>
+<div class="highlight"><pre><span></span><span class="c1"># import the needed modules</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">xml.parsers.expat</span>
+
+<span class="c1"># get content xml data from OpenDocument file</span>
+<span class="n">ziparchive</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s2">&quot;pelican.ods&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">xmldata</span> <span class="o">=</span> <span class="n">ziparchive</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;content.xml&quot;</span><span class="p">)</span>
+<span class="n">ziparchive</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Element</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">attrs</span>
+
+<span class="k">class</span> <span class="nc">TreeBuilder</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">start_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">end_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">char_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># create parser and parsehandler</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">parsers</span><span class="o">.</span><span class="n">expat</span><span class="o">.</span><span class="n">ParserCreate</span><span class="p">()</span>
+<span class="n">treebuilder</span> <span class="o">=</span> <span class="n">TreeBuilder</span><span class="p">()</span>
+<span class="c1"># assign the handler functions</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">StartElementHandler</span>  <span class="o">=</span> <span class="n">treebuilder</span><span class="o">.</span><span class="n">start_element</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">EndElementHandler</span>    <span class="o">=</span> <span class="n">treebuilder</span><span class="o">.</span><span class="n">end_element</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">CharacterDataHandler</span> <span class="o">=</span> <span class="n">treebuilder</span><span class="o">.</span><span class="n">char_data</span>
+
+<span class="c1"># parse the data</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="n">xmldata</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<p>After importing the modules <code>zipfile</code> and <code>xml.parsers.expat</code>, we open the OpenDocument file through the zipfile filter and extract the XML data from <code>content.xml</code> (in just three simple readable statements, that's what I like about python)</p>
+<p>Next, we have to parse the XML data and store its elements. First I define a class <code>Element</code> for storing the name, attributes and contents (note that its a subclass of <code>list</code>) of XML elements. The XML parse handler functions are the methods of the class <code>TreeBuilder</code>, which also collects the whole XML tree in its attribute <code>root</code> during parsing. The parsing itself is initiated by <code>parser.Parse(xmldata, True)</code>. </p>
+<p>At this point, the whole XML stream is parsed and the structure is stored in and accessible from <code>treebuilder.root</code>. For example, in the following code we define a function <code>showtree</code> and call it, for rendering an indented tree representation of the element names and character data:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">showtree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+            <span class="n">showtree</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="n">e</span>
+
+<span class="n">showtree</span><span class="p">(</span><span class="n">treebuilder</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This simple example could be extended ofcourse to serve a more real life application, but you get the point. </p>
+<p>Moreover, at the <a href="http://opendocumentfellowship.org">OpenDocument Fellowship</a> they are working on <a href="http://trac.opendocumentfellowship.org/libopendocument/">LibOpenDocument, a library for manipulating OpenDocument files</a>. At the time of this writing, there is only a PHP and a Python implementation in early development stage. </p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Bash: about .bashrc, .bash_profile, .profile, /etc/profile, etc/bash.bashrc and others - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Bash: about .bashrc, .bash_profile, .profile, /etc/profile, etc/bash.bashrc and others</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-10-03T00:00:00+02:00"> on 2005/10/03</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Ever wondered about the difference between <code>~/.bashrc</code>, <code>~/.bash_profile</code>, 
+<code>~/.profile</code>, <code>/etc/profile</code>, <code>/etc/bash.bashrc</code> (and maybe others) 
+and what their purposes are? I do. </p>
+<p>Some interesting excerpts from the bash manpage:</p>
+<blockquote>
+<p>When bash is invoked as an interactive <strong>login shell</strong>, or as a 
+non-interactive shell with  the <code>--login</code> option,  it  first reads and 
+executes commands from the file <code>/etc/profile</code>, if that file exists.
+After reading that file, it looks  for  <code>~/.bash_profile</code>,  <code>~/.bash_login</code>,
+and  <code>~/.profile</code>,  in  that order, and reads and executes commands from
+the first one that exists  and is readable.
+The <code>--noprofile</code> option may be used when the shell is started  to  inhibit this behavior.</p>
+<p>When an interactive shell that is <strong>not a login shell</strong> is started,
+bash  reads  and  executes  commands  from <code>/etc/bash.bashrc</code> and <code>~/.bashrc</code>, 
+if these files exist.  This may be inhibited by using the <code>--norc</code> option. 
+The <code>--rcfile</code> file option will force bash to read  and  execute commands 
+from file instead of <code>/etc/bash.bashrc</code> and <code>~/.bashrc</code>.</p>
+</blockquote>
+<p>As far as I understand, a <strong>login shell</strong> means a session where you log 
+in to the system and directly end up in Bash, like a remote ssh session 
+or logging in through a non-graphical text terminal. A <strong>non-login shell</strong> 
+is then the type of shells you open after logging in: 
+typically in a graphical session when you open a new terminal window.</p>
+<p>How I think things are supposed to work (for a typical setup):</p>
+<ul>
+<li><code>.profile</code> is for things that are not specifically related to Bash, 
+    like environment variables <code>PATH</code> and friends, and should be available anytime. 
+    For example, <code>.profile</code> should also be loaded when starting a graphical desktop session.</li>
+<li><code>.bashrc</code> is for the configuring the interactive Bash usage, 
+    like Bash aliases, setting your favorite editor, setting the Bash prompt, etc.</li>
+<li>
+<p><code>.bash_profile</code> is for making sure that both the things in <code>.profile</code> 
+    and <code>.bashrc</code> are loaded for login shells. 
+    For example, <code>.bash_profile</code> could be something simple like</p>
+<div class="highlight"><pre><span></span>. ~/.profile
+. ~/.bashrc
+</pre></div>
+
+
+<p>As stated in the man page excerpt above, if you would omit <code>.bash_profile</code>, only <code>.profile</code> would be loaded.</p>
+</li>
+</ul>
+<p>You might also be interested in <a href="/my-bashrc-bash-aliases-profile-and-other-files.html">the page I put together with the most important stuff from my <code>.bashrc</code>, <code>.profile</code> and other files</a>.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

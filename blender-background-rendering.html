@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Blender: background rendering - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="command line"/>
+        <meta name="tags" contents="blender"/>
+        <meta name="tags" contents="botsnack"/>
+        <meta name="tags" contents="stickeenote"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Blender: background rendering</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2008-05-23T00:00:00+02:00"> on 2008/05/23</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/command-line.html">command line</a>,                    <a href="/tag/blender.html">blender</a>,                    <a href="/tag/botsnack.html">botsnack</a>,                    <a href="/tag/stickeenote.html">stickeenote</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Yesterday I had to render a 3d animation for a colleague working on 3D television. He needed a short street-view video with depth map. Because there were some problems with some real world footage he wanted to use, he asked me to create an artificial video in <a href="http://www.blender.org" title="Blender">Blender</a>. After I created a simple scene with some models from <a href="http://www.katorlegaz.com/3d_models/">www.katorlegaz.com</a>, I wanted to render the whole animation overnight on one of the computers in our lab. I had some trouble with getting the command line arguments right and wanted to share this, in case someone else has the same problem.</p>
+<p>I first tried</p>
+<div class="highlight"><pre><span></span>blender -b -a foo.blend
+</pre></div>
+
+
+<p>the option <code>-b</code> is for background mode, so I could log out from the computer after I started the job, the options <code>-a</code> is for (according to the command line help):</p>
+<blockquote>
+<p>render frames from start to end (inclusive), only works when used after -b</p>
+</blockquote>
+<p>I thought this was the bare minimum to get the job done. However, nothing happened but this:</p>
+<div class="highlight"><pre><span></span>Compiled with Python version 2.5.
+Checking for installed Python... got it!
+ERROR: No camera
+
+Blender quit
+</pre></div>
+
+
+<p>Huh, no camera? There was an active camera, the scene rendered just fine from the UI, I checked my file over and over and everything seemed all right. </p>
+<p>The problem is that, unlike most command line tools I'm used to, command line Blender consumes the arguments in the given order. So with the command <code>blender -b -a foo.blend</code> Blender executes the <code>-a</code> before it loads the file <code>foo.blender</code>, which explains why it can't find a camera.</p>
+<p>The solution is to put the <code>-a</code> and other optionally arguments after the file name:</p>
+<div class="highlight"><pre><span></span>blender -b foo.blend -a
+</pre></div>
+
+
+<p>The help info you get from <code>blender -h</code> gives another example:</p>
+<div class="highlight"><pre><span></span><span class="n">Note</span><span class="o">:</span> <span class="n">Arguments</span> <span class="n">are</span> <span class="n">executed</span> <span class="k">in</span> <span class="n">the</span> <span class="n">order</span> <span class="n">they</span> <span class="n">are</span> <span class="n">given</span><span class="o">.</span> <span class="n">eg</span><span class="o">:</span>
+    <span class="s2">&quot;blender -b test.blend -f 1 -o /tmp&quot;</span>
+  <span class="o">...</span><span class="n">may</span> <span class="n">not</span> <span class="n">render</span> <span class="n">to</span> <span class="o">/</span><span class="n">tmp</span> <span class="n">because</span> <span class="s1">&#39;-f 1&#39;</span> <span class="n">renders</span> <span class="n">before</span> <span class="n">the</span> <span class="n">output</span> <span class="n">path</span> <span class="k">is</span> <span class="kd">set</span>
+    <span class="s2">&quot;blender -b -o /tmp test.blend -f 1&quot;</span>
+  <span class="o">...</span><span class="n">may</span> <span class="n">not</span> <span class="n">render</span> <span class="n">to</span> <span class="o">/</span><span class="n">tmp</span> <span class="n">because</span> <span class="n">loading</span> <span class="n">the</span> <span class="n">blend</span> <span class="n">file</span> <span class="n">overwrites</span> <span class="n">the</span> <span class="n">output</span> <span class="n">path</span> <span class="n">that</span> <span class="n">was</span> <span class="kd">set</span>
+    <span class="s2">&quot;blender -b test.blend -o /tmp -f 1&quot;</span> <span class="n">works</span> <span class="k">as</span> <span class="n">expected</span><span class="o">.</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Spidering JavaScript-manipulated HTML with PhantomJS - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="javascript"/>
+        <meta name="tags" contents="automation"/>
+        <meta name="tags" contents="html"/>
+        <meta name="tags" contents="phantomjs"/>
+        <meta name="tags" contents="spider"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Spidering JavaScript-manipulated HTML with PhantomJS</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2013-04-15T00:00:00+02:00"> on 2013/04/15</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/javascript.html">javascript</a>,                    <a href="/tag/automation.html">automation</a>,                    <a href="/tag/html.html">html</a>,                    <a href="/tag/phantomjs.html">phantomjs</a>,                    <a href="/tag/spider.html">spider</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Even if you are in an automated context, not using a typical browser, fetching the data/webpage from an URL is easy. There are command line tools like wget and curl, and every programming library has its share of libraries to build on.</p>
+<p>But what if you need the HTML markup of page after it has been manipulated with JavaScript?</p>
+<p><a href="http://phantomjs.org/">PhantomJS</a> is a headless WebKit browser that is scriptable with a JavaScript API, useful for automated testing, screen capturing, page load time monitoring and the like. It's also handy for our problem to "download" JavaScript-manipulated page markup.</p>
+<p>While there quite some pointers and examples on the internet, it was not immediately obvious how to get things working as desired. The biggest confusion came from the fact that the scriptable PhantomJS browser and the webpage run in separate "sandboxes". Apart from separate variable pools, <code>console.log()</code> messages from the webpage context won't be visible by default, while the ones from the PhantomJS context work normally, which was puzzling at first while debugging.</p>
+<p>Anyway, here is some boilerplate to solve the problem, using <code>page.evaluate()</code> to evaluate a function in the webpage's context and returning the document's <code>outerHTML</code> back in the PhantomJS context to be rendered on standard output.</p>
+<div class="highlight"><pre><span></span><span class="c1">// The URL to load.</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.google.com&#39;</span><span class="p">;</span>
+
+<span class="c1">// Start a PhantomJS &quot;page&quot; and point it to the desired URL.</span>
+<span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpage&#39;</span><span class="p">).</span><span class="nx">create</span><span class="p">();</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">===</span> <span class="s1">&#39;success&#39;</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// Run a function in the webpage&#39;s context and catch what it returns.</span>
+        <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="c1">// Optionally, do some more page manipulation here.</span>
+            <span class="c1">// ...</span>
+
+            <span class="c1">// Return the HTML from the loaded and JS-manipulated page.</span>
+            <span class="c1">// Note that a console.log() here in this context won&#39;t be visible (by default).</span>
+            <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">outerHTML</span><span class="p">;</span>
+        <span class="p">});</span>
+
+        <span class="c1">// Print the HTML to standard output.</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">html</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Make sure we quit PhantomJS, no point to keep waiting for nothing.</span>
+    <span class="nx">phantom</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<h3>Update</h3>
+<p>Apparently there is a shorter way to do this, as pointed out by <a href="https://twitter.com/ariyahidayat">Ariya Hidayat</a>, one of the guys behind PhantomJS:</p>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.google.com&#39;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpage&#39;</span><span class="p">).</span><span class="nx">create</span><span class="p">();</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">content</span><span class="p">);</span>
+    <span class="nx">phantom</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>Great!</p>
+<p>Still, in case you want to do some extra manipulation to the page before dumping it, the former boilerplate snippet might still be useful.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

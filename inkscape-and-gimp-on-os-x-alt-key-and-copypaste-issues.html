@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Inkscape and Gimp on OS X: ALT key and copy/paste issues. - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="inkscape"/>
+        <meta name="tags" contents="osx"/>
+        <meta name="tags" contents="gimp"/>
+        <meta name="tags" contents="keyboard"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Inkscape and Gimp on OS X: ALT key and copy/paste issues.</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-12-05T00:00:00+01:00"> on 2009/12/05</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/inkscape.html">inkscape</a>,                    <a href="/tag/osx.html">osx</a>,                    <a href="/tag/gimp.html">gimp</a>,                    <a href="/tag/keyboard.html">keyboard</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p><a href="http://inkscape.org/">Inkscape</a> and the <a href="http://www.gimp.org/">Gimp</a> are trusty tools in my daily tool box for various vector and bitmap image editing. Being open source applications, they have firm roots in the Linux world, but luckily they are also available for Windows and Mac OS X. No wonder I have them installed on my MacBook too.</p>
+<h3>The problem</h3>
+<p>On OS X, Inkscape and the Gimp are not completely native applications, but they depend on X11.app. This extra layer makes the user experience unfortunately less streamlined than with native applications. Especially the keyboard interaction of an out of the box setup can be clunky. </p>
+<p>For example: in Inkscape on Linux, the ALT key is used for some operations (kerning) and handy shortcuts (cloning), while in OS X you need the OPTION/ALT key for entering accented and other special characters (e.g. "é", "ü", "î" or "€" on my querty keyboard). So how do we combine these features (I need both) in Inkscape on OS X? With my default/out of the box installation of Inkscape, I only had the ALT key as a shortcut key like in Linux. Entering accented characters was not possible unfortunately. Really annoying because I really need to use those from time to time in my native language Dutch.</p>
+<p>Another problem is how to do copy/paste between native OS X application and Inkscape. For example, you're designing something like a flyer in Inkscape and you need to copy over some text from an email or text document. Typing everything over manually feels so medieval, doesn't it? Apart from the interaction problem, there is also the usability problem that X11.app application typically use CONTROL-C and CONTROL-V for copy/paste, while the native OS X applications use COMMAND-C and COMMAND-V.</p>
+<h3>The solution (kind of)</h3>
+<p>A real solution for this kind of problems would be native applications (and some nice people are working on that), but as long we're stuck with an X11.app layer in between, I'm afraid we'll have to cry ourselves asleep with some workarounds.</p>
+<p>A well put google query can get you somewhere. And that's what I've done too. You can find many clues for example here:</p>
+<ul>
+<li><a href="https://bugs.launchpad.net/inkscape/+bug/167290">Inkscape Bug #167290: OSX: ALT stolen by shortcuts, cannot type special characters</a></li>
+<li><a href="http://wiki.inkscape.org/wiki/index.php/FAQ#Mac_OS_X_specific_issues">Mac OS X specific issues on the Inkscape wiki</a></li>
+<li><a href="http://www.inkscapeforum.com/viewtopic.php?t=800&amp;f=5">"HOW-TO: Get the ALT key to function properly under Mac OS X" on inkscapeforum.com</a></li>
+</ul>
+<h3>My setup tweaks</h3>
+<p>Mainly for my own reference, I keep a checklist to document the various tweaks I did to my setup.</p>
+<ul>
+<li>
+<p>On most sources I found, people suggested to disable the options 
+    "Emulate three button mouse", "Follow system keyboard layout" and 
+    "Enable key equivalents under X11" on the "Input" tab of the 
+    X11.app preferences. I'm not completely sure of the precise meaning 
+    of these options, but it appears to be a good idea to keep them disabled.</p>
+<p><img alt="My X11.app input preferences" src="/articles/from-drupal-blog/images/X11pref_input.png" /></p>
+</li>
+<li>
+<p>The ALT key conflict can be fixed by exploiting the fact that there are
+    two OPTION/ALT keys: a left and a right one. This can be done by 
+    creating (or editing if you already have one) a X11 keymap 
+    modification file <code>.xmodmap</code> in your personal home directory. 
+    Create or edit this file <code>.xmodmap</code> and add the following 
+    (lines beginning with "!" are comments):</p>
+<div class="highlight"><pre><span></span>! Change the left OPTION/ALT key (keycode 66) to be Alt 
+! and leave the right OPTION/ALT key (keycode 69) untouched 
+! as Mode_switch for OS X style entering of accents.
+keycode 66 = Alt_L
+</pre></div>
+
+
+<p>After restarting X11.app (and Inkscape), you should be able to do 
+both font kerning or cloning (with the left OPTION/ALT key) and 
+entering accented characters with help of the right OPTION/ALT key.</p>
+<p><img alt="Happy ALTing in Inkscape" src="/articles/from-drupal-blog/images/Inkscape_happy_alting.png" /></p>
+</li>
+<li>
+<p>Switching the CONTROL and COMMAND key, so you can do copy/paste
+    with COMMAND-C/COMMAND-V can also be done with some tweaks in your 
+    <code>.xmodmap</code> file:</p>
+<div class="highlight"><pre><span></span>! Switch meta and control:
+! Assign the Meta_L event to the (right) CONTROL key (keycode 67),
+! assign the Control_L and Control_R events to the COMMAND keys
+! (keycodes 63 and 71).
+keycode 67 = Meta_L
+keycode 63 = Control_L
+keycode 71 = Control_R
+! Redefine the related modifiers keys, because we have now 
+! only one Meta key event and two Control key events instead of one.
+clear mod2
+clear control
+add mod2 = Meta_L
+add control = Control_L Control_R
+</pre></div>
+
+
+<p>Again, a restart of X11.app is required for these changes to take effect.</p>
+</li>
+<li>
+<p>Enabling "syncing" between the OS X pasteboard and the X11 clipboard 
+    is possible on the "Pasteboard" tab of the X11.app preferences:</p>
+<p><img alt="My X11.app pasteboard preferences" src="/articles/from-drupal-blog/images/X11pref_pasteboard.png" /></p>
+<p>Note that I only enabled the option "Update CLIPBOARD when Pasteboard changes", 
+which means that I can only copy text from OS X applications to Inkscape.
+If you enable "Update Pasteboard when CLIPBOARD changes" too, you
+can also copy text from Inkscape to OS X applications,
+<em>but then copy/pasting within Inkscape will stop working</em> . 
+Because I almost never need to copy from Inkscape to OS X and need 
+copy/paste within Inkscape a lot, it was a no-brainer to keep this 
+option disabled. Moreover, you can always temporarily enable the 
+option without the need to restart Inskscape or X11. Handy.</p>
+</li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

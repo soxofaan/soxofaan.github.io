@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>cat with rot13 encoding - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>cat with rot13 encoding</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-11-27T00:00:00+01:00"> on 2005/11/27</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>If you're familiar with the Unix or Linux commandline you probably know <code>cat</code> for printing files to standard output. <a href="http://en.wikipedia.org/wiki/Rot13" title="wikipedia about rot13">Rot13</a> is a  simple text encryption/cyphering/obfuscation (or whatever you want to call it) technique. It replaces each letter with the letter 13 places further in the alphabet. For example: 'a' becomes 'n', 'z' becomes 'm' and 'n' becomes 'a' (which illustrates the fact that the rot13 operation and its inverse are the same).</p>
+<p>The following (very) simple bash script combines the functionality of cat with rot13 encryption. Save it to a file called <code>catrot13</code> for example and store it to somewhere in your path.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+cat <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> tr <span class="s1">&#39;[a-m][n-z][A-M][N-Z]&#39;</span> <span class="s1">&#39;[n-z][a-m][N-Z][A-M]&#39;</span>
+</pre></div>
+
+
+<p>Usage example:</p>
+<div class="highlight"><pre><span></span>$&gt; cat hello.txt
+wello horld
+how do you do?
+
+$&gt; catrot13 hello.txt
+jryyb ubeyq
+ubj qb lbh qb?
+
+$&gt; catrot13 hello.txt | catrot13
+wello horld
+how do you do?
+
+$&gt; catrot13 -n hello.txt
+     1  jryyb ubeyq
+     2  ubj qb lbh qb?
+</pre></div>
+
+
+<p>The last command shows that you even can use the options of <code>cat</code>.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>URL shortening chain reaction - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="url"/>
+        <meta name="tags" contents="webdevelopment"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>URL shortening chain reaction</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-13T00:00:00+02:00"> on 2009/05/13</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/url.html">url</a>,                    <a href="/tag/webdevelopment.html">webdevelopment</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>You know those <a href="http://en.wikipedia.org/wiki/URL_redirection">URL shortening services</a> like tinyurl.com, is.gd and bit.ly? Here is an example: http://twurl.nl/jvuncl. Looks like a pretty normal shortened URL, right? Now eat this:</p>
+<div class="highlight"><pre><span></span>~/tmp$ wget http://twurl.nl/jvuncl
+--13:56:22--  http://twurl.nl/jvuncl
+           =&gt; `jvuncl&#39;
+Resolving twurl.nl... 87.255.53.196
+Connecting to twurl.nl|87.255.53.196|:80... connected.
+HTTP request sent, awaiting response... 303 See Other
+Location: http://bit.ly/v9B9T [following]
+--13:56:22--  http://bit.ly/v9B9T
+           =&gt; `v9B9T&#39;
+Resolving bit.ly... 128.121.254.205, 168.143.174.25, 128.121.254.129, ...
+Connecting to bit.ly|128.121.254.205|:80... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: http://www.socuteurl.com/mistergoosey [following]
+--13:56:23--  http://www.socuteurl.com/mistergoosey
+           =&gt; `mistergoosey&#39;
+Resolving www.socuteurl.com... 64.62.158.120
+Connecting to www.socuteurl.com|64.62.158.120|:80... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: http://tinyurl.com/o7r5b6 [following]
+--13:56:23--  http://tinyurl.com/o7r5b6
+           =&gt; `o7r5b6&#39;
+Resolving tinyurl.com... 195.66.135.131, 195.66.135.140
+Connecting to tinyurl.com|195.66.135.131|:80... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: http://is.gd/qGeL [following]
+--13:56:23--  http://is.gd/qGeL
+           =&gt; `qGeL&#39;
+Resolving is.gd... 78.31.109.147
+Connecting to is.gd|78.31.109.147|:80... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: http://www.boingboing.net/2009/04/04/why-url-shorteners-s.html [following]
+--13:56:23--  http://www.boingboing.net/2009/04/04/why-url-shorteners-s.html
+           =&gt; `why-url-shorteners-s.html&#39;
+Resolving www.boingboing.net... 204.11.50.136
+Connecting to www.boingboing.net|204.11.50.136|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+
+    [      &lt;=&gt;                                                        ] 147,917      111.42K/s
+
+13:56:25 (111.08 KB/s) - `why-url-shorteners-s.html&#39; saved [147917]
+</pre></div>
+
+
+<p>Whoa that was fun!</p>
+<p>...</p>
+<p>Now back to work.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

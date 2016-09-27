@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Get name of current function and caller with Python - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="programming"/>
+        <meta name="tags" contents="python"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Get name of current function and caller with Python</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2007-01-11T00:00:00+01:00"> on 2007/01/11</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/programming.html">programming</a>,                    <a href="/tag/python.html">python</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>With the python module <code>inspect</code>, one can inspect (not kidding) the 
+run-time python stack. Among other things, this makes it possible to 
+get the name of the current function or callers. 
+Handy for logging or debugging purposes. A simple script to illustrate:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="c1"># functions</span>
+<span class="k">def</span> <span class="nf">whoami</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">whosdaddy</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s2">&quot;hello, I&#39;m </span><span class="si">%s</span><span class="s2">, daddy is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">whoami</span><span class="p">(),</span> <span class="n">whosdaddy</span><span class="p">())</span>
+    <span class="n">bar</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">bar</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s2">&quot;hello, I&#39;m </span><span class="si">%s</span><span class="s2">, daddy is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">whoami</span><span class="p">(),</span> <span class="n">whosdaddy</span><span class="p">())</span>
+<span class="n">johny</span> <span class="o">=</span> <span class="n">bar</span>
+<span class="c1"># call them!</span>
+<span class="n">foo</span><span class="p">()</span>
+<span class="n">bar</span><span class="p">()</span>
+<span class="n">johny</span><span class="p">()</span>
+</pre></div>
+
+
+<p>output:</p>
+<div class="highlight"><pre><span></span>hello, I&#39;m foo, daddy is ?
+hello, I&#39;m bar, daddy is foo
+hello, I&#39;m bar, daddy is ?
+hello, I&#39;m bar, daddy is ?
+</pre></div>
+
+
+<p>How does it work?</p>
+<ul>
+<li><code>inspect.stack()</code> returns a list with frame records.</li>
+<li>In function <code>whoami()</code>: <code>inspect.stack()[1]</code> is the frame record of the function that calls <code>whoami</code>, like <code>foo()</code> and <code>bar()</code>.</li>
+<li>The fourth element of the frame record (<code>inspect.stack()[1][3]</code>) is the function name.</li>
+</ul>
+<p>The rest should be obvious (check <a href="http://docs.python.org/lib/inspect-stack.html" title="Python library reference on the inspect module">the python docs on inspect</a> for more information), except that <code>johny()</code> thinks he's function <code>bar()</code>. That's because <code>johny</code> actually just points to the code of <code>bar()</code> and the function name <code>bar</code> is associated with the code and not with the variables.</p>
+<p>Inspiration:</p>
+<ul>
+<li><a href="http://docs.python.org/lib/inspect-stack.html" title="Python library reference on the inspect module">Python library reference on the inspect module</a></li>
+<li><a href="http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66062">http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66062</a></li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

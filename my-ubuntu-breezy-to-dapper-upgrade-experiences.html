@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>My Ubuntu Breezy to Dapper upgrade experiences - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="ubuntu"/>
+        <meta name="tags" contents="linux"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>My Ubuntu Breezy to Dapper upgrade experiences</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-06-25T00:00:00+02:00"> on 2006/06/25</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/ubuntu.html">ubuntu</a>,                    <a href="/tag/linux.html">linux</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>On friday 23 june 2006 I decided to upgrade my <a href="http://www.kubuntu.org">kubuntu</a> powered laptop (Acer Travelmate 4002WLMi) from Breezy (aka 5.10) to Dapper Drake (aka 6.06). Here is a list (under construction) of my experiences with the upgrade so far. The merits/blames are not all addressed to (k)ubuntu, some are related to the fact that the software is upgraded too (KDE 3.5.3 instead of 3.4 for example). Moreover, some things might be related to stupid faults/wrong expectations of my own.</p>
+<p>All in all, I'm not so satisfied with this Ubuntu upgrade as I expected to be, after all those "Ubuntu Dapper is the best" vibes in the linux community.</p>
+<h3>The good experiences</h3>
+<ul>
+<li>The upgrade process itself was painless. I followed <a href="https://help.ubuntu.com/community/DapperUpgrades">the upgrade guide from Ubuntu's documentation wiki</a> (the way involving editing <code>/etc/apt/sources.list</code>, and running <code>sudo apt-get update &amp;&amp; sudo apt-get dist-upgrade</code>) and everything went smooth. I was a bit scared about that because my upgrade from Hoary (5.04) to Breezy was a nightmare.</li>
+<li>The booting to the login screen and the startup of KDE seem faster. Another nice thing is that the startup doesn't freezes for two minutes if there is no internet connection, like it was with Breezy.</li>
+<li>Some power management stuff seems to work: I have an icon about the status of the battery. But see lower why I had to disable it.</li>
+<li>The wirreless assistant is much better than the usability horror of kwifimanager I used under breezy.</li>
+<li>The automatic available updates notification (or whatever it is called) is nice/handy</li>
+</ul>
+<h3>The bad experiences</h3>
+<ul>
+<li>
+<p>The most irritating problem: from time to time some keystrokes don't get through. I did not accuratly measure it, but it's like every 20 or 30 keystrokes two or three are lost. It's an incredible irretating productivity killer (and an explanation of the possible typos in this post). <a href="http://ubuntuforums.org/showthread.php?t=187536">This thread on the Ubuntu forums</a> offers a solution by removing the smart battery kernel module:</p>
+<div class="highlight"><pre><span></span>sudo rmmod acpi_sbs
+</pre></div>
+
+
+<p>but now I don't see my battery status any more.
+- I don't understand why dapper's default kdm theme (that's the login screen) is so ugly (those colors, those wanabe rounded corners). I changed it back to the much better the from breezy. Not a big deal on itself, but nevertheless, it was a disappointing first graphical encounter with Dapper after all those command line cruft scrolling by.
+- Blender did not work properly: I could not select an object. Also, startup at the command line revealed some strange OpenGL warning messages like</p>
+<div class="highlight"><pre><span></span>*********************************WARN_ONCE*********************************
+File r300_state.c function r300Enable line 456
+TODO - double side stencil !
+***************************************************************************
+No ctx-&gt;FragmentProgram._Current!!
+</pre></div>
+
+
+<p>This problem was solved by <a href="https://help.ubuntu.com/community/BinaryDriverHowto/ATI">installing the binary driver for my video card (ATI mobility radeon 9700)</a>. But I had to revert this because the binary driver caused random lockup/freezes after logout, so I had to power down my computer the hard way.</p>
+</li>
+<li>
+<p>The game engine of blender did not work, I got a segmentation fault instead.
+    Based on <a href="http://blenderartists.org/forum/showthread.php?t=68919">this thread on blenderartists.org</a> I used the following solution:</p>
+<div class="highlight"><pre><span></span>cd /usr/lib
+sudo ln -s libGL.so.1.2 libGL.so
+</pre></div>
+
+
+</li>
+<li>
+<p>My KDE desktop was a bit messed up (mainly panel layout).</p>
+</li>
+<li>The appearance of GTK applications under KDE was messed up too. I had to fiddle with <code>gtk-theme-switch2</code> to get some things right. Yet, the fonts in the menus  and other interface elements of Firefox and Thunderbird are still to big to my taste. It was ok under Breezy.</li>
+<li>The interface theme of OpenOffice.org looks so Windows 95 (which is a bad thing to  me)</li>
+<li>Flash stopped working in Firefox. Solved (thanks to this <a href="http://ubuntuguide.org/wiki/Ubuntu_dapper#How_to_install_Flash_Player_.28Macromedia_Flash.29_Plug-in_for_Mozilla_Firefox"> source</a>) with <div class="highlight"><pre><span></span>sudo apt-get install flashplugin-nonfree
+sudo update-flashplugin
+</pre></div>
+
+
+</li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

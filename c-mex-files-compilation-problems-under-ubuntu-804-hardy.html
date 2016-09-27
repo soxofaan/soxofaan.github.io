@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>C++-MEX files compilation problems under Ubuntu 8.04 (Hardy) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="science"/>
+        <meta name="tags" contents="matlab"/>
+        <meta name="tags" contents="ubuntu"/>
+        <meta name="tags" contents="compiling"/>
+        <meta name="tags" contents="c++"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>C++-MEX files compilation problems under Ubuntu 8.04 (Hardy)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-23T00:00:00+02:00"> on 2009/09/23</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/science.html">science</a>,                    <a href="/tag/matlab.html">matlab</a>,                    <a href="/tag/ubuntu.html">ubuntu</a>,                    <a href="/tag/compiling.html">compiling</a>,                    <a href="/tag/c.html">c++</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>How unpleasant I may find it, sometimes I have to use some tools in Matlab at work. Today I stumbled on a problem with compiling MEX-files written in C++ on my Ubuntu 8.04 (Hardy Heron) box. To illustrate, I'll use the example C++ MEX file <code>mexcpp.cpp</code> provided with Matlab (Matlab r2007a) in the <code>extern/examples/mex/</code> folder.</p>
+<p>Out-of-the-box compilation with </p>
+<div class="highlight"><pre><span></span>mex mexcpp.cpp
+</pre></div>
+
+
+<p>gave the following warning:</p>
+<blockquote>
+<p>Warning: You are using gcc version "4.2.4".  The earliest gcc version supported with mex is "4.0.0".  The latest version tested for use with mex is "4.2.0". To download a different version of gcc, visit http://gcc.gnu.org</p>
+</blockquote>
+<p>Despite the warning a MEX-file <code>mexcpp.mexglx</code> was generated. However, its usage resulted in the following:</p>
+<blockquote>
+<p>Invalid MEX-file '/foo/bar/mexcpp.mexglx': /matlabdir/sys/os/glnx86/libstdc++.so.6: version `GLIBCXX_3.4.9' not found (required by /foo/bar/mexcpp.mexglx).</p>
+</blockquote>
+<p>As a sidenote: compiling MEX-files written in C also caused the warning message, but using the compiled MEX-files did not fail.</p>
+<p>A bit of googling ('a bit' is unfortunately an understatement, I almost lost a whole day) brought me to <a href="http://ubuntuforums.org/showthread.php?p=7737533">this thread in the Ubuntu forums</a>. The fix (workaround actually) is, in a nutshell, to listen to the warning message mentioned above: use an older compiler.</p>
+<p>The GCC version in Ubuntu 8.04 is 4.2.4 by default (at time of this writing on my setup). I decided to install version 4.1 (no worries, different versions of GCC compilers can coexist):</p>
+<div class="highlight"><pre><span></span>sudo apt-get install gcc-4.1 g++-4.1
+</pre></div>
+
+
+<p>Then, I had to tell the <code>mex</code> tool to use version 4.1 instead of the default. To do so, one has to create a settings file <code>mexopts.sh</code>, which can be generated with </p>
+<div class="highlight"><pre><span></span>mex -setup
+</pre></div>
+
+
+<p>This created a file <code>~/.matlab/R2007a/mexopts.sh</code> in my case. In this file, I went to the section for the right architecture ('glnx86' in my case) and changed the appropriate variables:</p>
+<div class="highlight"><pre><span></span>CC=&#39;gcc-4.1&#39;
+...
+  CXX=&#39;g++-4.1&#39;
+</pre></div>
+
+
+<p>Just recompiled the MEX-file and no more warnings or error messages. kthxbye</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

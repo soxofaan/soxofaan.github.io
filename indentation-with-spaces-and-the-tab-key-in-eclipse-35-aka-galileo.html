@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Indentation with spaces and the tab key in Eclipse (3.5 aka Galileo) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="eclipse"/>
+        <meta name="tags" contents="stickeenote"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Indentation with spaces and the tab key in Eclipse (3.5 aka Galileo)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2010-05-28T00:00:00+02:00"> on 2010/05/28</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/eclipse.html">eclipse</a>,                    <a href="/tag/stickeenote.html">stickeenote</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Indentation with spaces and the tab key in Eclipse. I've pulled quite some hair on this one and now that I found the solution, I decided to write it down, so I don't have to loose my precious hair anymore. </p>
+<p>Everybody has its own preferences, but I like 2 space indentation for PHP (code style of Drupal) and 4 space indentation in Python. And when I press the tab key, I want to increase the indentation level, not insert a tab character. Doesn't seem like much to ask, but it took a long and frustrating process to get this working in Eclipse (3.5 aka Galileo at the time of this writing), <a href="http://www.aptana.org/studio">Aptana Studio</a> actually, with <a href="http://www.eclipse.org/pdt/">PDT</a> for PHP development and the excellent <a href="http://pydev.org">Pydev</a> for Python development.</p>
+<p>There are lot of tab/indentation related options scattered around in the preferences and apparently you have to be careful about how you set them up.</p>
+<ul>
+<li>
+<p>First important thing: do not enable the "insert spaces for tabs" 
+    option under Preferences/General/Editors/"Text Editors". 
+    Enabling this one interferes rather aggressively with the other
+    tab/indentation settings.</p>
+</li>
+<li>
+<p>For PHP, I set the indentation policy to two spaces under 
+    Preferences/PHP/"Code Style"/Formatter and enabled "Tab key indents 
+    the current line" under Preferences/PHP/Editor/Typing</p>
+</li>
+<li>
+<p>For Python, the settings are on one page under 
+    Preferences/Pydev/Editor: set the tab length and enable 
+    "Replace tabs with spaces when typing".</p>
+</li>
+</ul>
+<p>Now back to coding (as long as the tools don't get in the way again).</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

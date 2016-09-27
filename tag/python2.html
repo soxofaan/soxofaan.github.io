@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>python - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Articles tagged<br />&ldquo;python&rdquo;</h1>
+    </header>
+
+    <main class="content">
+    <ul id="article-list">
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/jython-and-pythonpath.html"
+                               title="link to Jython and PYTHONPATH">Jython and PYTHONPATH</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-09T00:00:00+02:00"> on 2009/09/09</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>For some small tools or jobs I use <a href="http://jython.org">Jython</a> so I can (re)use some existing Java code, while still writing in <a href="http://python.org">Python</a>. I also have various custom Python modules, of which I put the paths in my <code>PYTHONPATH</code> environment variable, so those modules are easily available in Python scripts ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/date-tick-control-in-pylabmatplotlib.html"
+                               title="link to Date tick control in pylab/matplotlib">Date tick control in pylab/matplotlib</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-18T00:00:00+02:00"> on 2009/05/18</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Today I struggled a bit with <a href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.plot_date">pylab's plot_date</a> function and overlapping date tick labels:</p>
+<p><img alt="overlapping plot_date xticks" src="/articles/from-drupal-blog/images/data_critical_D7_issues_before.png" /></p>
+<p>After some googling, I found that matplotlib offers 
+<a href="http://matplotlib.sourceforge.net/api/dates_api.html#date-tickers">nice flexible date tick control and formatting</a>. 
+I added a date tick locator and a date formatter to the mix as follows:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import ...</span></pre></div> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/script-for-easier-adding-subversion-ignore-rules.html"
+                               title="link to Script for easier adding subversion ignore rules">Script for easier adding subversion ignore rules</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2008-07-04T00:00:00+02:00"> on 2008/07/04</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>It's possible to make <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.ignore.html">Subversion ignore unversioned files</a>, so they don't show up in the status overview and you get a better signal to noise ratio. The command line interface to add ignore rules this is however a bit clunky. First, you need to remember following command:</p>
+<div class="highlight"><pre><span></span>svn ...</pre></div> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/parsing-the-subversion-id-keyword-with-python.html"
+                               title="link to Parsing the subversion Id keyword with python">Parsing the subversion Id keyword with python</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2008-02-19T00:00:00+01:00"> on 2008/02/19</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Parsing a subversion Id keyword is just a matter of some regular expression magic:</p>
+<div class="highlight"><pre><span></span><span class="c1"># use the built in regular expression library</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1"># the subversion Id keyword</span>
+<span class="n">svnid</span> <span class="o">=</span> <span class="s1">&#39;$Id: svnidparse.py 1234 2008-02-19 09:59:27Z joske $&#39;</span>
+
+<span class="c1"># bow for the mighty regular expression</span>
+<span class="n">svnidrep</span> <span class="o">=</span> <span class="s1">r&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision ...</span></pre></div> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/non-root-installation-of-lp_solve-and-its-python-bindings.html"
+                               title="link to Non-root installation of lp_solve and its Python bindings">Non-root installation of lp_solve and its Python bindings</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2007-03-05T00:00:00+01:00"> on 2007/03/05</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Howto install and use <code>lp_solve</code> and its Python extension module as non root on Linux?</p>
+<p>Compile and install the <code>lp_solve</code> shared library:</p>
+<ul>
+<li>
+<p>Download <code>lp_solve_5.5.0.10_source.tar.gz</code> from 
+    <a href="https://sourceforge.net/project/showfiles.php?group_id=145213&amp;package_id=159735"> SourceForge</a> 
+    and untar so you get a directory <code>lp_solve_5.5</code> with contents.</p>
+</li>
+<li>
+<p>Enter directory <code>lp_solve_5.5/lpsolve55</code> and excecute </p>
+<div class="highlight"><pre><span></span>sh ...</pre></div></li></ul> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/get-name-of-current-function-and-caller-with-python.html"
+                               title="link to Get name of current function and caller with Python">Get name of current function and caller with Python</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2007-01-11T00:00:00+01:00"> on 2007/01/11</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>With the python module <code>inspect</code>, one can inspect (not kidding) the 
+run-time python stack. Among other things, this makes it possible to 
+get the name of the current function or callers. 
+Handy for logging or debugging purposes. A simple script to illustrate:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="c1"># functions</span>
+<span class="k">def</span> <span class="nf">whoami</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack ...</span></pre></div> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/a-clash-between-locale-settings-c-extension-python-modules-and-pylab-aka-matplotlib.html"
+                               title="link to a clash between locale settings, C extension Python modules and pylab (aka matplotlib)">a clash between locale settings, C extension Python modules and pylab (aka matplotlib)</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-03-06T00:00:00+01:00"> on 2006/03/06</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>This weekend I encountered a weird problem during programming C extension modules for <a href="http://www.python.org" title="Python homepage">Python</a>. For some obscure reason floats from my C extension modules were formatted with a comma as separater (e.g. <code>123,456</code>) instead of with the more familiar point (e.g. <code>123.456</code>). Obviously some locale related ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/saving-of-images-in-scipy-and-preventing-dynamic-range-rescaling.html"
+                               title="link to Saving of images in scipy and preventing dynamic range rescaling">Saving of images in scipy and preventing dynamic range rescaling</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-02-01T00:00:00+01:00"> on 2006/02/01</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p><a href="http://www.scipy.org/">Scipy</a> is a (set of) open source <a href="http://www.python.org">Python</a> modules for scientific/mathematical/engineering stuff. I (try to) use it instead of <a href="http://www.mathworks.com">Matlab</a> or its open source clone <a href="http://www.octave.org/">Octave</a> because I don't like  Matlab's scripting language and prefer Python's programming features.</p>
+<p>If you want to store a 2D ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/reading-opendocument-office-files-from-python.html"
+                               title="link to Reading OpenDocument office files from Python">Reading OpenDocument office files from Python</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-01-20T00:00:00+01:00"> on 2006/01/20</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>The <a href="http://en.wikipedia.org/wiki/Opendocument">OpenDocument file format</a>  (aka "<a href="http://www.oasis-open.org">OASIS</a> Open Document Format for Office Applications"), is an open and free standard for office files. It's fairly easy to read OpenDocument files in/from <a href="http://www.python.org">Python</a>. Basicly, an OpenDocument file is just a zip archive but with another extension (".ods" spreadsheets, ".odt" for text ...</p> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="/python-pickling-and-dealing-with-attributeerror-module-object-has-no-attribute-thing.html"
+                               title="link to Python: pickling and dealing with "AttributeError: 'module' object has no attribute 'Thing'"">Python: pickling and dealing with "AttributeError: 'module' object has no attribute 'Thing'"</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-10-17T00:00:00+02:00"> on 2005/10/17</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>The <a href="http://docs.python.org/lib/module-pickle.html" title="python pickle module"><code>pickle</code> module</a> of python is a very handy module if you want to store and retrieve your python data structures to and from a file. Using that module you don't need to waste your time on writing your own export and import functions any more. </p>
+<p>We will write ...</p> </div>
+                </article>
+            </li>
+    </ul>
+
+<p class="paginator">
+        <a href="/tag/python.html">&laquo;</a>
+
+    Page 2 / 3
+
+        <a href="/tag/python3.html">&raquo;</a>
+</p>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

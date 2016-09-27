@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Running 32 bit executables on a 64 bit machine (Ubuntu Linux) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="64bit"/>
+        <meta name="tags" contents="ubuntu"/>
+        <meta name="tags" contents="linux"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Running 32 bit executables on a 64 bit machine (Ubuntu Linux)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2010-07-01T00:00:00+02:00"> on 2010/07/01</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/64bit.html">64bit</a>,                    <a href="/tag/ubuntu.html">ubuntu</a>,                    <a href="/tag/linux.html">linux</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>I recently had this strange problem with running a 32 bit executable on a 64 bit machine. It executed just fine on 32 bit machines and some other 64 bit machine. But on this particular machine I got the strange error message:</p>
+<blockquote>
+<p>bash: some32bitexecutable: No such file or directory</p>
+</blockquote>
+<p>which is confusing because bash seems to complain that it does not find the executable, while I knew it was there. Using absolute paths and double checking the permissions didn't help.</p>
+<p>The problem was however that the 32 bit runtime libraries were not available. </p>
+<p>The fix on Ubuntu is to install the <a href="http://packages.ubuntu.com/lucid/ia32-libs"><code>ia32-libs</code></a> package, described as:</p>
+<blockquote>
+<p>ia32 shared libraries for use on amd64 and ia64 systems.
+This package contains runtime libraries for the ia32/i386 architecture, configured for use on an amd64 or ia64 Debian system running a 64-bit kernel.</p>
+</blockquote>
+<p>(FYI: it will pull down some other packages too, like <code>lib32gcc1</code>, <code>libc6-i386</code> and <code>lib32stdc++6</code>.)</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

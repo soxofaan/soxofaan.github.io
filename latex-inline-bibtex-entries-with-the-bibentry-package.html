@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>LaTeX: inline BibTeX entries with the bibentry package - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="trick"/>
+        <meta name="tags" contents="botsnack"/>
+        <meta name="tags" contents="bibtex"/>
+        <meta name="tags" contents="latex"/>
+        <meta name="tags" contents="making of phd"/>
+        <meta name="tags" contents="howto"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>LaTeX: inline BibTeX entries with the bibentry package</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-07-17T00:00:00+02:00"> on 2009/07/17</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/trick.html">trick</a>,                    <a href="/tag/botsnack.html">botsnack</a>,                    <a href="/tag/bibtex.html">bibtex</a>,                    <a href="/tag/latex.html">latex</a>,                    <a href="/tag/making-of-phd.html">making of phd</a>,                    <a href="/tag/howto.html">howto</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>In the introduction chapter of my PhD dissertation, I had to make a listing of my publications. The obvious brain dead way to achieve this is just typing everything manually in a list. But this feels just so wrong when you're already using BibTeX for managing references and bibliographical stuff. However, the traditional usage of BibTeX in LaTeX is to generate a full list of all references and put this in a dedicated section or chapter. </p>
+<p>With the bibentry package (which is part of the <a href="http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=natbib">natlib package</a> actually) it is possible to put bibliographic entries anywhere in the text. As far as I know and experienced, the bibentry package is included in a default LaTeX setup, so you don't have to install something, just enable it in your document. </p>
+<p>Getting it work as desired can take some trial and error, so I thought it may be a good idea to feed "them search engines" with a working example.</p>
+<p>Here is a simple proof of concept example LaTeX document <code>test_bibentry.tex</code>:</p>
+<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+
+<span class="k">\usepackage</span><span class="nb">{</span>bibentry<span class="nb">}</span>
+<span class="k">\nobibliography*</span>
+
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+
+<span class="k">\section</span><span class="nb">{</span>Introduction<span class="nb">}</span>
+
+Look ma, inline bibtex entries:
+
+<span class="k">\begin</span><span class="nb">{</span>itemize<span class="nb">}</span>
+<span class="k">\item</span> <span class="k">\bibentry</span><span class="nb">{</span>michael<span class="nb">}</span>
+<span class="k">\item</span> <span class="k">\bibentry</span><span class="nb">{</span>elvis<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>itemize<span class="nb">}</span>
+
+<span class="k">\section</span><span class="nb">{</span>And now for something completely different<span class="nb">}</span>
+Lorem ipsum yada yada,
+also see <span class="k">\cite</span><span class="nb">{</span>britney<span class="nb">}</span>, 
+yada yada, and <span class="k">\cite</span><span class="nb">{</span>marilyn<span class="nb">}</span> too.
+
+<span class="k">\bibliographystyle</span><span class="nb">{</span>alpha<span class="nb">}</span>
+<span class="k">\bibliography</span><span class="nb">{</span>test<span class="nb">_</span>bibentry.bib<span class="nb">}</span>
+
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</pre></div>
+
+
+<p>The stuff that's important here:
+- <code>\usepackage{bibentry}</code>: duh.
+- <code>\nobibliography*</code>: tells bibentry to (re)use the bibliographic data from the standard BibTeX setup by <code>\bibliography{test_bibentry.bib}</code>.
+- <code>\bibentry{foo}</code>: an inline bibliographic entry will be put here.</p>
+<p>Here is the accompanying BibTeX file <code>test_bibentry.bib</code>:</p>
+<div class="highlight"><pre><span></span>@Book{michael,
+    author = &quot;Michael Jackson&quot;,
+    title = &quot;My Kingdom For A Lollypop&quot;,
+    publisher = &quot;Neverland \&amp; Everland Publishing&quot;,
+    year = 2004
+}
+
+@Book{elvis,
+    author = &quot;Elvis Presley&quot;,
+    title = &quot;Turn Me One More Time&quot;,
+    publisher = &quot;Jail House Books&quot;,
+    year = 1963
+}
+
+@Book{britney,
+    author = &quot;Britney Spears&quot;,
+    title = &quot;Let&#39;s Go Oversea To Canada&quot;,
+    publisher = &quot;Blonde, Blondt \&amp; Blondey&quot;,
+    year = 2007
+}
+
+@Book{marilyn,
+    author = &quot;Marilyn Manson&quot;,
+    title = &quot;I Love My Little Pony&quot;,
+    publisher = &quot;Pinc \&amp; Cuddley Press&quot;,
+    year = 2005
+}
+</pre></div>
+
+
+<p>And here is what it looks like in the end:</p>
+<p><img alt="bibentry result example" src="/articles/from-drupal-blog/images/bibentry_result_example.png" /></p>
+<p>Note the inline entries in the introduction section, the standard <code>\cite{}</code> references in the second section and how all references show up in the final bibliographic listing. Just how I wanted it in my PhD dissertation. With slightly different content of course. </p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

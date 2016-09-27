@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>PDF to PostScript conversion: pdf2ps versus pdftops - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="postscript"/>
+        <meta name="tags" contents="pdf"/>
+        <meta name="tags" contents="command line"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>PDF to PostScript conversion: pdf2ps versus pdftops</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2010-02-05T00:00:00+01:00"> on 2010/02/05</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/postscript.html">postscript</a>,                    <a href="/tag/pdf.html">pdf</a>,                    <a href="/tag/command-line.html">command line</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Occasionally, I have to convert a PDF file to Postscript (e.g. for 
+subsequent processing with some PostScript utility). 
+In the Linux/command line area, I know two options: pdf2ps and pdftops. 
+I also know that one of the two is wonky and the 
+other is better. But because their names are so close I can't manage
+to remember which one to take. This post should put an end to that!</p>
+<p><em>Spoiler alert</em> (and a questionable mnemonic) "pdftops is da top".</p>
+<h3>pdf2ps</h3>
+<p>The pdf2ps tools is based on 
+<a href="http://en.wikipedia.org/wiki/Ghostscript" title="Wikipedia entry on Ghostscript">Ghostscript</a>, 
+a PostScript interpreter. It is actually a fairly thin shell script 
+wrapper around the "gs" tool.</p>
+<p>Basic usage is pretty straight forward:</p>
+<div class="highlight"><pre><span></span>pdf2ps <span class="o">[</span>options<span class="o">]</span> input.pdf <span class="o">[</span>output.ps<span class="o">]</span>
+</pre></div>
+
+
+<p>In case you don't specify the output file name, it's extracted from the 
+input file name by replacing the ".pdf" extension with ".ps".</p>
+<p>Help: the man page is minimalistic, the only interesting thing is the 
+note about the option <code>-dLanguageLevel=3</code>. Running <code>pdf2ps -h</code> also
+gives you this info. However, as the tool is based on Ghostscript, you
+can also give it other options that "gs" accepts (for example <code>-r 300</code>
+to set the resolution to 300 dpi).</p>
+<h3>pdftops</h3>
+<p>The pdftops tool comes with Xpdf or is successor 
+<a href="http://poppler.freedesktop.org/">Poppler</a> (e.g. on Ubuntu 9.10, it's
+part of the "poppler-utils" package).</p>
+<p>Basic usage is straight forward:</p>
+<div class="highlight"><pre><span></span>pdftops <span class="o">[</span>options<span class="o">]</span> input.pdf <span class="o">[</span>output.ps<span class="o">]</span>
+</pre></div>
+
+
+<p>Help: the man page explains a lot of options and <code>pdftops -h</code> gives you
+a short version of that.</p>
+<h3>pdf2ps versus pdftops: pdftops wins hands down</h3>
+<p>Problem with pdf2ps: fonts are converted to bitmap fonts (at a pretty
+high resolution by default, but configurable with the <code>-r</code> option): 
+For starters, the PDF-to-PS conversion can take quite some time. But
+more importantly, the resulting file can be huge, which puts a burden on
+subsequent processing of the PostScript file. I also remember having
+issues with pdf2ps rather aggressively cropping to bounding boxes.</p>
+<p>With pdftops on the other hand, the conversion takes less time, the
+resulting file is smaller, and fonts are better preserved. Also, pdftops
+provides some interesting additional options like <code>-eps</code> to generate an
+EPS file, <code>-f</code> and <code>-l</code> to limit the  page range to convert, and options
+to control/change the page size: <code>-origpagesizes</code>, <code>-nocrop</code>, <code>-expand</code>,
+<code>-noshrink</code>. Check out the man page for more info.</p>
+<h3>Even more Poppler goodies</h3>
+<p>Apart from the pdftops tool, the poppler-utils package also provides 
+some other interesting toosl: pdfinfo (PDF document information extractor), 
+pdfimages (PDF image extractor), pdftohtml (PDF to HTML converter), 
+pdftotext (PDF to text converter), and pdffonts (PDF font analyzer). </p>
+<p>Handy.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

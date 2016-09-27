@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Blocking referer spam with Apache .htaccess directives - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="webdevelopment"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="drupal"/>
+        <meta name="tags" contents="apache"/>
+        <meta name="tags" contents="spam"/>
+        <meta name="tags" contents="htaccess"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Blocking referer spam with Apache .htaccess directives</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-04-28T00:00:00+02:00"> on 2006/04/28</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/webdevelopment.html">webdevelopment</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/drupal.html">drupal</a>,                    <a href="/tag/apache.html">apache</a>,                    <a href="/tag/spam.html">spam</a>,                    <a href="/tag/htaccess.html">htaccess</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>The logs of my (drupal powered) website show a lot of <a href="http://en.wikipedia.org/wiki/Referer_spam" title="Wikipedia about referer spam">referer spam</a>. Some time ago I had <a href="/visitors">this statistics page</a> which contained a listing of the last 10 pages my site's visitors came from (aka referers). Soon spambots found out and spammed this list. I made the list invisible for anonymous visitors, but nevertheless spambots stil target my site (less frequent than when the list was visible, however), polute my stats, use bandwidth, use processing power and kill those cute little puppies. Now I went a bit further to block those dirty spambots ...</p>
+<p>There are some drupal modules concerning different sorts of spam, but I found another solution that blocks the spambots  <em>before</em>  drupal kicks in to generate webpages. The trick is using the <code>.htaccess</code> file to tweak the  <a href="http://httpd.apache.org/">Apache http server's</a> behavoir. I added the following lines to drupal's <code>.htaccess</code> file (inside the <code>mod_rewrite</code> block):</p>
+<div class="highlight"><pre><span></span><span class="nb">RewriteCond</span> %{HTTP_REFERER} (poker) [NC,OR]
+<span class="nb">RewriteCond</span> %{HTTP_REFERER} (viagra) [NC,OR]
+<span class="nb">RewriteCond</span> %{HTTP_REFERER} (casino) [NC]
+<span class="nb">RewriteRule</span> .* - [F]
+</pre></div>
+
+
+<p>What this means: if the HTTP referer contains 'viagra', 'poker' or 'casino' (typical words in spam referers), the webserver answers with "forbidden" (HTTP response 403).  The <code>NC</code> makes the patterns case insensitive ( <em>n</em> o  <em>c</em> ase), the <code>OR</code> is the glue between the different conditions (it makes an or-combination, that's why the last condition does not need an <code>OR</code>) and the <code>F</code> stands for "forbidden". The result is that the corresponding spambots don't get in.</p>
+<p>More examples and information on how this works:</p>
+<ul>
+<li><a href="http://drupal.org/node/24302">http://drupal.org/node/24302</a></li>
+<li><a href="http://www.spywareinfo.com/articles/referer_spam/">http://www.spywareinfo.com/articles/referer_spam/</a></li>
+<li><a href="http://httpd.apache.org/docs/2.0/mod/mod_rewrite.html">The mod_rewrite module (Apache http server documentation)</a></li>
+</ul>
+<p>Here's a simple test to see the spambot blocking in action. With the <a href="http://en.wikipedia.org/wiki/Wget" title="Wikipedia about wget">wget utility</a> we'll play a spambot ourselves with referer "http://www.poker-stinks.com":</p>
+<div class="highlight"><pre><span></span>$&gt; wget --referer=&quot;http://www.poker-stinks.com&quot; http://example.com/
+--19:56:07--  http://example.com/
+           =&gt; `index.html&#39;
+Resolving example.com... 357.593.740.825
+Connecting to example.com|357.593.740.825|:80... connected.
+HTTP request sent, awaiting response... 403 Forbidden
+19:56:07 ERROR 403: Forbidden.
+</pre></div>
+
+
+<p>Huray, it works.</p>
+<p>At the time of this writing, 9 out of the latest 10 (non google) referers are spam entries. I hope it declines from now on, maybe after adding some more spam domain matching conditions.</p>
+<p>PS. <a href="http://en.wikipedia.org/wiki/Referer" title="wikipedia about referer and referrer">It seems that "referer" is a misspelling of "referrer", that it made it into the official specification of HTTP.</a> </p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Using custom LaTeX document classes in LyX - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="lyx"/>
+        <meta name="tags" contents="latex"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Using custom LaTeX document classes in LyX</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-09-21T00:00:00+02:00"> on 2006/09/21</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/lyx.html">lyx</a>,                    <a href="/tag/latex.html">latex</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>For writing with LaTeX I prefer using <a href="http://www.lyx.org" title="LyX - a WYSIWYM document processor for LaTeX">LyX</a> because it hides the ugliness of LaTeX source code behind a pseudo-WYSIWYG frontend (the developers call it WYSIWYM: what you see is what you  <em>mean</em> ). Including mathematical expressions, however, is very LaTeX minded and comfortable: you type LaTeX math constructs (stuff with <code>_</code>, <code>^</code>, <code>\sum</code>, ...) and LyX directly visualises it as a pretty printed formula. For the advanced LaTeX constructions not available in LyX's interface one can always fall back om "raw LaTeX" input fields. In short, I think LyX is a very handy compromise between the power of LaTeX and the user friendliness of a WYSIWYG system.</p>
+<p>Sometimes, for example when writing an article for a conference, one need to use a custom LaTeX document class, recommended by the conference author guidelines. The procedure to make LyX using this custom document class is non obvious and a bit involved. It is broadly explained in the LyX manual (Part Customization, Chapter 5 Installing New Document Classes, Layouts, and Templates), but here is the short version (for teTeX on Linux or related systems, I don't know about Windows):</p>
+<ul>
+<li>Get the LaTeX document class file, e.g. <code>funkyarticle.cls</code>.</li>
+<li>Put this class file where LaTeX could find it. 
+    I use for example the directory <code>~/texmf/tex/latex/</code> in my own 
+    home directory (it has to be precisely the <code>~/texmf/tex/latex/</code> 
+    directory structure, otherwise it does not work). 
+    That way I don't have to mess with my system 
+    (for example in directories as <code>/usr/share/texmf/tex/latex/</code>) 
+    as administrator.
+     <a href="http://www.math.uiuc.edu/~hildebr/tex/customstyles.html" title="LaTeX Tips: Installing and using custom packages and style files">This pages is more elaborate on installing custom LaTeX stuff</a></li>
+<li>Run <code>texhash</code> from the command line. This updates (La)TeX's database 
+    (it creates <code>ls-R</code> files, e.g. look at <code>~/texmf/ls-R</code>).</li>
+<li>
+<p>Make a LyX layout file matching the custom LaTeX class file, 
+    e.g. <code>funkyarticle.layout</code>. Put it where LyX can find it, 
+    e.g. in <code>~/.lyx/layouts/</code>. </p>
+<p>The LyX layout file declares how LyX has to format your text (LyX does not use the LaTeX layout system and settings). A very minimal LyX layout file could be this:</p>
+<div class="highlight"><pre><span></span>#% Do not delete the line below; configure depends on this
+#  \DeclareLaTeXClass[funkyarticle]{article (funky)}
+
+# Input general definitions
+Input stdclass.inc
+</pre></div>
+
+
+<p>For conference articles I use for example something like</p>
+<div class="highlight"><pre><span></span>#% Do not delete the line below; configure depends on this
+#  \DeclareLaTeXClass[funkyarticle]{article (funky)}
+
+# Input general definitions
+Input stdclass.inc
+
+MaxCounter      Counter_Section
+
+Style Section
+    Align Center
+    Font
+        Shape SmallCaps
+    EndFont
+End
+</pre></div>
+
+
+<p>You can find more elaborate examples to base your layout file on in your global LyX layout directory (<code>/usr/share/lyx/layouts/</code> in my case, search for </code>*.layout</code> files).</p>
+<p>The second line of the layout file is very important and has to be tailored to your particular case: in  <code>\DeclareLaTeXClass[foo]{bar}</code> the <code>foo</code> refers to the LaTeX class file <code>foo.cls</code> and <code>bar</code> is how this class will be called in the LyX interface.</p>
+</li>
+<li>
+<p>Start LyX and choose "Edit" &gt; "Reconfigure". Close Lyx.</p>
+</li>
+<li>Restart LyX. Under "Layout" &gt; "Document" &gt; "Layout" &gt; "Document class" 
+    the newly created LaTeX/LyX class should now be selectable 
+    (as "article (funky)" in our example)</li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

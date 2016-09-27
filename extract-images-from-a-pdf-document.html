@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Extract images from a PDF document - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="image"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="command line"/>
+        <meta name="tags" contents="pdf"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Extract images from a PDF document</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2008-01-27T00:00:00+01:00"> on 2008/01/27</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/image.html">image</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/command-line.html">command line</a>,                    <a href="/tag/pdf.html">pdf</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>When you want to extract a bitmap image from a PDF document, it is tempting to do the "print screen" trick. The drawback of this approach is that you'll inevitably lose quality: the image pixels will typically not map to your screen's pixels in a one to one fashion because of the decimation/resampling/scaling (or even rotation) when viewing the PDF document.</p>
+<p>There are probably a lot of tools extract the bitmap image correctly out there. I guess this functionality is built in in Adobe Acrobat reader. But if you're in my situation (no desire to use Adobe's bloat) or you just need a small handy command line tool for linux (or other "unixes"): try <a href="http://linuxcommand.org/man_pages/pdfimages1.html">pdfimages</a>. It's part of the <a href="http://en.wikipedia.org/wiki/Xpdf">xpdf</a> package, which is probably available for all major linux distributions.</p>
+<p>Usage is very straightforward:</p>
+<div class="highlight"><pre><span></span>pdfimages -j foo.pdf  bar
+</pre></div>
+
+
+<p>This will extract all images from <code>foo.pdf</code> and save them in JPEG 
+format (option <code>-j</code>) to <code>bar-000.jpg</code>, <code>bar-001.jpg</code>, <code>bar-002.jpg</code>, etc.</p>
+<p>Inspired by <a href="http://www.boekhoff.info/?pid=linux&amp;tip=extract-images-from-pdf-files">http://www.boekhoff.info/?pid=linux&amp;tip=extract-images-from-pdf-files</a></p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

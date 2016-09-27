@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Color highlighted diffs with git, svn and cvs - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="git"/>
+        <meta name="tags" contents="programming"/>
+        <meta name="tags" contents="subversion"/>
+        <meta name="tags" contents="cvs"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Color highlighted diffs with git, svn and cvs</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-04T00:00:00+02:00"> on 2009/05/04</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/git.html">git</a>,                    <a href="/tag/programming.html">programming</a>,                    <a href="/tag/subversion.html">subversion</a>,                    <a href="/tag/cvs.html">cvs</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>At first it felt annoying, but now I really like that <a href="http://git-scm.com/">git</a> uses a pager when it has to present something (e.g. a log or a diff) that is longer than your screen. Git even provides a built in option <code>--color</code> to show you a diff with helpful colors. I use this option all the time and made a shortcut <code>dic</code> for it with the following command</p>
+<div class="highlight"><pre><span></span>git config --global alias.dic <span class="s2">&quot;diff --color&quot;</span>
+</pre></div>
+
+
+<p>Also possible is to edit your <code>~/.gitconfig</code> directly so you have something like the following in there:</p>
+<div class="highlight"><pre><span></span><span class="k">[alias]</span>
+        <span class="na">di</span> <span class="o">=</span> <span class="s">diff</span>
+<span class="s">        dic = diff --color</span>
+</pre></div>
+
+
+<p>Now I just do </p>
+<div class="highlight"><pre><span></span>git dic
+</pre></div>
+
+
+<p>and I get a nice paged and color highlighted diff.</p>
+<p>This is a so I-wonder-how-I-could-live-without-it thingy that I wanted the same when working with Subversion or CVS. These guys don't have color highlighting built in, but luckily there is this standalone "diff colorizer" <a href="http://colordiff.sourceforge.net/" title="colordiff - color highlighted diff output">colordiff</a> to help us out. Colordiff should be available at a sufficiently recent Linux package manager near you (Ubuntu has it since 6.06 for example), otherwise installing it manually is not that hard (it's mainly one perl script and some config files).</p>
+<p>If we also add a pager like "less" to the mix, we can mimic the behavior of git. To do so, I added two little scripts to my <code>$PATH</code>.</p>
+<p>The first one is <code>cvscolordiff.sh</code>:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+cvs diff -bup <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> colordiff <span class="p">|</span> less -R
+</pre></div>
+
+
+<p>and the one for Subversion is <code>svncolordiff.sh</code>:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+svn diff --diff-cmd colordiff -x <span class="s2">&quot;-u -w -p&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> less -R
+</pre></div>
+
+
+<p>I first tried with constructing bash aliases, but then things go wrong when you try to use arguments to only see diffs of certain files for example. The scripts above take care of this with the <code>"$@"</code> magic, so I can do things like</p>
+<div class="highlight"><pre><span></span>svncolordiff.sh foo.cpp bar.py
+</pre></div>
+
+
+<p>Also note (in case your wondering) the <code>-R</code> option for <code>less</code>. This options makes sure <code>less</code> presents  nice colors instead of spitting color control character garbage at you. </p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

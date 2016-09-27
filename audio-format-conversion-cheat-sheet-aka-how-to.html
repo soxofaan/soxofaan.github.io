@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Audio format conversion cheat sheet (aka how to) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="cheat sheet"/>
+        <meta name="tags" contents="audio"/>
+        <meta name="tags" contents="ogg vorbis"/>
+        <meta name="tags" contents="ffmpeg"/>
+        <meta name="tags" contents="mp3"/>
+        <meta name="tags" contents="howto"/>
+        <meta name="tags" contents="mplayer"/>
+        <meta name="tags" contents="sox"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="music"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Audio format conversion cheat sheet (aka how to)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-12-02T00:00:00+01:00"> on 2009/12/02</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/cheat-sheet.html">cheat sheet</a>,                    <a href="/tag/audio.html">audio</a>,                    <a href="/tag/ogg-vorbis.html">ogg vorbis</a>,                    <a href="/tag/ffmpeg.html">ffmpeg</a>,                    <a href="/tag/mp3.html">mp3</a>,                    <a href="/tag/howto.html">howto</a>,                    <a href="/tag/mplayer.html">mplayer</a>,                    <a href="/tag/sox.html">sox</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/music.html">music</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>In my day job, I regularly have to convert/transcode/re-encode audio data from one format to another. Because I typically have to do this in batch jobs, I'm mostly dealing with command line tools (on Linux) like <a href="http://lame.sourceforge.net/" title="Lame MP3 encoder homepage">Lame</a>, <a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX (Sound eXchange)</a>, <a href="http://www.mplayerhq.hu" title="MPlayer homepage">MPlayer</a> and <a href="http://ffmpeg.org/" title="FFmpeg homepage">FFmpeg</a>.  Having a cheat sheet of how to invoke them with the desired options has proven to be very useful, so here is mine. Note that I only cover the operations I mostly need, like format conversion, sample rate conversion, conversion to mono and trimming/cropping. If you need more/other functionality, look in the man pages or ask your favorite search engine.</p>
+<p><em>Update:</em> also see a <a href="/an-audio-conversion-use-case-comparison-of-execution-speed-between-sox-ffmpeg-and-mplayer.html">follow up blog post</a> about an execution time comparison between SoX, FFmpeg and MPlayer.</p>
+<h3>Audio manipulation with SoX</h3>
+<p><a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX (Sound eXchange)</a> calls itself "the Swiss Army knife of sound processing programs" and offers, apart from standard audio format and sample rate conversion, a basic set of effects (e.g. pitch shifting, reverb, low pass filtering, flanger, etc). It's available for Linux (search for 'sox' in your package manager), Mac OS X and Windows. </p>
+<div class="highlight"><pre><span></span><span class="c1"># Minimal conversion example</span>
+sox input.mp3 output.wav
+
+<span class="c1"># Convert to mono (two possibilities: by specifying output format</span>
+<span class="c1"># or with the &#39;channels&#39; effect.</span>
+sox input.mp3 -c <span class="m">1</span> output.wav
+sox input.mp3 output.wav channels 1
+
+<span class="c1"># Change sample rate (again two possibilities)</span>
+sox input.mp3 -r <span class="m">8000</span> output.wav
+sox input.mp3 output.wav rate 8000
+<span class="c1"># Newer versions of SoX also support</span>
+sox input.mp3 output.wav rate 8k
+
+<span class="c1"># Trim a fragment of 30 seconds at an offset of 60 seconds</span>
+<span class="c1"># with the &#39;trim&#39; effect</span>
+sox input.mp3 output.wav trim <span class="m">60</span> 30
+
+<span class="c1"># All together now (trimmed fragment in mono, 22.05 Hz sample rate)</span>
+sox input.mp3 output.wav trim <span class="m">60</span> <span class="m">30</span> channels <span class="m">1</span> rate 22050
+</pre></div>
+
+
+<p>One issue with SoX is that default installs typically do not support writing MP3 files because of the patent and licensing issues with MP3. Reading MP3 files worked for me (Ubuntu 8.04 and higher) after installing the "libsox-fmt-all" package. If you're up to it, you can recompile SoX with MP3 encoding support, but there are other options if you really want MP3 encoding (see below).</p>
+<h3>Decode to WAV (from wide variety of formats) with MPlayer</h3>
+<p><a href="http://www.mplayerhq.hu" title="MPlayer homepage">MPlayer</a> is a media player that supports a wide range of multimedia formats. It is typically used for playing video with a GUI, but can also be used (in batch mode without a GUI) to convert the audio to WAV format. MPlayer is available for Linux (package "mplayer"), Windows and Mac OS X.</p>
+<p>The invocation bit more complex than with the other decoders shown here. For clarity, the command is spread out over several lines here (do not forget to remove the backslashes when you want it on one line):</p>
+<div class="highlight"><pre><span></span><span class="c1"># Decode the audio channel to PCM (WAV) and ignore the video channels</span>
+mplayer <span class="se">\</span>
+    -ao pcm:fast:waveheader:file<span class="o">=</span>output.wav <span class="se">\</span>
+    -vo null -vc null <span class="se">\</span>
+    input.mp3
+
+<span class="c1"># Use additional audio filters (-af) to resample to 22050 Hz </span>
+<span class="c1"># and mix down to mono.</span>
+mplayer <span class="se">\</span>
+    -ao pcm:fast:waveheader:file<span class="o">=</span>output.wav <span class="se">\</span>
+    -af <span class="nv">resample</span><span class="o">=</span>22050,pan<span class="o">=</span>1:0.5:0.5 <span class="se">\</span>
+    -vo null -vc null <span class="se">\</span>
+    input.mp3
+<span class="c1"># By default, one expects 16 bits per sample. On some setups however,</span>
+<span class="c1"># MPlayer uses 32 bits per sample by default.</span>
+<span class="c1"># To avoid this, set the format explicitly with:</span>
+<span class="c1">#    -format s16le</span>
+
+<span class="c1"># Pick the 30 seconds fragment at an offset of 1 minute:</span>
+mplayer <span class="se">\</span>
+    -ao pcm:fast:waveheader:file<span class="o">=</span>output.wav <span class="se">\</span>
+    -vo null -vc null <span class="se">\</span>
+    -ss <span class="m">60</span> -endpos <span class="m">30</span> <span class="se">\</span>
+    input.mp3
+</pre></div>
+
+
+<p>Note: on some platforms I had to add the option <code>-format s16le</code> to make sure MPlayer encoded 16 bit PCM samples instead of 24 bit or even 32 bit, which can cause problems with some audio players/tools.</p>
+<h3>Transcode with FFmpeg (from and to a wide variety of formats)</h3>
+<p><a href="http://ffmpeg.org/" title="FFmpeg homepage">FFmpeg</a> is another powerful open source tool for multimedia handling like conversion/transcoding. Installing is easy with a sufficient recent Linux distribution, install the "ffmpeg" package (note: on Ubuntu 9.10 aka Karmic Koala, I also had to install "libavcodec-unstripped-52", to make MP3 encoding possible, your mileage may vary). Getting it working on Windows apparently requires you to compile it yourself (or trusting a website that provides binaries). For Mac OS X, I installed the "ffmpeg" package through <a href="http://www.macports.org/">MacPorts</a>, and there is also one for <a href="http://www.finkproject.org/">Fink</a>.</p>
+<p>FFmpeg is typically used for video, but audio transcoding works too and is pretty simple:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Minimal example: transcode from MP3 to WMA</span>
+ffmpeg -i input.mp3 output.wma
+
+<span class="c1"># You can get the list of supported formats with:</span>
+ffmpeg -formats
+
+<span class="c1"># Convert WAV to MP3, mix down to mono (use 1 audio channel), </span>
+<span class="c1"># set bit rate to 64 kbps and  sample rate to 22050 Hz</span>
+ffmpeg -i input.wav -ac <span class="m">1</span> -ab <span class="m">64000</span> -ar <span class="m">22050</span> output.mp3
+<span class="c1"># Note: you can also use &#39;-ab 64k&#39;, but I&#39;m not sure how well this </span>
+<span class="c1"># is supported in different version of FFmpeg</span>
+
+<span class="c1"># Picking the 30 seconds fragment at an offset of 1 minute:</span>
+<span class="c1"># In seconds</span>
+ffmpeg -i input.mp3 -ss <span class="m">60</span> -t <span class="m">30</span> output.wav
+<span class="c1"># In HH:MM:SS format</span>
+ffmpeg -i input.mp3 -ss 0:01:00 -t 0:00:30 output.wav
+</pre></div>
+
+
+<h3>Encode as MP3 or re-encode an MP3 file to a different bit rate with Lame</h3>
+<p><a href="http://lame.sourceforge.net/" title="Lame MP3 encoder homepage">Lame</a> is a well known open source MP3 encoder. Installing on Linux should be easy: just look for the "lame" package. For Mac OS X, you can use the "lame" package of <a href="http://www.macports.org">MacPorts</a> or <a href="http://www.finkproject.org/">Fink</a>. For Windows you have to compile it yourself, or trust <a href="http://lame.sourceforge.net/links.php#Binaries">some websites that provide binaries</a>.</p>
+<p>You can use it for example to encode from WAV format to MP3 or to re-encode an MP3 to a different bit rate. Some examples:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Minimal example of converting a wave file to MP3</span>
+lame input.wav output.mp3
+
+<span class="c1"># Re-encode existing MP3 to 64 kbps MP3</span>
+lame -b <span class="m">64</span> original.mp3 new.mp3
+
+<span class="c1"># More interesting options</span>
+<span class="c1"># -m m: save as mono</span>
+<span class="c1"># -m s: save as stereo</span>
+<span class="c1"># -m j: save as joint stereo (exploits inter-channel correlation</span>
+<span class="c1">#       more than regular stereo)</span>
+<span class="c1"># -q 2: quality tweaking: the lower the value, the better the </span>
+<span class="c1">#       quality, but the slower the algorithm. Default is 5.</span>
+
+<span class="c1"># By default, lame uses constant bit rate (CBR) encoding. </span>
+<span class="c1"># You can also use average bit rate (ABR) encoding, </span>
+<span class="c1"># e.g. for an average bit rate of 123 kbps:</span>
+lame --abr <span class="m">123</span> input.wav output.mp3
+<span class="c1"># or variable (VBR) encoding, e.g. between 32 kbps and 192 kbps:</span>
+lame -v -b <span class="m">32</span> -B <span class="m">192</span> input.wav output.mp3
+</pre></div>
+
+
+<h3>Encode in Ogg Vorbis format</h3>
+<p>With the "oggenc" tool you can encode audio in WAV format (or raw or AIFF) to Ogg Vorbis format. On Ubuntu I had to install the "vorbis-tools" package to get "oggenc".</p>
+<div class="highlight"><pre><span></span><span class="c1"># Minimal example</span>
+oggenc audio.wav -o audio.ogg
+<span class="c1"># Setting the bit rate, downmix to mono and set the sample rate:</span>
+oggenc -b <span class="m">32</span> --downmix --resample <span class="m">22050</span> input.wav -o output.ogg
+</pre></div>
+
+
+<h3>Getting information about audio files</h3>
+<p>To get basic information about an audio file (like the number of channels, sample rate, duration, etc), there is the 'soxi' tool, which is part of the sox package:</p>
+<div class="highlight"><pre><span></span>soxi file.mp3
+</pre></div>
+
+
+<p>which returns something like:</p>
+<div class="highlight"><pre><span></span>Input File     : &#39;file.mp3&#39;
+Channels       : 2
+Sample Rate    : 44100
+Precision      : 16-bit
+Duration       : 00:03:55.35 = 10378847 samples = 17651.1 CDDA sectors
+File Size      : 1.88M
+Bit Rate       : 64.0k
+Sample Encoding: MPEG audio (layer I, II or III)
+</pre></div>
+
+
+<p>You can easily specify multiple files too.</p>
+<p>When soxi is not available (e.g. it isn't on Ubuntu 8.04) or when soxi does not recognize the file format, there are some alternatives based on FFmpeg and MPlayer.</p>
+<p>With FFmpeg, just don't specify an output file, for example:</p>
+<div class="highlight"><pre><span></span>ffmpeg -i file.mp3
+</pre></div>
+
+
+<p>which returns something like:</p>
+<div class="highlight"><pre><span></span><span class="p">...</span> <span class="p">[</span><span class="n">version</span> <span class="n">information</span><span class="p">]</span> <span class="p">...</span>
+<span class="n">Input</span> <span class="err">#</span><span class="mi">0</span><span class="p">,</span> <span class="n">mp3</span><span class="p">,</span> <span class="n">from</span> <span class="err">&#39;</span><span class="n">file</span><span class="p">.</span><span class="n">mp3</span><span class="err">&#39;</span><span class="o">:</span>
+  <span class="nl">Duration</span><span class="p">:</span> <span class="mo">00</span><span class="o">:</span><span class="mo">03</span><span class="o">:</span><span class="mf">55.2</span><span class="p">,</span> <span class="nl">start</span><span class="p">:</span> <span class="mf">0.000000</span><span class="p">,</span> <span class="nl">bitrate</span><span class="p">:</span> <span class="mi">63</span> <span class="n">kb</span><span class="o">/</span><span class="n">s</span>
+  <span class="n">Stream</span> <span class="err">#</span><span class="mf">0.0</span><span class="o">:</span> <span class="nl">Audio</span><span class="p">:</span> <span class="n">mp2</span><span class="p">,</span> <span class="mi">44100</span> <span class="n">Hz</span><span class="p">,</span> <span class="n">stereo</span><span class="p">,</span> <span class="mi">64</span> <span class="n">kb</span><span class="o">/</span><span class="n">s</span>
+<span class="n">Must</span> <span class="n">supply</span> <span class="n">at</span> <span class="n">least</span> <span class="n">one</span> <span class="n">output</span> <span class="n">file</span>
+</pre></div>
+
+
+<p>You can supply several files, but you need to put the flag <code>-i</code> in front of each one.</p>
+<p>With MPlayer, it's a bit more involved:</p>
+<div class="highlight"><pre><span></span>mplayer -vo null -ao null -frames <span class="m">0</span> -identify file.mp3
+</pre></div>
+
+
+<p>which returns something like:</p>
+<div class="highlight"><pre><span></span><span class="p">...</span> <span class="p">[</span><span class="n">version</span> <span class="n">information</span><span class="p">]</span> <span class="p">...</span>
+<span class="n">Playing</span> <span class="n">file</span><span class="p">.</span><span class="n">mp3</span><span class="p">.</span>
+<span class="n">ID_AUDIO_ID</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">Audio</span> <span class="n">file</span> <span class="n">file</span> <span class="n">format</span> <span class="n">detected</span><span class="p">.</span>
+<span class="n">ID_FILENAME</span><span class="o">=</span><span class="n">file</span><span class="p">.</span><span class="n">mp3</span>
+<span class="n">ID_DEMUXER</span><span class="o">=</span><span class="n">audio</span>
+<span class="n">ID_AUDIO_FORMAT</span><span class="o">=</span><span class="mi">80</span>
+<span class="n">ID_AUDIO_BITRATE</span><span class="o">=</span><span class="mi">64000</span>
+<span class="n">ID_AUDIO_RATE</span><span class="o">=</span><span class="mi">44100</span>
+<span class="n">ID_AUDIO_NCH</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">ID_LENGTH</span><span class="o">=</span><span class="mf">235.00</span>
+<span class="o">==========================================================================</span>
+<span class="n">Forced</span> <span class="n">audio</span> <span class="nl">codec</span><span class="p">:</span> <span class="n">mad</span>
+<span class="n">Opening</span> <span class="n">audio</span> <span class="nl">decoder</span><span class="p">:</span> <span class="p">[</span><span class="n">libmad</span><span class="p">]</span> <span class="n">libmad</span> <span class="n">mpeg</span> <span class="n">audio</span> <span class="n">decoder</span>
+<span class="nl">AUDIO</span><span class="p">:</span> <span class="mi">44100</span> <span class="n">Hz</span><span class="p">,</span> <span class="mi">2</span> <span class="n">ch</span><span class="p">,</span> <span class="n">s16le</span><span class="p">,</span> <span class="mf">64.0</span> <span class="n">kbit</span><span class="o">/</span><span class="mf">4.54</span><span class="o">%</span> <span class="p">(</span><span class="nl">ratio</span><span class="p">:</span> <span class="mi">8000</span><span class="o">-&gt;</span><span class="mi">176400</span><span class="p">)</span>
+<span class="n">ID_AUDIO_BITRATE</span><span class="o">=</span><span class="mi">64000</span>
+<span class="n">ID_AUDIO_RATE</span><span class="o">=</span><span class="mi">44100</span>
+<span class="n">ID_AUDIO_NCH</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">Selected</span> <span class="n">audio</span> <span class="nl">codec</span><span class="p">:</span> <span class="p">[</span><span class="n">mad</span><span class="p">]</span> <span class="nl">afm</span><span class="p">:</span> <span class="n">libmad</span> <span class="p">(</span><span class="n">libMAD</span> <span class="n">MPEG</span> <span class="n">layer</span> <span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">==========================================================================</span>
+<span class="nl">AO</span><span class="p">:</span> <span class="p">[</span><span class="n">null</span><span class="p">]</span> <span class="mi">44100</span><span class="n">Hz</span> <span class="mi">2</span><span class="n">ch</span> <span class="n">s16le</span> <span class="p">(</span><span class="mi">2</span> <span class="n">bytes</span> <span class="n">per</span> <span class="n">sample</span><span class="p">)</span>
+<span class="n">ID_AUDIO_CODEC</span><span class="o">=</span><span class="n">mad</span>
+<span class="nl">Video</span><span class="p">:</span> <span class="n">no</span> <span class="n">video</span>
+<span class="n">Starting</span> <span class="n">playback</span><span class="p">...</span>
+
+
+<span class="n">Exiting</span><span class="p">...</span> <span class="p">(</span><span class="n">End</span> <span class="n">of</span> <span class="n">file</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>Further reading</h3>
+<ul>
+<li><a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX (Sound eXchange)</a></li>
+<li><a href="http://www.mplayerhq.hu" title="MPlayer homepage">MPlayer</a></li>
+<li><a href="http://ffmpeg.org/" title="FFmpeg homepage">FFmpeg</a></li>
+<li><a href="http://lame.sourceforge.net/" title="Lame MP3 encoder homepage">Lame</a></li>
+<li>Interesting how-to on ffmpeg: http://howto-pages.org/ffmpeg/</li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

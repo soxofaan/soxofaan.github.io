@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Simple and quick command line argument handling in Python - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="trick"/>
+        <meta name="tags" contents="command line"/>
+        <meta name="tags" contents="python"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Simple and quick command line argument handling in Python</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-01-17T00:00:00+01:00"> on 2012/01/17</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/trick.html">trick</a>,                    <a href="/tag/command-line.html">command line</a>,                    <a href="/tag/python.html">python</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>When creating a command line tool, you quickly are faced with the burden of handling command line arguments (parsing options, arguments, flags, etc).
+In Python, the <a href="http://docs.python.org/library/optparse.html" title="Optparse Python module">optparse module</a> or, its newer version, the <a href="http://docs.python.org/library/argparse.html" title="Argparse Python module">argparse module</a> are very nice solutions to build powerful command line interfaces, completely with automatically generated help.  </p>
+<p>Sometimes however, you just want a quick, simple and small way to get from A to B without a lot of overhead and overkill. Below I'll show you a quick and simple Python trick for command line handling by directly mapping the command line arguments to function arguments.</p>
+<p>The beauty lies in letting Python function argument handling do the boring work (argument count checking, falling back on default values), so we don't have to do it:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="s1">&#39;ZAZAZAZA&#39;</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s1">&#39;x:&#39;</span><span class="p">,</span> <span class="n">x</span>
+    <span class="k">print</span> <span class="s1">&#39;y:&#39;</span><span class="p">,</span> <span class="n">y</span>
+    <span class="k">print</span> <span class="s1">&#39;z:&#39;</span><span class="p">,</span> <span class="n">z</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># Map command line arguments to function arguments.</span>
+    <span class="n">do_something</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+
+
+<p>Let's run this with three arguments:</p>
+<div class="highlight"><pre><span></span>$ python dosomething.py one twoo three
+x: one
+y: twoo
+z: three
+</pre></div>
+
+
+<p>Run it with two arguments and Python will assign a default value for the third:</p>
+<div class="highlight"><pre><span></span>$ python dosomething.py one twoo
+x: one
+y: twoo
+z: ZAZAZAZA
+</pre></div>
+
+
+<p>Run it with one, zero, four or more arguments and Python will complain about argument mismatch:</p>
+<div class="highlight"><pre><span></span>$ python dosomething.py one
+Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+  File <span class="s2">&quot;./dosomething.py&quot;</span>, line 11, in &lt;module&gt;
+    do_something<span class="o">(</span>*sys.argv<span class="o">[</span>1:<span class="o">])</span>
+TypeError: do_something<span class="o">()</span> takes at least <span class="m">2</span> arguments <span class="o">(</span><span class="m">1</span> given<span class="o">)</span>
+</pre></div>
+
+
+<p>Handy!</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

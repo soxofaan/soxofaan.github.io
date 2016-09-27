@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>a clash between locale settings, C extension Python modules and pylab (aka matplotlib) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="pylab"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="programming"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>a clash between locale settings, C extension Python modules and pylab (aka matplotlib)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-03-06T00:00:00+01:00"> on 2006/03/06</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/pylab.html">pylab</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/python.html">python</a>,                    <a href="/tag/programming.html">programming</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>This weekend I encountered a weird problem during programming C extension modules for <a href="http://www.python.org" title="Python homepage">Python</a>. For some obscure reason floats from my C extension modules were formatted with a comma as separater (e.g. <code>123,456</code>) instead of with the more familiar point (e.g. <code>123.456</code>). Obviously some locale related problem. Most of my desktop and applications are set up for Dutch (my native language), but when I'm programming/working I use English and scientific conventions (e.g. a point as decimal separator). After isolating the problem I found out it was related to importing the <a href="http://matplotlib.sourceforge.net/" title="Matplotlib homepage">pylab (aka Matplotlib)</a> module (which I started using for plotting graphs and figures from Python). The following situation illustrates the problem.</p>
+<p>The very minimal but operational C extension module <code>pylabproblem.c</code>:</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span>
+<span class="nf">hello</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello there, check out this float: %.3f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mf">123.456</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">Methods</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="s">&quot;hello&quot;</span><span class="p">,</span>  <span class="n">hello</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">&quot;Say hello and show a float.&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">PyMODINIT_FUNC</span>
+<span class="nf">initpylabproblem</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;pylabproblem&quot;</span><span class="p">,</span> <span class="n">Methods</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>which I compiled (under <a href="http://www.kubuntu.org/" title="Kubuntu Linux">Kubuntu Linux</a>) to a shared library <code>pylabproblem.os</code> as follows:</p>
+<div class="highlight"><pre><span></span>gcc -fPIC -I/usr/include/python2.4 -c -o pylabproblem.os pylabproblem.c
+gcc -shared -o pylabproblem.so pylabproblem.os
+</pre></div>
+
+
+<p>Then I used this freshly made C extension module in the following simple Python script <code>pylabproblen-test.py</code>:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">pylabproblem</span>
+<span class="n">pylabproblem</span><span class="o">.</span><span class="n">hello</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">pylab</span>
+<span class="n">pylabproblem</span><span class="o">.</span><span class="n">hello</span><span class="p">()</span>
+</pre></div>
+
+
+<p>This script first imports the C extension module <code>pylabproblem</code> and calls its <code>hello()</code> function. Then it imports the pylab/matplotlib module and calls <code>pylabproblem</code>'s <code>hello()</code> function again. This is the output from the script when I ran it:</p>
+<div class="highlight"><pre><span></span>$&gt; ./pylabproblem-test.py
+Hello there, check out this float: 123.456
+Hello there, check out this float: 123,456
+</pre></div>
+
+
+<p>Not very practical if you want to postprocess that output in a further stage (with grep, gnuplot, ...). Apparently importing <code>pylab</code> causes some changes of locale settings in this situation. </p>
+<p>I checked my locale settings and found that not very much was setted: only <code>LANG="nl_BE.UTF-8"</code> and <code>LANGUAGE="nl_BE:nl:en_GB:en"</code>. After I explicitly set <code>LC_NUMERIC</code> to for example <code>"C"</code>, I got what I wanted:</p>
+<div class="highlight"><pre><span></span>$&gt; export LC_NUMERIC=&quot;C&quot;
+$&gt; ./pylabproblem-test.py
+Hello there, check out this float: 123.456
+Hello there, check out this float: 123.456
+</pre></div>
+
+
+<p>I think I better add a line <code>export LC_NUMERIC="C"</code> to my <code>~/.bashrc</code>.</p>
+<h3>references and links</h3>
+<ul>
+<li><a href="http://www.python.org/peps/pep-0331.html">PEP 331: Locale-Independent Float/String Conversions</a></li>
+<li><a href="http://starship.python.net/crew/hinsen/NumPyExtensions.html">Numerical Python arrays in C extension modules</a></li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

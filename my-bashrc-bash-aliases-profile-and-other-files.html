@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>My bashrc, bash aliases, profile and other files - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="osx"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="command line"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>My bashrc, bash aliases, profile and other files</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-10-19T00:00:00+02:00"> on 2009/10/19</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/osx.html">osx</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/command-line.html">command line</a>,                    <a href="/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>I spend a lot of time on the (bash) command line in (Linux and OS x) and it's always good for productivity to have your favorite set of shortcuts, aliases, perferences, predefined (environment) variables and such at your fingertips. You know, all the stuff that lives in <code>.bashrc</code>, <code>.profile</code>, <code>.vimrc</code>, <code>.git</code>, etc.</p>
+<p>I have access to several systems (at home, at work, remote servers, etc) and from time to time I'm sitting behind a system that doesn't know my preferences yet. I considered using some sort of version control system to "synchronize" these preference files between my setups, but (apart from the practical hurdles) it generally seemed overkill, especially since each setup can have its own peculiarities and customizations.</p>
+<p>So, mainly for my own reference, I'm keeping an list of the most important general stuff here. Be welcome to cherry-pick (or suggest additions).</p>
+<h3><code>.bashrc</code></h3>
+<p>In <code>.bashrc</code>, I put the things that are related to  <em>interactive</em>  Bash usage. You'll also find a lot of references that configure environment variables like <code>PATH</code> in <code>.bashrc</code>, but I prefer to put these in <code>.profile</code> (see lower).
+<code>.bashrc</code> should be loaded when opening a new interactive Bash shell.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Enable programmable completion features.</span>
+<span class="k">if</span> <span class="o">[</span> -f /etc/bash_completion <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">source</span> /etc/bash_completion
+<span class="k">fi</span>
+
+<span class="c1"># Set the PS1 prompt (with colors).</span>
+<span class="c1"># Based on http://www-128.ibm.com/developerworks/linux/library/l-tip-prompt/</span>
+<span class="c1"># And http://networking.ringofsaturn.com/Unix/Bash-prompts.php .</span>
+<span class="nv">PS1</span><span class="o">=</span><span class="s2">&quot;\[\e[36;1m\]\h:\[\e[32;1m\]\w</span>$<span class="s2"> \[\e[0m\]&quot;</span>
+
+<span class="c1"># Set the default editor to vim.</span>
+<span class="nb">export</span> <span class="nv">EDITOR</span><span class="o">=</span>vim
+
+<span class="c1"># Avoid succesive duplicates in the bash command history.</span>
+<span class="nb">export</span> <span class="nv">HISTCONTROL</span><span class="o">=</span>ignoredups
+
+<span class="c1"># Append commands to the bash command history file (~/.bash_history)</span>
+<span class="c1"># instead of overwriting it.</span>
+<span class="nb">shopt</span> -s histappend
+
+<span class="c1"># Append commands to the history every time a prompt is shown,</span>
+<span class="c1"># instead of after closing the session.</span>
+<span class="nv">PROMPT_COMMAND</span><span class="o">=</span><span class="s1">&#39;history -a&#39;</span>
+
+<span class="c1"># Add bash aliases.</span>
+<span class="k">if</span> <span class="o">[</span> -f ~/.bash_aliases <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">source</span> ~/.bash_aliases
+<span class="k">fi</span>
+</pre></div>
+
+
+<h3><code>.bash_aliases</code></h3>
+<p>I use a separate file <code>.bash_aliases</code> for my favorite Bash aliases, to keep things more tidy. This file is "sourced" by <code>.bashrc</code> (see higher).</p>
+<div class="highlight"><pre><span></span><span class="c1"># Make some possibly destructive commands more interactive.</span>
+<span class="nb">alias</span> <span class="nv">rm</span><span class="o">=</span><span class="s1">&#39;rm -i&#39;</span>
+<span class="nb">alias</span> <span class="nv">mv</span><span class="o">=</span><span class="s1">&#39;mv -i&#39;</span>
+<span class="nb">alias</span> <span class="nv">cp</span><span class="o">=</span><span class="s1">&#39;cp -i&#39;</span>
+
+<span class="c1"># Add some easy shortcuts for formatted directory listings and add a touch of color.</span>
+<span class="nb">alias</span> <span class="nv">ll</span><span class="o">=</span><span class="s1">&#39;ls -lF --color=auto&#39;</span>
+<span class="nb">alias</span> <span class="nv">la</span><span class="o">=</span><span class="s1">&#39;ls -alF --color=auto&#39;</span>
+<span class="nb">alias</span> <span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;ls -F&#39;</span>
+
+<span class="c1"># Make grep more user friendly by highlighting matches</span>
+<span class="c1"># and exclude grepping through .svn folders.</span>
+<span class="nb">alias</span> <span class="nv">grep</span><span class="o">=</span><span class="s1">&#39;grep --color=auto --exclude-dir=\.svn&#39;</span>
+
+<span class="c1"># Shortcut for using the Kdiff3 tool for svn diffs.</span>
+<span class="nb">alias</span> <span class="nv">svnkdiff3</span><span class="o">=</span><span class="s1">&#39;svn diff --diff-cmd kdiff3&#39;</span>
+</pre></div>
+
+
+<h3><code>.profile</code></h3>
+<p>I put the "run time modifying" stuff (<code>PATH</code> and friends) in <code>.profile</code>, so that these things are also easily available outside interactive Bash sessions, like non-interactive Bash sessions, other command line shells sessions and even the graphical shell/desktop environment. The <code>.profile</code> file should be loaded on login on Linux setups.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Add some more custom software to PATH.</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/usr/bin
+<span class="nb">export</span> PATH
+
+<span class="c1"># Make sure pkg-config can find self-compiled software</span>
+<span class="c1"># and libraries (installed to ~/usr)</span>
+<span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span><span class="nv">$PKG_CONFIG_PATH</span>:~/usr/lib/pkgconfig
+<span class="nb">export</span> PKG_CONFIG_PATH
+
+<span class="c1"># Add custom compiled libraries to library search path.</span>
+<span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:~/usr/lib
+<span class="nb">export</span> LD_LIBRARY_PATH
+
+<span class="c1"># Add custom compiled libraries to library run path.</span>
+<span class="nv">LD_RUN_PATH</span><span class="o">=</span><span class="nv">$LD_RUN_PATH</span>:~/usr/lib
+<span class="nb">export</span> LD_RUN_PATH
+
+<span class="c1"># Add custom Python modules to the Python path.</span>
+<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$PYTHONPATH</span>:~/slippenspythonlib
+<span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$PYTHONPATH</span>:~/usr/lib/python2.5/site-packages
+<span class="nb">export</span> PYTHONPATH
+
+<span class="c1"># Java;s CLASSPATH customization</span>
+<span class="nv">CLASSPATH</span><span class="o">=</span><span class="nv">$CLASSPATH</span>:~/foo/bar.jar
+<span class="nb">export</span> CLASSPATH
+</pre></div>
+
+
+<h3><code>.bash_profile</code></h3>
+<p>As I've described in <a href="/bashrc_and_others">a separate blog post about <code>.bashrc</code>, <code>.profile</code> and others</a>, deciding where to put things may seem a bit hairy. I limit myself to <code>.bashrc</code> and <code>.profile</code>, and use  <code>.bash_profile</code> to reuse these for (textual) login shells (see <a href="/bashrc_and_others">that blog post for more info</a>).</p>
+<div class="highlight"><pre><span></span><span class="c1"># Load .profile, containing login, non-bash related initializations.</span>
+<span class="nb">source</span> ~/.profile
+
+<span class="c1"># Load .bashrc, containing non-login related bash initializations.</span>
+<span class="nb">source</span> ~/.bashrc
+</pre></div>
+
+
+<h3>.screenrc</h3>
+<p><a href="http://en.wikipedia.org/wiki/GNU_Screen" title="Wikipedia on GNU Screen">GNU Screen</a> is a very handy tool I should have learned earlier about. It lets you have persistent shell sessions, so you can log out on one computer and reconnect to the still running session from an other computer. Recommended if you're "commandlining" a lot in an networked environment. Anyway, here is my <code>.screenrc</code> to have a handy caption bar, listing the available windows.</p>
+<div class="highlight"><pre><span></span># Set the default window name to empty string instead of the arbitrary &quot;bash&quot;
+shelltitle &#39;&#39;
+
+# Set the window caption.
+# I use caption instead of hardstatus, so it is available per split window too
+# (hardstatus is only per complete screen).
+caption always &quot;%{= KW}%-Lw%{= wb}%n %t %{= KW}%+Lw %-=| <span class="cp">${</span><span class="n">USER</span><span class="cp">}</span>@%H | %M%d %c%{-}&quot;
+# Some decryption hints:
+# %{= KW}     background light black (aka dark gray) with foreground light white
+# %{= wb}     background dark white (ake light gray) with foreground dark blue
+# %-Lw        all windows before the current window.
+# %n%f %t     current window number, flags and title.
+# %+Lw        all windows after the current window.
+# %-=         pad remaining spaces.
+# %H          hostname.
+# %M%d %s     month and day (MmmDD) and current time (HH:MM).
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

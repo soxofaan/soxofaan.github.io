@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>redirecting python's "print" statements to a file - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="programming"/>
+        <meta name="tags" contents="python"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>redirecting python's "print" statements to a file</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-10-07T00:00:00+02:00"> on 2005/10/07</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/programming.html">programming</a>,                    <a href="/tag/python.html">python</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Something I find annoying about writing a program/script that writes to text files is that you explicitly have to write the linefeeds (things like "\n", "\r", "\r\n" or std::endl). I remember Pascal having something like a <code>writeln()</code> function, which was very handy when I spend my time programming in TurboPascal, but it's no real incentive at all to return to the "begin...end" mess of Pascal. Apparently java has a <code>writeln</code> function too.</p>
+<p>In Python you have the <code>print</code> statement, which also silently appends a linefeed (unless you end the statement with a comma). The default behaviour of <code>print</code> is to write to the standard output, but you can redirect this to files or other writable objects (technically all objects that have a <code>write</code> method). That way you can use short, simple and clear <code>print</code> statements instead of those cluttered <code>object.write( "wello horld" + "\n")</code> constructs.</p>
+<p>The first technique is based on redirecting <code>sys.stdout</code> by assigning a writable object (such as a file object) to it. The <code>print</code> statements that follow will write to that object, instead of the default standard output. The drawback is that you should remember to reset <code>sys.stdout</code> to <code>sys.__stdout__</code> if you want your default standard output back.</p>
+<p>The second technique came to my attention when I reread <a href="http://www.oreilly.com/catalog/lpython2/">Learning Python</a> for the second time. It involves redirecting the print statement directly as follows:</p>
+<div class="highlight"><pre><span></span><span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;wello horld&quot;</span>
+</pre></div>
+
+
+<p>in which <code>output</code> is a writable object.</p>
+<p>As an illustration, consider the following script:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># a simple class with a write method</span>
+<span class="k">class</span> <span class="nc">WritableObject</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+<span class="c1"># example with redirection of sys.stdout</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="n">WritableObject</span><span class="p">()</span>                   <span class="c1"># a writable object</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">foo</span>                         <span class="c1"># redirection</span>
+<span class="k">print</span> <span class="s2">&quot;one, two, three, four&quot;</span>            <span class="c1"># some writing</span>
+<span class="k">print</span> <span class="s2">&quot;little hat&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;little hat&quot;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">__stdout__</span>              <span class="c1"># remember to reset sys.stdout!</span>
+<span class="k">print</span> <span class="s2">&quot;foo&#39;s content:&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="o">.</span><span class="n">content</span>                <span class="c1"># show the result of the writing</span>
+
+<span class="c1"># example with redirection of the print statement</span>
+<span class="n">bar</span> <span class="o">=</span> <span class="n">WritableObject</span><span class="p">()</span>                   <span class="c1"># another writable object</span>
+<span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">bar</span><span class="p">,</span> <span class="s2">&quot;one, two, three, four&quot;</span>     <span class="c1"># some (redirected) writing</span>
+<span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">bar</span><span class="p">,</span> <span class="s2">&quot;little hat made of paper&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;bar&#39;s content:&quot;</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">content</span>                <span class="c1"># the result</span>
+</pre></div>
+
+
+<p>the output of this script is</p>
+<div class="highlight"><pre><span></span>foo&#39;s content: [&#39;one, two, three, four&#39;, &#39;\n&#39;, &#39;little hat&#39;, &#39;\n&#39;, &#39;little hat&#39;, &#39;\n&#39;]
+bar&#39;s content: [&#39;one, two, three, four&#39;, &#39;\n&#39;, &#39;little hat made of paper&#39;, &#39;\n&#39;]
+</pre></div>
+
+
+<p>In a more real life situation (for example with file objects to write to), this can be very handy and keeps you code cleaner and more human readable.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

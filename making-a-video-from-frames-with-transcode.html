@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Making a video from frames with transcode - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="video"/>
+        <meta name="tags" contents="linux"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Making a video from frames with transcode</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-08-20T00:00:00+02:00"> on 2006/08/20</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/video.html">video</a>,                    <a href="/tag/linux.html">linux</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Making a video from a set of frames can be done with <a href="http://www.transcoding.org">transcode</a> as follows.
+Disclaimer: this is mainly a reminder to myself, based on <a href="http://www.transcoding.org/cgi-bin/transcode?Making_Animations" title="making animations with transcode">these instructions for making animations from frames</a>, with some extra's.</p>
+<p>First make a file with the filenames of the individual frames (in the right order of course). E.g. if the frames are named <code>/tmp/0001.png</code>, <code>/tmp/0002.png</code>, ..., <code>/tmp/0100.png</code>:</p>
+<div class="highlight"><pre><span></span>$&gt; ls /tmp/0*.png  &gt; framelist.txt
+</pre></div>
+
+
+<p>Also, indentify the size of the input frames. E.g. with <a href="http://www.imagemagick.org/script/identify.php" title="ImageMagick's indentify">ImageMagick's identify</a>:</p>
+<div class="highlight"><pre><span></span>$&gt; identify /tmp/0001.png
+/tmp/0001.png PNG 400x300 400x300+0+0 DirectClass 65kb
+</pre></div>
+
+
+<p>Then invoke transcode with the frame list as input:</p>
+<div class="highlight"><pre><span></span>$&gt; transcode -i framelist.txt <span class="se">\</span>
+   -x imlist,null -g400x300 --use_rgb -z <span class="se">\</span>
+   -y xvid,null -f25 -o frames.avi -H 0
+</pre></div>
+
+
+<p>the meaning of the different arguments:</p>
+<ul>
+<li><code>-x</code>: the input video format (imlist) and audio format (null)</li>
+<li><code>-g</code>: the size of the frames (400x300 in this case)</li>
+<li><code>--use_rgb</code>: to indicate that the input color space is RGB </li>
+<li><code>-z</code>: to flip the input upside down (I need this to get the output video right)</li>
+<li><code>-y</code>: the output video format (xvid) and audio format (null)</li>
+<li><code>-f</code>: the frame rate</li>
+<li><code>-o</code>: the output video file</li>
+<li><code>-H 0</code>: disable autoprobing for the input format</li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

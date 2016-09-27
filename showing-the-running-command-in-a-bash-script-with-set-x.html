@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Showing the running command in a bash script with "set -x" - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="command line"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Showing the running command in a bash script with "set -x"</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-29T00:00:00+02:00"> on 2009/05/29</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/command-line.html">command line</a>,                    <a href="/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Bash scripts are handy for putting a bunch of longer running jobs in one batch. In some occasions it can be useful to know which command is running at the moment, especially when the commands do not generate output themselves or this output is redirected to files. </p>
+<p>Bash has a simple setting to achieve this:</p>
+<div class="highlight"><pre><span></span><span class="nb">set</span> -x
+</pre></div>
+
+
+<p>which, according to <code>help set</code>, enables the following feature:</p>
+<blockquote>
+<p>-x  Print commands and their arguments as they are executed.</p>
+</blockquote>
+<p>Disabling it just takes a mere</p>
+<div class="highlight"><pre><span></span><span class="nb">set</span> +x
+</pre></div>
+
+
+<p>You can play with it from the bash command line itself, or put it in a bash script of course.</p>
+<p>A simple illustration with this bash script <code>put_out_the_trash.sh</code> that contains silent commands:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nb">set</span> -x
+
+touch cookiewrap
+mv cookiewrap dustbin
+mv dustbin trashcan_kitchen
+mv trashcan_kitchen outside
+</pre></div>
+
+
+<p>Running the script from the command line gives you:</p>
+<div class="highlight"><pre><span></span>$ ./put_out_the_trash.sh
++ touch cookiewrap
++ mv cookiewrap dustbin
++ mv dustbin trashcan_kitchen
++ mv trashcan_kitchen outside
+$
+</pre></div>
+
+
+<p>So you see what's happening.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Overwide figures in LaTeX - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="latex"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Overwide figures in LaTeX</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-11-26T00:00:00+01:00"> on 2009/11/26</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/latex.html">latex</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>When using default LaTeX styles, you get a rather small text width. This is for a very good reason: readability. However, when you want to add an image, figure or table, this width can be a bit limiting. If you naively add an image (or table) that is wider than the text width, the image will typically align on the left margin and extend into the right margin, which is not that pretty. Moreover, because you're not using the left margin, it limits the maximum width you can use.</p>
+<p>I found <a href="http://www.scharrer-online.de/latex/overwide.shtml" title="LaTeX Recipe: Overwide Graphics">this nifty LaTeX recipe for overwide graphics</a>, which I'd like to rehash.</p>
+<p>The trick is to put the image (or something else) in a <code>\makebox</code> command:</p>
+<div class="highlight"><pre><span></span><span class="k">\makebox</span><span class="na">[\textwidth][c]</span><span class="nb">{</span>
+  <span class="c">% put your overwide image here</span>
+<span class="nb">}</span>
+</pre></div>
+
+
+<p>To see it in action, I made a small but functional illustration with a fake image (using the <code>\rule</code> command):</p>
+<p><img alt="overwide figure" src="/articles/from-drupal-blog/images/overwidefigure.png" /></p>
+<p>The code to produce this:</p>
+<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="na">[12pt]</span><span class="nb">{</span>article<span class="nb">}</span>
+
+<span class="c">% Some float settings to get all the figures at the top of the page</span>
+<span class="k">\setcounter</span><span class="nb">{</span>topnumber<span class="nb">}{</span>4<span class="nb">}</span>
+<span class="k">\setcounter</span><span class="nb">{</span>totalnumber<span class="nb">}{</span>4<span class="nb">}</span>
+
+<span class="c">% Make the captions larger so we can read them in the screenshot.</span>
+<span class="k">\usepackage</span><span class="na">[Large]</span><span class="nb">{</span>caption<span class="nb">}</span>
+
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+
+<span class="c">% An image that is small enough.</span>
+<span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>
+    <span class="k">\centering</span>
+    <span class="k">\rule</span><span class="nb">{</span>5cm<span class="nb">}{</span>1em<span class="nb">}</span>
+    <span class="k">\caption</span><span class="nb">{</span>Faking a small image with the rule command.<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+
+<span class="c">% An overwide image.</span>
+<span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>
+    <span class="k">\centering</span>
+    <span class="k">\rule</span><span class="nb">{</span>17cm<span class="nb">}{</span>1em<span class="nb">}</span>
+    <span class="k">\caption</span><span class="nb">{</span>What about a wide image?<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+
+<span class="c">% Using the makebox trick to align it nicely.</span>
+<span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>
+    <span class="k">\makebox</span><span class="na">[\textwidth][c]</span><span class="nb">{</span>
+        <span class="k">\rule</span><span class="nb">{</span>17cm<span class="nb">}{</span>1em<span class="nb">}</span>
+    <span class="nb">}</span>
+    <span class="k">\caption</span><span class="nb">{</span>This looks better, doesn&#39;t it?<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+
+<span class="c">% The same makebox trick with right alignment.</span>
+<span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>
+    <span class="k">\makebox</span><span class="na">[\textwidth][r]</span><span class="nb">{</span>
+        <span class="k">\rule</span><span class="nb">{</span>17cm<span class="nb">}{</span>1em<span class="nb">}</span>
+    <span class="nb">}</span>
+    <span class="k">\caption</span><span class="nb">{</span>We can even align it to the right.<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+
+
+<span class="c">% A bit of nonsense text to visualize the normal margins.</span>
+<span class="k">\section</span><span class="nb">{</span>Iprem Losum<span class="nb">}</span>
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Etiam sed mattis lorem. Mauris consectetur, diam a
+condimentum fermentum, diam sem tincidunt libero, eu
+venenatis nulla turpis congue urna. Quisque sagittis iaculis
+turpis, id adipiscing sapien lobortis eu. Curabitur elementum,
+turpis et vehicula iaculis, augue sem egestas odio, vel
+ornare dui erat nec sem. Cras massa tellus, commodo nec
+tincidunt a, bibendum in ipsum. Donec nisi dolor, ultrices
+eu aliquet non, placerat ut orci. Nulla neque augue, vehicula
+et tempor eget, mattis vitae augue. Maecenas eu felis mi, non
+adipiscing libero.
+
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Avoid duplicates in your bash history - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="bash"/>
+        <meta name="tags" contents="linux"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Avoid duplicates in your bash history</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-10-03T00:00:00+02:00"> on 2005/10/03</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/bash.html">bash</a>,                    <a href="/tag/linux.html">linux</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Sometimes I need to repeat a command several times on the bash commandline. I don't mean a scenario where you could use a for or while loop, but take for example editing a script in an editor and periodically running it in a terminal. In that case my bash history used to be appended over and over with the same command for running that script. </p>
+<p>If you set the shell variable <code>HISTCONTROL</code> to <code>ignoredups</code>, bash will not append a command to the history if it matches the last command of the history.</p>
+<p>Add the following to your <code>~/.bashrc</code> file to enable it (unless it is already enabled, of course):</p>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">HISTCONTROL</span><span class="o">=</span>ignoredups
+</pre></div>
+
+
+<p>In fact, with <code>HISTCONTROL</code> you can do a bit more. The manpage of bash tells the following about <code>HISTCONTROL</code>:</p>
+<blockquote>
+<p>A  colon-separated  list of values controlling how commands are saved on the history list.  If the list of values includes <code>ignorespace</code>, lines which begin  with  a  space character  are  not  saved  in the history list.  A value of <code>ignoredups</code> causes lines matching the previous history entry to not be  saved.   A  value  of  <code>ignoreboth</code>  is shorthand  for <code>ignorespace</code> and <code>ignoredups</code>.  A value of <code>erasedups</code> causes all previous lines matching the current line to be removed from the history list before that line is  saved.  Any value not in the above list is ignored.  If <code>HISTCONTROL</code> is unset, or does not include a valid value, all lines read by the shell parser are saved on  the history  list,  subject to the value of <code>HISTIGNORE</code>.  The second and subsequent lines of a multi-line compound command are not  tested,  and  are  added  to  the  history regardless of the value of <code>HISTCONTROL</code>.</p>
+</blockquote>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

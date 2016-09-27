@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>moving files to the (KDE) trash can from the command line - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="kde"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>moving files to the (KDE) trash can from the command line</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-10-07T00:00:00+02:00"> on 2005/10/07</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/kde.html">kde</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>When you want get rid of some files, but fully deleting them is bit drastic, a trash can is an handy option. In a graphical environment the tools are there to do it (drag and drop, right mouse button on a file, etc.), but on the command line it is not something very handy to do. In the old days there was a directory <code>~/Desktop/Trash</code> that acted as the trash can. But nowadays, KDE and Gnome implement the <a href="http://www.ramendik.ru/docs/trashspec.html">freedesktop.org trash specification</a>, which is more advanced than a simple directory with files. This makes it less straightforward to access the trash can from the command line.</p>
+<p>When KDE is installed, the KDE file manager can be used from the commandline to do it:</p>
+<div class="highlight"><pre><span></span>$&gt; kfmclient move foobar.txt trash:/
+</pre></div>
+
+
+<p>will move <code>foobar.txt</code> to the trash can.</p>
+<p>To make it a bit more user friendly, you can put the following script in a directory in your <code>$PATH</code>, call it something like <code>totrash</code> and make it executable:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># Move files to trash:/</span>
+kfmclient move <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> trash:/
+</pre></div>
+
+
+<p>On the commandline you only need then</p>
+<div class="highlight"><pre><span></span>$&gt; totrash foobar.txt pleezeew.hu
+</pre></div>
+
+
+<p>and you're done. </p>
+<p>Based on <a href="http://www.kde-forum.org/post/41787/lastpost.html#post41787">http://www.kde-forum.org/post/41787/lastpost.html#post41787</a></p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

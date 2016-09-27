@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Jython and PYTHONPATH - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="jython"/>
+        <meta name="tags" contents="bash"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="python"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Jython and PYTHONPATH</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-09T00:00:00+02:00"> on 2009/09/09</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/jython.html">jython</a>,                    <a href="/tag/bash.html">bash</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/python.html">python</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>For some small tools or jobs I use <a href="http://jython.org">Jython</a> so I can (re)use some existing Java code, while still writing in <a href="http://python.org">Python</a>. I also have various custom Python modules, of which I put the paths in my <code>PYTHONPATH</code> environment variable, so those modules are easily available in Python scripts and interactive sessions.</p>
+<p>However, Jython does not automatically pick up the <code>PYTHONPATH</code> information, for reasons that seem to be discussed in <a href="http://osdir.com/ml/lang.jython.devel/2007-07/msg00007.html">this Jython development mailing list thread</a>. </p>
+<p>Jython 2.5 introduced the <code>JYTHONPATH</code> environmental variable as Jython-equivalent of <code>PYTHONPATH</code>, so setting both to the same value should do the trick for most use cases (unless you're working in a setup with incompatible Python an Jython versions).</p>
+<p>For Jython versions prior to 2.5 (like 2.2.1 in my case), there is an easy "workaround", by invoking Jython with the appropriate <code>-Dpython.path=foo/path:bar/path</code> option. For example as follows:</p>
+<div class="highlight"><pre><span></span>jython -Dpython.path<span class="o">=</span><span class="nv">$PYTHONPATH</span>
+</pre></div>
+
+
+<p>To make it a bit less clunky, I added the following alias to my bash aliases:</p>
+<div class="highlight"><pre><span></span><span class="nb">alias</span> <span class="nv">jython</span><span class="o">=</span><span class="s1">&#39;jython -Dpython.path=$PYTHONPATH&#39;</span>
+</pre></div>
+
+
+<p>Note that I used single quotes in the alias. This way, <code>$PYTHONPATH</code> is not expanded before defining the alias, but on invocation of the jython command. This means that changes to the <code>PYTHONPATH</code> environmental variable happening after defining the alias (which typically happens when starting a new shell) will still be picked up in the alias command.
+If I had used double quotes, <code>$PYTHONPATH</code> would be expanded before defining the alias, which means that <code>-Dpython.path</code> would be hardcoded. Consequently, changes to <code>PYTHONPATH</code> would be invisible for the jython alias.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Accented characters with qwerty keyboard (Ubuntu Linux) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="ubuntu"/>
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="language"/>
+        <meta name="tags" contents="querty"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Accented characters with qwerty keyboard (Ubuntu Linux)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-03-23T00:00:00+01:00"> on 2009/03/23</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/ubuntu.html">ubuntu</a>,                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/language.html">language</a>,                    <a href="/tag/querty.html">querty</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>I prefer a qwerty keyboard for programming, but to write in my native language (Dutch) I need sometimes accented characters like &euml;, &iuml;, &eacute;, etc, which do not have dedicated keys on a qwerty layout.</p>
+<p>A handy way under Linux is to use a "compose key" (<code>[Alt Gr]</code> on my setup), which allows you to compose accented characters by entering the accent (umlaut, accent grave, ...) and the unaccented character separately.</p>
+<p>Some examples (I don't use all these cases myself, it's just an illustration of what is possible):</p>
+<ul>
+<li>for "&eacute;", I type <code>[Alt Gr] ['] [e]</code></li>
+<li>for "&egrave;", I type <code>[Alt Gr] [] [e]</code></li>
+<li>for "&uuml;", I type <code>[Alt Gr] ["] [u]</code></li>
+<li>for "&ocirc;", I type <code>[Alt Gr] [^] [o]</code></li>
+<li>for "&ccedil;", I type <code>[Alt Gr] [,] [c]</code></li>
+<li>for "&ntilde;", I type <code>[Alt Gr] [~] [n]</code></li>
+<li>for "&aring;", I type <code>[Alt Gr] [o] [a]</code></li>
+<li>for "&aelig;", I type <code>[Alt Gr] [a] [e]</code></li>
+<li>for "&OElig;", I type <code>[Alt Gr] [O] [E]</code></li>
+<li>for "&oslash;", I type <code>[Alt Gr] [/] [o]</code></li>
+<li>for "&szlig;", I type <code>[Alt Gr] [s] [s]</code></li>
+</ul>
+<p>To enable this feature under Ubuntu Linux 8.04 (Gnome desktop) go to the keyboard preferences (Ubuntu menu &gt; "Settings" &gt; "Preferences" &gt; "Keyboard").</p>
+<p><img alt="Keyboard settings in Ubuntu menu" src="/articles/from-drupal-blog/images/ComposeKey_menu.png" /></p>
+<p>Then, go to the tab "Layouts" and press the "Layout Options..." key at the bottom. Under "Compose key position" you can enable the compose key of your liking (which is <code>[Alt Gr]</code> aka "Right Alt" for me).</p>
+<p><img alt="Compose key settings" src="/articles/from-drupal-blog/images/ComposeKey_options-edit.png" /></p>
+<p>This is for Ubuntu 8.04, but other flavors of Linux or other window managers probably have very similar ways to configure the compose key.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

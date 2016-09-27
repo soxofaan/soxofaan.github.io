@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Check iTunes library for inexistent files and broken links with Python and PyObjC - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="itunes"/>
+        <meta name="tags" contents="osx"/>
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="objc"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Check iTunes library for inexistent files and broken links with Python and PyObjC</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2013-01-24T00:00:00+01:00"> on 2013/01/24</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/itunes.html">itunes</a>,                    <a href="/tag/osx.html">osx</a>,                    <a href="/tag/python.html">python</a>,                    <a href="/tag/objc.html">objc</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Music files come, music files go. And after some time your iTunes library is sprinkled with cases of </p>
+<blockquote>
+<p>The song “Monsieur Cannibale” could not be used because the original file could not be found. Would you like to locate it?</p>
+</blockquote>
+<p>Being annoyed by this and having no idea how "healthy" my library was, 
+I decided to delve in the corners of <code>~/Music/iTunes/iTunes Library.xml</code>. 
+After considering some approaches with XML parsing libraries, I stumbled 
+on <a href="http://bob.ippoli.to/archives/2005/07/18/airport-express-hates-me/">this nice solution</a> 
+which directly hooks into Mac OSX's frameworks with the 
+<a href="http://packages.python.org/pyobjc/">PyObjC, a Python-ObjC bridge</a>.</p>
+<p>Long story short, I hacked this little script together to scan through 
+the tracks in my iTunes library and complain about local files it can't find:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">Foundation</span>
+
+<span class="k">def</span> <span class="nf">scan_itunes_library</span><span class="p">(</span><span class="n">library_file</span><span class="p">):</span>
+
+    <span class="c1"># Load iTunes library</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">Foundation</span><span class="o">.</span><span class="n">NSDictionary</span><span class="o">.</span><span class="n">dictionaryWithContentsOfFile_</span><span class="p">(</span><span class="n">library_file</span><span class="p">)</span>
+
+    <span class="c1"># Check track info.</span>
+    <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">db</span><span class="p">[</span><span class="s1">u&#39;Tracks&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+
+        <span class="k">if</span> <span class="s1">u&#39;Location&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">track</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s1">&#39;No location info in track info&#39;</span><span class="p">,</span> <span class="n">track</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Resolve location</span>
+        <span class="n">nsurl</span> <span class="o">=</span> <span class="n">Foundation</span><span class="o">.</span><span class="n">NSURL</span><span class="o">.</span><span class="n">URLWithString_</span><span class="p">(</span><span class="n">track</span><span class="p">[</span><span class="s1">u&#39;Location&#39;</span><span class="p">])</span>
+
+        <span class="c1"># Check local file paths</span>
+        <span class="k">if</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">scheme</span><span class="p">()</span> <span class="o">==</span> <span class="s1">u&#39;file&#39;</span> <span class="ow">and</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">host</span><span class="p">()</span> <span class="o">==</span> <span class="s1">u&#39;localhost&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">nsurl</span><span class="o">.</span><span class="n">path</span><span class="p">()):</span>
+                <span class="k">print</span> <span class="s2">&quot;Location does not exist:&quot;</span><span class="p">,</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">path</span><span class="p">(),</span> <span class="s1">&#39;from track&#39;</span><span class="p">,</span> <span class="n">track</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s2">&quot;Don&#39;t know how to check&quot;</span><span class="p">,</span> <span class="n">nsurl</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">scan_itunes_library</span><span class="p">(</span><span class="n">library_file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Run this script with the path to your iTunes Library XML file 
+(<code>~/Music/iTunes/iTunes Library.xml</code> typically) as argument.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

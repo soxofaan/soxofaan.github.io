@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Python trick: asynchronously reading subprocess pipes - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="python"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Python trick: asynchronously reading subprocess pipes</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-03-09T00:00:00+01:00"> on 2012/03/09</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/python.html">python</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p><em>Update:</em> I reworked the code below a bit and put it on 
+<a href="https://github.com/soxofaan/asynchronousfilereader">github</a> and 
+<a href="https://pypi.python.org/pypi/asynchronousfilereader">pypi</a> to make it
+pip installable</p>
+<p>As its name suggests, the Python
+ <a href="http://docs.python.org/library/subprocess.html">subprocess</a> allows you 
+ to spawn a child/sub process and keep an eye on its standard output 
+ through a pipe for example. Very handy to glue together external 
+ systems/processes. A tricky issue with having parallel "flows" this 
+ way (your python process and the child process in this case), is the 
+ risk on deadlocks if you are not careful with the order things are done. 
+ For example, you want to read from the subprocess standard output pipe, 
+ but the buffer of the standard error pipe is full and the operating 
+ system wants you to read that first. Kaboom, deadlock. That's why the 
+ documentation recommends the <a href="http://docs.python.org/library/subprocess.html#subprocess.Popen.communicate">communicate() method</a>, 
+ which returns the complete standard output and standard error content 
+ in one fell swoop.</p>
+<p>Fine, but what if you want to read standard output and error line by 
+line, for example because you want to monitor a longer running process?
+On the web you can find many solutions, with varying degrees of complexity, 
+abstraction and dependencies. One solution (with limited code and no 
+dependencies outside the standard library) is to read the pipes in
+separate threads, so one pipe can't block another. </p>
+<p>The code below shows an example implementation. The script is set up in 
+such a way that is used both for the parent as the child process. </p>
+<ul>
+<li>For the child process: when called with 'produce' argument, it runs the 
+    <code>produce()</code> function that just renders some lines randomly on
+    standard output and standard error. Between the lines there is a 
+    touch of delay simulate a longer running process.</li>
+<li>The parent process (script called without arguments), implemented in 
+    the <code>consume()</code> function, invokes the same script in "child mode"
+    as subprocess and monitors its output line by line, without knowing 
+    in advance from which pipe each line will come.</li>
+</ul>
+<p>The <code>AsynchronousFileReader</code> class is for the threads that will read 
+the standard output and error pipes asynchronously and put each line 
+on a <a href="http://docs.python.org/library/queue.html">queue</a>. The main thread 
+can then monitor the subprocess by watching the lines as they come in 
+on the queues.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">Queue</span>
+
+<span class="k">class</span> <span class="nc">AsynchronousFileReader</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Helper class to implement asynchronous reading of a file</span>
+<span class="sd">    in a separate thread. Pushes read lines on a queue to</span>
+<span class="sd">    be consumed in another thread.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">)</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fd</span> <span class="o">=</span> <span class="n">fd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span> <span class="o">=</span> <span class="n">queue</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The body of the tread: read lines and put them on the queue.&#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fd</span><span class="o">.</span><span class="n">readline</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">eof</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Check whether there is no more content to expect.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">consume</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Example of how to consume standard output and standard error of</span>
+<span class="sd">    a subprocess asynchronously without risk on deadlocking.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Launch the command as subprocess.</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+
+    <span class="c1"># Launch the asynchronous readers of the process&#39; stdout and stderr.</span>
+    <span class="n">stdout_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+    <span class="n">stdout_reader</span> <span class="o">=</span> <span class="n">AsynchronousFileReader</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stdout_queue</span><span class="p">)</span>
+    <span class="n">stdout_reader</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">stderr_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+    <span class="n">stderr_reader</span> <span class="o">=</span> <span class="n">AsynchronousFileReader</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="n">stderr_queue</span><span class="p">)</span>
+    <span class="n">stderr_reader</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Check the queues if we received some output (until there is nothing more to get).</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">stdout_reader</span><span class="o">.</span><span class="n">eof</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">stderr_reader</span><span class="o">.</span><span class="n">eof</span><span class="p">():</span>
+        <span class="c1"># Show what we received from standard output.</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">stdout_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">stdout_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">print</span> <span class="s1">&#39;Received line on standard output: &#39;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="c1"># Show what we received from standard error.</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">stderr_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">stderr_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">print</span> <span class="s1">&#39;Received line on standard error: &#39;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="c1"># Sleep a bit before asking the readers again.</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Let&#39;s be tidy and join the threads we&#39;ve started.</span>
+    <span class="n">stdout_reader</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="n">stderr_reader</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="c1"># Close subprocess&#39; file descriptors.</span>
+    <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">produce</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Dummy function to randomly render a couple of lines</span>
+<span class="sd">    on standard output and standard error.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">])</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Line </span><span class="si">%d</span><span class="s1"> on </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">output</span><span class="p">))</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># The main flow:</span>
+    <span class="c1"># if there is an command line argument &#39;produce&#39;, act as a producer</span>
+    <span class="c1"># otherwise be a consumer (which launches a producer as subprocess).</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;produce&#39;</span><span class="p">:</span>
+        <span class="n">produce</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">consume</span><span class="p">([</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;produce&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Running this will generate a line by line monitoring report like</p>
+<div class="highlight"><pre><span></span>Received line on standard output: &quot;Line 0 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
+Received line on standard error: &quot;Line 1 on &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x100292270&gt;\n&quot;
+Received line on standard output: &quot;Line 2 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
+Received line on standard error: &quot;Line 3 on &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x100292270&gt;\n&quot;
+Received line on standard output: &quot;Line 4 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
+Received line on standard output: &quot;Line 5 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
+Received line on standard error: &quot;Line 6 on &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x100292270&gt;\n&quot;
+Received line on standard error: &quot;Line 7 on &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x100292270&gt;\n&quot;
+Received line on standard output: &quot;Line 8 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
+Received line on standard output: &quot;Line 9 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

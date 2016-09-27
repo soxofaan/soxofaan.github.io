@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Bash: the difference between $* and $@ and what that means for working with filenames containing spaces - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="bash"/>
+        <meta name="tags" contents="linux"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Bash: the difference between $* and $@ and what that means for working with filenames containing spaces</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-11-29T00:00:00+01:00"> on 2005/11/29</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/bash.html">bash</a>,                    <a href="/tag/linux.html">linux</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Lets's start with a citation about the special parameters <code>$*</code> and <code>$@</code>  from the <a href="http://www.gnu.org/software/bash/manual/bashref.html#SEC25" title="bash manual about special parameters">bash manual</a>:</p>
+<blockquote>
+<p><strong> Parameter <code>*</code> </strong></p>
+<p>Expands to the positional parameters, starting from one. 
+When the expansion occurs within double quotes, it expands to a 
+single word with the value of each parameter separated by the first 
+character of the IFS special variable. That is, <code>"$*"</code> is equivalent 
+to <code>"$1c$2c..."</code>, where <code>c</code> is the first character of the value of 
+the <code>IFS</code> variable. If <code>IFS</code> is unset, the parameters are separated 
+by spaces. If <code>IFS</code> is null, the parameters are joined without 
+intervening separators.</p>
+<p><strong> Parameter <code>@</code> </strong></p>
+<p>Expands to the positional parameters, starting from one. When the 
+expansion occurs within double quotes, each parameter expands to a 
+separate word. That is, <code>"$@"</code> is equivalent to <code>"$1" "$2"</code> .... 
+When there are no positional parameters, <code>"$@"</code> and <code>$@</code> expand 
+to nothing (i.e., they are removed).</p>
+</blockquote>
+<p>Apparently both <code>$*</code> and <code>$@</code> expand to the positional parameters. The difference about the expanding between double quotes can be important if you have to deal with filenames with spaces. The following example should clarify the difference. Consider the two files <code>filename.txt</code> and <code>filename with spaces.txt</code>:</p>
+<div class="highlight"><pre><span></span>$&gt; cat filename.txt
+hello
+
+$&gt; cat &quot;filename with spaces.txt&quot;
+hi there
+</pre></div>
+
+
+<p>We now write the following simple bash script, which we will give the fancy name <code>test.sh</code>:</p>
+<div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;--- cat $* ---&#39;</span>
+cat <span class="nv">$*</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;--- cat $@ ---&#39;</span>
+cat <span class="nv">$@</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;--- cat &quot;$*&quot; ---&#39;</span>
+cat <span class="s2">&quot;</span><span class="nv">$*</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;--- cat &quot;$@&quot; ---&#39;</span>
+cat <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>and execute it with the two files above as arguments:</p>
+<div class="highlight"><pre><span></span><span class="err">$</span><span class="o">&gt;</span> <span class="p">.</span><span class="o">/</span><span class="n">test</span><span class="p">.</span><span class="n">sh</span> <span class="n">filename</span><span class="p">.</span><span class="n">txt</span> <span class="s">&quot;filename with spaces.txt&quot;</span>
+<span class="o">---</span> <span class="n">cat</span> <span class="err">$</span><span class="o">*</span> <span class="o">---</span>
+<span class="n">hello</span>
+<span class="nl">cat</span><span class="p">:</span> <span class="nl">filename</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+<span class="nl">cat</span><span class="p">:</span> <span class="nl">with</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+<span class="nl">cat</span><span class="p">:</span> <span class="n">spaces</span><span class="p">.</span><span class="nl">txt</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+<span class="o">---</span> <span class="n">cat</span> <span class="err">$</span><span class="p">@</span> <span class="o">---</span>
+<span class="n">hello</span>
+<span class="nl">cat</span><span class="p">:</span> <span class="nl">filename</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+<span class="nl">cat</span><span class="p">:</span> <span class="nl">with</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+<span class="nl">cat</span><span class="p">:</span> <span class="n">spaces</span><span class="p">.</span><span class="nl">txt</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+<span class="o">---</span> <span class="n">cat</span> <span class="s">&quot;$*&quot;</span> <span class="o">---</span>
+<span class="nl">cat</span><span class="p">:</span> <span class="n">filename</span><span class="p">.</span><span class="n">txt</span> <span class="n">filename</span> <span class="n">with</span> <span class="n">spaces</span><span class="p">.</span><span class="nl">txt</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+<span class="o">---</span> <span class="n">cat</span> <span class="s">&quot;$@&quot;</span> <span class="o">---</span>
+<span class="n">hello</span>
+<span class="n">hi</span> <span class="n">there</span>
+</pre></div>
+
+
+<p>In most cases you probably will need the last construct: <code>"$@"</code>.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

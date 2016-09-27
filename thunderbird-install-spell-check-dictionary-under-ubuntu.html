@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Thunderbird: install spell check dictionary (under Ubuntu) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="linux"/>
+        <meta name="tags" contents="language"/>
+        <meta name="tags" contents="thunderbird"/>
+        <meta name="tags" contents="email"/>
+        <meta name="tags" contents="ubuntu"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Thunderbird: install spell check dictionary (under Ubuntu)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2006-06-28T00:00:00+02:00"> on 2006/06/28</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/linux.html">linux</a>,                    <a href="/tag/language.html">language</a>,                    <a href="/tag/thunderbird.html">thunderbird</a>,                    <a href="/tag/email.html">email</a>,                    <a href="/tag/ubuntu.html">ubuntu</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>I had some difficulties in Ubuntu with installing a new spell check dictionary for my mail client <a href="http://www.mozilla.com/thunderbird/" title="Mozilla Thunderbird email client">Thunderbird</a>. My native language is Dutch (Nederlands) and writing Dutch with a English spell checker active is not very interesting. I tried the methods explained at <a href="http://www.mozilla.com/thunderbird/dictionaries.html">http://www.mozilla.com/thunderbird/dictionaries.html</a> , but that didn't work. I got some message that the dictionary "has been succesfully installed", but that message did not reflect the truth. </p>
+<p>I messed a bit with the installation script inside the <code>spell-nl.xpi</code> file, and found out that the dictionary would/should be installed to <code>/usr/lib/mozilla-thunderbird/components/myspell</code>, a directory that is only writable by the root user. Apparently the installation procedure did not detect the write failure. I could put the Dutch dictionary there as root user, but I looked a bit further and found out that installing the appropriate <a href="http://en.wikipedia.org/wiki/MySpell" title="Wikipedia about MySpell">MySpell</a> package (<code>myspell-nl</code> for me) is a much cleaner/safer solution. MySpell is the spell checker of <a href="http://www.openoffice.org" title="OpenOffice.org - the famous open source and free office suite">OpenOffice.org</a>, which is also used in Thunderbird. </p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

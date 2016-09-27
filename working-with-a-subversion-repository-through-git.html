@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Working with a Subversion repository through Git - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="subversion"/>
+        <meta name="tags" contents="git"/>
+        <meta name="tags" contents="note to self"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Working with a Subversion repository through Git</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-25T00:00:00+02:00"> on 2009/05/25</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/subversion.html">subversion</a>,                    <a href="/tag/git.html">git</a>,                    <a href="/tag/note-to-self.html">note to self</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>I'm experimenting with using a Subversion repository through Git. That way I can keep better track of my own (experimental) work, without polluting/destabilizing the central Subversion repository with small incremental commits. Git comes with a <code>svn</code> sub-tool that takes care of all the interfacing between the local git repository and the central Subversion repository. Mainly for my own reference, I'll collect some pointers and tricks for using this <code>git-svn</code> tool here. Maybe it's useful for other too.</p>
+<h3>Check out/import/starting</h3>
+<p>Create a fresh git-svn working copy/repository, and tell it where the subversion repository is:</p>
+<div class="highlight"><pre><span></span>mkdir marsyas-git-svn
+<span class="nb">cd</span> marsyas-git-svn
+git svn init https://marsyas.svn.sourceforge.net/svnroot/marsyas/trunk
+</pre></div>
+
+
+<p>This will download nothing. Use the fetch command to so. As importing the whole subversion history is not recommended (it could take a  <em>lot</em>  of time), you should specify from which subversion revision you want to start tracking:</p>
+<div class="highlight"><pre><span></span>git svn fetch -r3463
+</pre></div>
+
+
+<h3>Daily usage</h3>
+<p>Getting the latest revision from subversion (like <code>svn update</code>):</p>
+<div class="highlight"><pre><span></span>git svn rebase
+</pre></div>
+
+
+<p>Commit your local changes, you've been managing with git:</p>
+<div class="highlight"><pre><span></span>git svn dcommit
+</pre></div>
+
+
+<h3>Further reading</h3>
+<ul>
+<li>http://flavio.castelli.name/howto_use_git_with_svn</li>
+<li>http://utsl.gen.nz/talks/git-svn/intro.html</li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

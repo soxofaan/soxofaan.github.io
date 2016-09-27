@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>LaTeX: use \textnormal instead of \textrm (or \textsf) in math - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="latex"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>LaTeX: use \textnormal instead of \textrm (or \textsf) in math</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2005-12-14T00:00:00+01:00"> on 2005/12/14</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/latex.html">latex</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>If you you want to use normal text in a math environment (mathdisplay, equation,...) you should use <code>\textnormal{}</code> instead of <code>\textrm{}</code>. Apparently the latter is more popular: a <a href="http://www.google.com/search?q=latex+textrm" title="google search for 'latex textrm'">google search for "latex textrm"</a> delivers almost 25.000 hits, whereas <a href="http://www.google.com/search?q=latex+textnormal" title="google search for 'latex textnormal'">google search for "latex textnormal"</a>  returns not more than 800 hits. The advantage of <code>\textnormal</code> is that the text will be typeset in the normal font of the body text. <code>\textrm</code> on the other hand activates a roman (serif) font. Most of the time the result of these two will be the same because the default font of the body text is a serif one in most cases. But sometimes it is not.</p>
+<p>An example I encountered was reusing LaTeX code from an article in a <a href="http://latex-beamer.sourceforge.net/">LaTeX Beamer Class presentation</a>. In a beamer presentation the default font is a sans serif one. When I reused my math expressions, I had to replace all <code>\textrm</code> with <code>\textsf</code> to adjust to this "other default". If I would have used <code>\textnormal</code>, there wouldn't be a problem.</p>
+<p>For example (I like examples), consider the following LaTeX body, saved to a file <code>textnormalexample_body.tex</code>:</p>
+<div class="highlight"><pre><span></span>This just some normal text, and here is some math:
+<span class="k">\begin</span><span class="nb">{</span>eqnarray*<span class="nb">}</span>
+ <span class="k">\int</span><span class="nb">_</span>1<span class="nb">^</span>9 x dx <span class="nb">&amp;</span> <span class="nb">&amp;</span> <span class="k">\textrm</span><span class="nb">{</span>this is textrm<span class="nb">}</span><span class="k">\\</span>
+ <span class="k">\sum</span><span class="nb">_</span>1<span class="nb">^</span>9 y    <span class="nb">&amp;</span> <span class="nb">&amp;</span> <span class="k">\textsf</span><span class="nb">{</span>this is textsf<span class="nb">}</span><span class="k">\\</span>
+ <span class="k">\prod</span><span class="nb">_</span>1<span class="nb">^</span>9 z   <span class="nb">&amp;</span> <span class="nb">&amp;</span> <span class="k">\textnormal</span><span class="nb">{</span>this is textnormal<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>eqnarray*<span class="nb">}</span>
+</pre></div>
+
+
+<p>We use this in a simple article document:</p>
+<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+  <span class="k">\input</span> <span class="nb">{</span>textnormalexample<span class="nb">_</span>body.tex<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</pre></div>
+
+
+<p>and a comparable simple beamer presentation:</p>
+<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>beamer<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+  <span class="k">\begin</span><span class="nb">{</span>frame<span class="nb">}</span>
+    <span class="k">\input</span><span class="nb">{</span>textnormalexample<span class="nb">_</span>body.tex<span class="nb">}</span>
+  <span class="k">\end</span><span class="nb">{</span>frame<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</pre></div>
+
+
+<p>The result of the article is:</p>
+<p><img alt="result of the article document" src="/articles/from-drupal-blog/images/textnormal_article.png" /></p>
+<p>The result of the beamer presentation is:</p>
+<p><img alt="result of the beamer presention document" src="/articles/from-drupal-blog/images/textnormal_beamer.png" /></p>
+<p>Note that the font of the text inside the <code>\textnormal{..}</code> matches the font of the body in both cases.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

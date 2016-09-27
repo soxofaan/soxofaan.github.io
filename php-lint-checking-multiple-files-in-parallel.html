@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>PHP lint checking multiple files in parallel - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="php"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>PHP lint checking multiple files in parallel</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2011-11-02T00:00:00+01:00"> on 2011/11/02</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/php.html">php</a>,                    <a href="/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>When programming, lint checking your source code can be useful to detect low level issues like syntax errors, undefined or unused variables. The PHP command line interpreter has an option <code>-l</code>/<code>--syntax-check</code> to do a syntax check of the provided PHP file, instead of executing it:</p>
+<div class="highlight"><pre><span></span>$ php -l file_with_syntax_error.php 
+PHP Parse error:  syntax error, unexpected T_VARIABLE in file_with_syntax_error.php on line 5
+Errors parsing file_with_syntax_error.php
+</pre></div>
+
+
+<p>Unfortunately, it only allows to check one file at a time. For example, the following does not work as expected:</p>
+<div class="highlight"><pre><span></span>$ php -l file1.php file2.php file_with_syntax_error.php 
+No syntax errors detected in file1.php
+</pre></div>
+
+
+<p>If you want to lint-check (a complete tree of) multiple PHP files, you have to use some kind of loop (e.g. in Bash) to check them one by one.</p>
+<p>I recently was faced with this issue, but also wanted to have some parallelism, to speed up the process by putting multiple cores a work, instead of checking one file at a time. After googling a bit I found the following (command line) solutions.</p>
+<h3>Use find + xargs's parallel mode</h3>
+<p>With the appropriate options, we can set up a find+xargs combo to achieve what we want: xargs option <code>-n</code> to only provide one argument to <code>php</code> at a time and xargs option <code>-P</code> to dispatch multiple jobs (here eight) in parallel:</p>
+<div class="highlight"><pre><span></span>$ find . -name <span class="s2">&quot;*.php&quot;</span> -print0 <span class="p">|</span> xargs -0 -n1 -P8 php -l
+</pre></div>
+
+
+<h3>Makefile trick</h3>
+<p>In case you want to integrate the lint check in a Makefile work flow, you could consider the following Makefile trick:</p>
+<div class="highlight"><pre><span></span>files := $(shell find . -name \*.php)
+
+.PHONY: <span class="cp">${</span><span class="n">files</span><span class="cp">}</span>
+<span class="cp">${</span><span class="n">files</span><span class="cp">}</span>:
+    php -l $@
+
+.PHONY: lint
+lint: <span class="cp">${</span><span class="n">files</span><span class="cp">}</span>
+    echo Lint finished
+</pre></div>
+
+
+<p>Invoke this with the option <code>-j</code>/<code>--jobs</code> for parallel jobs, for example:</p>
+<div class="highlight"><pre><span></span>$ make -j <span class="m">8</span> lint
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

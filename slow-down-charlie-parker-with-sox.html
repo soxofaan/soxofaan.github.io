@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Slow down Charlie Parker with SoX - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="osx"/>
+        <meta name="tags" contents="audio"/>
+        <meta name="tags" contents="bash"/>
+        <meta name="tags" contents="note to self"/>
+        <meta name="tags" contents="music"/>
+        <meta name="tags" contents="transcription"/>
+        <meta name="tags" contents="play along"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Home</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Slow down Charlie Parker with SoX</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2011-12-16T00:00:00+01:00"> on 2011/12/16</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="/tag/osx.html">osx</a>,                    <a href="/tag/audio.html">audio</a>,                    <a href="/tag/bash.html">bash</a>,                    <a href="/tag/note-to-self.html">note to self</a>,                    <a href="/tag/music.html">music</a>,                    <a href="/tag/transcription.html">transcription</a>,                    <a href="/tag/play-along.html">play along</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>For the saxophone music classes I'm taking, I have some exercises to play along with Charlie Parker records. Because that Bird plays pretty fast, it helps to slow things down a bit. I started with manually slowing down the tempo with <a href="http://audacity.sourceforge.net/" title="Audacity">Audacity</a>, but soon I couldn't suppress the itch to automate things as I needed several slow down factors and also wanted the slow down factor in the MP3 ID3 title tag.</p>
+<p>Here is the bash for loop I use now, mainly for my own reference (copy, edit and paste in terminal), but I guess it might be interesting in some form for other people as well. </p>
+<div class="highlight"><pre><span></span><span class="nv">input</span><span class="o">=</span>perhaps.mp3
+<span class="nv">slowdowns</span><span class="o">=</span><span class="s2">&quot;0.95 0.90 0.85 0.80 0.75 0.70 0.60&quot;</span>
+
+<span class="c1"># Additional sox options, e.g. &quot;trim 80 30&quot; to extract fragment from 1:20 to 1:50</span>
+<span class="nv">soxoptions</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+<span class="k">for</span> tempo in <span class="nv">$slowdowns</span><span class="p">;</span> <span class="k">do</span>
+  <span class="nv">output</span><span class="o">=</span><span class="si">${</span><span class="nv">input</span><span class="p">%.mp3</span><span class="si">}</span>-tempo<span class="nv">$tempo</span>.mp3
+  <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$tempo</span><span class="s2"> slowing down </span><span class="nv">$input</span><span class="s2"> to </span><span class="nv">$output</span><span class="s2">&quot;</span>
+  sox <span class="nv">$input</span> <span class="nv">$output</span> <span class="nv">$soxoptions</span> tempo <span class="nv">$tempo</span>
+  <span class="nv">title</span><span class="o">=</span><span class="k">$(</span>id3v2 --list <span class="nv">$output</span> <span class="p">|</span> awk -F <span class="s1">&#39;: &#39;</span> <span class="s1">&#39;/TIT2/ { print $2 }&#39;</span><span class="k">)</span>
+  <span class="nv">percent</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;scale=0; </span><span class="nv">$tempo</span><span class="s2"> * 100/1&quot;</span> <span class="p">|</span> bc -l<span class="k">)</span>
+  id3v2 --song <span class="s2">&quot;</span><span class="nv">$title</span><span class="s2"> (</span><span class="nv">$percent</span><span class="s2">%)&quot;</span> <span class="nv">$output</span>
+  <span class="nb">echo</span> <span class="k">done</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<p>This will generate files <code>perhaps-tempo0.95.mp3</code>, <code>perhaps-tempo0.90.mp3</code>, etc.</p>
+<p>Dependencies:</p>
+<ul>
+<li><a href="http://sox.sourceforge.net/" title="SoX ">SoX</a> for slowing down the audio. I installed it on my Mac with Macports (port "sox")</li>
+<li><a href="http://id3v2.sourceforge.net/" title="id3v2">id3v2</a> for appending the slow down factor to the MP3 ID3V2 title tag. Also installed with Macports (port "id3v2").</li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>
