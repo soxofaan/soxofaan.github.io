@@ -21,7 +21,7 @@
 
     <nav>
         <ul id="menu">
-                <li class="active"><a href="/index.html">Home</a>
+                <li class="active"><a href="/index.html">Stefaan Lippens' Blog</a>
                 </li>
                 <li><a href="/tags.html">Tags</a>
                 </li>
@@ -34,7 +34,7 @@
 
     <header class="page-header">
     <h1>Stefaan Lippens inserts content here</h1>
-<h2 class="tagline">adding to the pile</h2>    </header>
+<h2 class="tagline">yet another weblog</h2>    </header>
 
     <main class="content">
     <ul id="article-list">
@@ -42,30 +42,52 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/quick-and-easy-tag-cloud-in-pelican.html"
-                               title="link to Quick and easy tag cloud in Pelican">Quick and easy tag cloud in Pelican</a>
+                            <a href="http://stefaanlippens.net/jupyter-notebook-dialog.html"
+                               title="link to Dialog popup in Jupyter notebook">Dialog popup in Jupyter notebook</a>
                         </h2>
                         <div class="article-meta">
                                     <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2026-09-28T00:00:00+02:00"> on 2026/09/28</span>
+        <span class="publication-date" title="2016-09-28T00:00:00+02:00"> on 2016/09/28</span>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>Here's a quick trick to create a tag cloud in <a href="http://getpelicam.com">Pelican</a>
-without plugings and minimal amount of code.</p>
-<p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag count
-to a CSS <code>font-size</code> value, for example like this:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
-<span class="n">JINJA_FILTERS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># ...</span>
-    <span class="s1">&#39;tag_count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%.1f%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">math ...</span></pre></div> </div>
+                    <div class="article-content article-summary"> <p>While wrestling with a relatively large data set, visualised 
+with <a href="http://bokeh.pydata.org/">Bokeh</a> in an
+<a href="https://ipython.org/">IPython</a>/<a href="http://jupyter.org/">Jupyter</a> 
+notebook, I needed a way to show some "copy-pastable"
+text dump when making a box selection on the graph.
+Some kind of popup or dialog seemed ideal for this.</p>
+<p>I didn't want to spend ...</p> </div>
                 </article>
             </li>
             <li class="article-list">
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/switching-my-blog-to-pelican.html"
+                            <a href="http://stefaanlippens.net/quick-and-easy-tag-cloud-in-pelican.html"
+                               title="link to Quick and easy tag cloud in Pelican">Quick and easy tag cloud in Pelican</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2016-09-28T00:00:00+02:00"> on 2016/09/28</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary"> <p>Here's a quick (and dirty?) trick to create a tag cloud 
+in <a href="http://getpelicam.com">Pelican</a>
+without plugins and minimal amount of code.</p>
+<p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag's article count
+to a CSS <code>font-size</code> value. For example like this:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="n">JINJA_FILTERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c ...</span></pre></div> </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="http://stefaanlippens.net/switching-my-blog-to-pelican.html"
                                title="link to Switching my blog to Pelican">Switching my blog to Pelican</a>
                         </h2>
                         <div class="article-meta">
@@ -74,14 +96,17 @@ to a CSS <code>font-size</code> value, for example like this:</p>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>Let's try Pelican</p> </div>
+                    <div class="article-content article-summary"> <p>For several years I had a Drupal powered blog and it served me well.
+During those days I was an active Drupal developer (working on Drupal modules
+like CAPTCHA and GeSHi), but that activity and interest has decreased to almost nothing nowadays.
+My writing activity on the blog decreased also ...</p> </div>
                 </article>
             </li>
             <li class="article-list">
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/phantomjs-script-to-capture-revealjs-slideshow-slides.html"
+                            <a href="http://stefaanlippens.net/phantomjs-script-to-capture-revealjs-slideshow-slides.html"
                                title="link to PhantomJS script to capture Reveal.js slideshow slides">PhantomJS script to capture Reveal.js slideshow slides</a>
                         </h2>
                         <div class="article-meta">
@@ -90,14 +115,14 @@ to a CSS <code>font-size</code> value, for example like this:</p>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>Just a quick note that I whipped up a PhantomJS script to capture screenshots of Reveal.js powered slideshow slides.</p> </div>
+                    <div class="article-content article-summary"> <p>Just a quick note that I whipped up a PhantomJS script to capture screenshots of Reveal.js powered slide show slides.</p> </div>
                 </article>
             </li>
             <li class="article-list">
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/spidering-javascript-manipulated-html-with-phantomjs.html"
+                            <a href="http://stefaanlippens.net/spidering-javascript-manipulated-html-with-phantomjs.html"
                                title="link to Spidering JavaScript-manipulated HTML with PhantomJS">Spidering JavaScript-manipulated HTML with PhantomJS</a>
                         </h2>
                         <div class="article-meta">
@@ -114,7 +139,7 @@ to a CSS <code>font-size</code> value, for example like this:</p>
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/git-cherry-pick-without-whitespace.html"
+                            <a href="http://stefaanlippens.net/git-cherry-pick-without-whitespace.html"
                                title="link to Git cherry-pick without whitespace">Git cherry-pick without whitespace</a>
                         </h2>
                         <div class="article-meta">
@@ -130,7 +155,7 @@ to a CSS <code>font-size</code> value, for example like this:</p>
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/get-stacktracetracebackbacktrace-in-python-catch-body.html"
+                            <a href="http://stefaanlippens.net/get-stacktracetracebackbacktrace-in-python-catch-body.html"
                                title="link to Get stacktrace/traceback/backtrace in Python catch body">Get stacktrace/traceback/backtrace in Python catch body</a>
                         </h2>
                         <div class="article-meta">
@@ -158,7 +183,7 @@ in a way you can manipulate?</p>
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/check-itunes-library-for-inexistent-files-and-broken-links-with-python-and-pyobjc.html"
+                            <a href="http://stefaanlippens.net/check-itunes-library-for-inexistent-files-and-broken-links-with-python-and-pyobjc.html"
                                title="link to Check iTunes library for inexistent files and broken links with Python and PyObjC">Check iTunes library for inexistent files and broken links with Python and PyObjC</a>
                         </h2>
                         <div class="article-meta">
@@ -178,7 +203,7 @@ in a way you can manipulate?</p>
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/unicode-fun-in-python.html"
+                            <a href="http://stefaanlippens.net/unicode-fun-in-python.html"
                                title="link to Unicode Fun in Python">Unicode Fun in Python</a>
                         </h2>
                         <div class="article-meta">
@@ -193,14 +218,14 @@ in a way you can manipulate?</p>
 
 
 <p>result:</p>
-<p><img alt="Unicode fun" src="/articles/from-drupal-blog/images/python-unicode-fun.png" /></p> </div>
+<p><img alt="Unicode fun" src="http://stefaanlippens.net/articles/from-drupal-blog/images/python-unicode-fun.png" /></p> </div>
                 </article>
             </li>
             <li class="article-list">
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="/git-resolve-conflict-after-stash-pop-in-working-directory-no-stagingindex.html"
+                            <a href="http://stefaanlippens.net/git-resolve-conflict-after-stash-pop-in-working-directory-no-stagingindex.html"
                                title="link to Git: resolve conflict after stash pop in working directory (no staging/index)">Git: resolve conflict after stash pop in working directory (no staging/index)</a>
                         </h2>
                         <div class="article-meta">
@@ -215,40 +240,19 @@ in a way you can manipulate?</p>
 #   (use &quot;git ...</pre></div> </div>
                 </article>
             </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="/python-determine-installation-prefix.html"
-                               title="link to Python: determine installation prefix">Python: determine installation prefix</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2012-04-18T00:00:00+02:00"> on 2012/04/18</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary"> <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
-<div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;import sys;print(&quot;</span><span class="se">\n</span><span class="s1">&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;</span>
-</pre></div>
-
-
-<p>(Replace "python" with the actual python executable you want to ...</p> </div>
-                </article>
-            </li>
     </ul>
 
 <p class="paginator">
 
-    Page 1 / 12
+    Page 1 / 11
 
-        <a href="/index2.html">&raquo;</a>
+        <a href="http://stefaanlippens.net/index2.html">&raquo;</a>
 </p>
 
     </main>
 
     <footer class="page-footer">
-            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+            &copy; Stefaan Lippens 2005-2016
     </footer>
 
 </div>

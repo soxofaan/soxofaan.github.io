@@ -16,9 +16,8 @@
 
 
         <meta name="tags" contents="osx"/>
-        <meta name="tags" contents="webdevelopment"/>
+        <meta name="tags" contents="webdev"/>
         <meta name="tags" contents="apache"/>
-        <meta name="tags" contents="note to self"/>
 </head>
 
 <body>
@@ -28,7 +27,7 @@
 
     <nav>
         <ul id="menu">
-                <li><a href="/index.html">Home</a>
+                <li><a href="/index.html">Stefaan Lippens' Blog</a>
                 </li>
                 <li><a href="/tags.html">Tags</a>
                 </li>
@@ -49,7 +48,7 @@
 
             <div class="tags">
                 Tagged:
-                    <a href="/tag/osx.html">osx</a>,                    <a href="/tag/webdevelopment.html">webdevelopment</a>,                    <a href="/tag/apache.html">apache</a>,                    <a href="/tag/note-to-self.html">note to self</a>            </div>
+                    <a href="http://stefaanlippens.net/tag/osx.html">osx</a>,                    <a href="http://stefaanlippens.net/tag/webdev.html">webdev</a>,                    <a href="http://stefaanlippens.net/tag/apache.html">apache</a>            </div>
     </div>
 
     </header>
@@ -58,32 +57,28 @@
     <div class="article-content">
         <p>Reminder to self: how to set up a virtual host for localhost webdevelopment on OS X with MAMP</p>
 <ol>
-<li>DNS setup: add an entry for the local domain name in <code>/etc/hosts</code>, e.g. <div class="highlight"><pre><span></span>127.0.0.1     foo.localhost
+<li>
+<p>DNS setup: add an entry for the local domain name in <code>/etc/hosts</code>, e.g. </p>
+<div class="highlight"><pre><span></span>127.0.0.1     foo.localhost
 </pre></div>
 
 
-</li>
-</ol>
 <p>and flush DNS cache with </p>
-<div class="highlight"><pre><span></span>    dscacheutil -flushcache
+<div class="highlight"><pre><span></span>dscacheutil -flushcache
 </pre></div>
 
 
 <ol>
 <li>
 <p>Apache config (<code>/Applications/MAMP/conf/apache/httpd.conf</code>): add a virtual host entry like </p>
-<div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="err">*</span><span class="nt">&gt;</span>
+<p><VirtualHost *>
   ServerName foo.localhost
   DocumentRoot /Users/eddywally/Sites/foo/localhost-dev/drupal
-<span class="nt">&lt;/VirtualHost&gt;</span>
-</pre></div>
-
-
-<p>and restart webserver, e.g. with </p>
-<div class="highlight"><pre><span></span>/Applications/MAMP/bin/apache2/bin/apachectl restart
-</pre></div>
-
-
+</VirtualHost>
+    and restart webserver, e.g. with </p>
+<p>/Applications/MAMP/bin/apache2/bin/apachectl restart</p>
+</li>
+</ol>
 </li>
 <li>
 <p>Connect to <code>http://foo.localhost:8888</code> (don't forget the nonstandard port number, unless you configured MAMP to use standard port 80).</p>
@@ -91,16 +86,16 @@
 </ol>
 <p>further reading:</p>
 <ul>
-<li>http://httpd.apache.org/docs/2.0/vhosts/</li>
-<li>http://www.entityarts.net/blog/steve_krueger/07-19-2007/virtualhosts_mamp_wamp_xammp_etc_great_drupal_multisite</li>
-<li>http://www.sysarchitects.com/node/58</li>
+<li><a href="http://httpd.apache.org/docs/2.0/vhosts/">http://httpd.apache.org/docs/2.0/vhosts/</a></li>
+<li><a href="http://www.entityarts.net/blog/steve_krueger/07-19-2007/virtualhosts_mamp_wamp_xammp_etc_great_drupal_multisite">http://www.entityarts.net/blog/steve_krueger/07-19-2007/virtualhosts_mamp_wamp_xammp_etc_great_drupal_multisite</a></li>
+<li><a href="http://www.sysarchitects.com/node/58">http://www.sysarchitects.com/node/58</a></li>
 </ul>
     </div>
 
     </main>
 
     <footer class="page-footer">
-            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+            &copy; Stefaan Lippens 2005-2016
     </footer>
 
 </div>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Dialog popup in Jupyter notebook - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/normalize.css">
+        <link rel="stylesheet" href="/theme/styles.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="icon" href="/theme/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" sizes="114x114" href="/theme/apple-touch-icon-precomposed.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/theme/favicon152.png">
+        <link rel="apple-touch-icon" sizes="196x196" href="/theme/favicon196.png">
+
+
+
+        <meta name="tags" contents="ipython"/>
+        <meta name="tags" contents="jupyter"/>
+        <meta name="tags" contents="bokeh"/>
+        <meta name="tags" contents="javascript"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Stefaan Lippens' Blog</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Dialog popup in Jupyter notebook</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2016-09-28T00:00:00+02:00"> on 2016/09/28</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="http://stefaanlippens.net/tag/ipython.html">ipython</a>,                    <a href="http://stefaanlippens.net/tag/jupyter.html">jupyter</a>,                    <a href="http://stefaanlippens.net/tag/bokeh.html">bokeh</a>,                    <a href="http://stefaanlippens.net/tag/javascript.html">javascript</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>While wrestling with a relatively large data set, visualised 
+with <a href="http://bokeh.pydata.org/">Bokeh</a> in an
+<a href="https://ipython.org/">IPython</a>/<a href="http://jupyter.org/">Jupyter</a> 
+notebook, I needed a way to show some "copy-pastable"
+text dump when making a box selection on the graph.
+Some kind of popup or dialog seemed ideal for this.</p>
+<p>I didn't want to spend too much custom code on it, let alone going
+down the overkill/overengineering path and add more libraries and
+dependencies to the mix.
+Jupyter as a webapp should have something like this under the hood
+somewhere, right?</p>
+<p>It took me quite a bit to figure this out (especially how to 
+do it from a Bokeh JavaScript callback), so here is a quick note on 
+how I did it.</p>
+<h2>General</h2>
+<p>Jupyter indeed has an internal dialog module that can be leveraged
+as show below. 
+Through <a href="http://requirejs.org/">RequireJs</a> I load the internal 
+<code>base/js/dialog</code> module and use the <code>modal</code> function 
+to trigger a model with title and body.</p>
+<div class="highlight"><pre><span></span><span class="nx">require</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;base/js/dialog&quot;</span><span class="p">],</span> 
+    <span class="kd">function</span><span class="p">(</span><span class="nx">dialog</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">dialog</span><span class="p">.</span><span class="nx">modal</span><span class="p">({</span>
+            <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Hello world&#39;</span><span class="p">,</span>
+            <span class="nx">body</span><span class="o">:</span> <span class="s1">&#39;Hi, lorem ipsum and such&#39;</span><span class="p">,</span>
+            <span class="nx">buttons</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s1">&#39;kthxbye&#39;</span><span class="o">:</span> <span class="p">{}</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+
+
+<p>See it in action here:
+<img alt="Jupyter dialog" src="http://stefaanlippens.net/articles/images/jupyter-dialog.png" /></p>
+<h2>In Bokeh</h2>
+<p>When doing this from a Bokeh callback, that didn't work immediately
+because Bokeh seems to have its own, differently configured <code>require</code>,
+without access to <code>base/js/dialog</code> directly. Luckily
+there is apparently also an alias <code>requirejs</code> that doesn't seem to 
+be shadowed by Bokeh. I'm not sure to what extent I am depending on
+deprecated or fragile assumptions here, but this variation worked for
+me:</p>
+<div class="highlight"><pre><span></span><span class="nx">requirejs</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;base/js/dialog&quot;</span><span class="p">],</span> 
+    <span class="kd">function</span><span class="p">(</span><span class="nx">dialog</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="c1">// ...</span>
+    <span class="p">});</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/theme/slicknav.css">
+<script src="/theme/jquery.slicknav.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menu').slicknav({'label': ''});
+    });
+</script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

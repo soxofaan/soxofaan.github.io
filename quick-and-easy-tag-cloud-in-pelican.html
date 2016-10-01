@@ -16,8 +16,6 @@
 
 
         <meta name="tags" contents="pelican"/>
-        <meta name="tags" contents="trick"/>
-        <meta name="tags" contents="python"/>
 </head>
 
 <body>
@@ -27,7 +25,7 @@
 
     <nav>
         <ul id="menu">
-                <li><a href="/index.html">Home</a>
+                <li><a href="/index.html">Stefaan Lippens' Blog</a>
                 </li>
                 <li><a href="/tags.html">Tags</a>
                 </li>
@@ -43,47 +41,48 @@
 
     <div class="article-meta">
                 <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2026-09-28T00:00:00+02:00"> on 2026/09/28</span>
+        <span class="publication-date" title="2016-09-28T00:00:00+02:00"> on 2016/09/28</span>
 
 
             <div class="tags">
                 Tagged:
-                    <a href="/tag/pelican.html">pelican</a>,                    <a href="/tag/trick.html">trick</a>,                    <a href="/tag/python.html">python</a>            </div>
+                    <a href="http://stefaanlippens.net/tag/pelican.html">pelican</a>            </div>
     </div>
 
     </header>
 
     <main class="content">
     <div class="article-content">
-        <p>Here's a quick trick to create a tag cloud in <a href="http://getpelicam.com">Pelican</a>
-without plugings and minimal amount of code.</p>
-<p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag count
-to a CSS <code>font-size</code> value, for example like this:</p>
+        <p>Here's a quick (and dirty?) trick to create a tag cloud 
+in <a href="http://getpelicam.com">Pelican</a>
+without plugins and minimal amount of code.</p>
+<p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag's article count
+to a CSS <code>font-size</code> value. For example like this:</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="n">JINJA_FILTERS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># ...</span>
-    <span class="s1">&#39;tag_count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%.1f%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+    <span class="s1">&#39;count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="s1">&#39;{p:.1f}%&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
 <span class="p">}</span>
 </pre></div>
 
 
-<p>(Play with the parameters of that mathematical function to tweak the
-size mapping appropriately.)</p>
+<p>(Play with the parameters of that mathematical expression to tweak the
+size mapping to your liking.)</p>
 <p>In the <code>tags.html</code> template you can now use this filter to inject 
-inline CSS font sizes as desired. For example, in a typical implementation
-that renders the tags as an item list:</p>
+the font sizes as inline CSS.
+For example, in a typical implementation that renders the tags listing
+as an item list:</p>
 <div class="highlight"><pre><span></span> <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;tags&quot;</span><span class="nt">&gt;</span>
      <span class="cp">{%</span>- <span class="k">for</span> <span class="nv">tag</span><span class="o">,</span> <span class="nv">articles</span> <span class="k">in</span> <span class="nv">tags</span><span class="o">|</span><span class="nf">sort</span> <span class="cp">%}</span>
-        <span class="nt">&lt;li</span> <span class="na">style=</span><span class="s">&quot;font-size: </span><span class="cp">{{</span> <span class="nv">articles</span><span class="o">|</span><span class="nf">count</span><span class="o">|</span><span class="nf">tag_count_to_font_size</span> <span class="cp">}}</span><span class="s">;&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">style=</span><span class="s">&quot;font-size: </span><span class="cp">{{</span> <span class="nv">articles</span><span class="o">|</span><span class="nf">count</span><span class="o">|</span><span class="nf">count_to_font_size</span> <span class="cp">}}</span><span class="s">;&quot;</span><span class="nt">&gt;</span>
             <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">tag.url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">tag</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
 </pre></div>
 
 
-<p>For a pretty tag cloud, you also need some CSS rules on the 
+<p>For a pretty tag cloud, you may also need some CSS rules on the 
 corresponding list elements (if not already), in essence something like
 this:</p>
-<div class="highlight"><pre><span></span>    <span class="nt">ul</span><span class="nc">.tags</span> <span class="p">{</span> <span class="nb">list-style-type</span><span class="o">:</span> <span class="nb">none</span><span class="p">;</span> <span class="p">}</span>
-    <span class="nt">ul</span><span class="nc">.tags</span> <span class="nt">li</span> <span class="p">{</span> <span class="nb">display</span><span class="o">:</span> <span class="nb">inline</span><span class="o">-</span><span class="nb">block</span><span class="p">;</span> <span class="p">}</span>
+<div class="highlight"><pre><span></span><span class="nt">ul</span><span class="nc">.tags</span> <span class="p">{</span> <span class="nb">list-style-type</span><span class="o">:</span> <span class="nb">none</span><span class="p">;</span> <span class="p">}</span>
+<span class="nt">ul</span><span class="nc">.tags</span> <span class="nt">li</span> <span class="p">{</span> <span class="nb">display</span><span class="o">:</span> <span class="nb">inline</span><span class="o">-</span><span class="nb">block</span><span class="p">;</span> <span class="p">}</span>
 </pre></div>
 
 
@@ -93,7 +92,7 @@ this:</p>
     </main>
 
     <footer class="page-footer">
-            This is the blog "Stefaan Lippens inserts content here" &mdash; &copy; Stefaan Lippens 2005-2016
+            &copy; Stefaan Lippens 2005-2016
     </footer>
 
 </div>
