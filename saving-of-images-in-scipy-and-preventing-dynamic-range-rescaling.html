@@ -47,7 +47,7 @@
 
             <div class="tags">
                 Tagged:
-                    <a href="http://stefaanlippens.net/tag/scipy.html">scipy</a>,                    <a href="http://stefaanlippens.net/tag/python.html">python</a>            </div>
+                    <a href="https://soxofaan.github.io/tag/scipy.html">scipy</a>,                    <a href="https://soxofaan.github.io/tag/python.html">python</a>            </div>
     </div>
 
     </header>
@@ -73,7 +73,7 @@
 
 
 <p>An enlarged version of the image <code>tmp.png</code> we just generated would look like</p>
-<p><img alt="the image values are rescaled to the 0-255 range" src="http://stefaanlippens.net/articles/from-drupal-blog/images/scipyimsave_default.png" /></p>
+<p><img alt="the image values are rescaled to the 0-255 range" src="https://soxofaan.github.io/articles/from-drupal-blog/images/scipyimsave_default.png" /></p>
 <p>As you can see the dynamic range of the pixel values is rescaled to 0-255 before saving: the values 80 become totally black (value 0) and the values 200 become totally white (value 255). Sometimes this is what you want, sometimes it is not.</p>
 <p>To prevent the rescaling of the dynamic range (or impose your own rescaling), you can use the following workaround:</p>
 <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># long version:</span>
@@ -85,7 +85,7 @@
 
 
 <p>In the first step we transform the array <code>a</code> to a <a href="http://www.pythonware.com/products/pil/">PIL image</a>, while imposing our own value range with the arguments <code>cmin</code> and <code>cmax</code>. The second step is just saving the PIL image to a file. The result is:</p>
-<p><img alt="the original pixel values" src="http://stefaanlippens.net/articles/from-drupal-blog/images/scipyimsave_workaround.png" /></p>
+<p><img alt="the original pixel values" src="https://soxofaan.github.io/articles/from-drupal-blog/images/scipyimsave_workaround.png" /></p>
 <p>We are not doing anything special here. It's just based on Scipy's implementation of <code>imsave()</code> (in the file <code>pilutils.py</code>):</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">imsave</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Save an array to an image file.</span>
