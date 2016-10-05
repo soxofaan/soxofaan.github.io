@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Dynamic Pelican settings - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="pelican"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Stefaan Lippens' Blog</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Dynamic Pelican settings</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2016-10-06T00:00:00+02:00"> on 2016/10/06</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://soxofaan.github.io/tag/pelican.html">pelican</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DynamicSetting</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Allow a Pelican setting, such as ARTICLE_URL and ARTICLE_SAVE_AS, to be dynamic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_f</span> <span class="o">=</span> <span class="n">f</span>
+    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+
+<p>With this helper class you can create dynamic settings like in this example </p>
+<div class="highlight"><pre><span></span><span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
+    <span class="s1">&#39;{cleanurl}&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span><span class="p">)</span>
+<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
+    <span class="s1">&#39;{cleanurl}/index.html&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>You can even, if you prefer that, use it as decorator, e.g.:</p>
+<div class="highlight"><pre><span></span><span class="nd">@DynamicSetting</span>
+<span class="k">def</span> <span class="nf">ARTICLE_URL</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;{cleanurl}&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;{slug}.html&#39;</span>
+</pre></div>
+
+
+<p>example</p>
+<div class="highlight"><pre><span></span><span class="n">Title</span><span class="o">:</span> <span class="n">hello</span> <span class="n">world</span>
+<span class="n">CleanUrl</span><span class="o">:</span> <span class="n">hello</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

@@ -3,7 +3,7 @@
 <head>
             <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>cat with rot13 encoding - Stefaan Lippens inserts content here</title>
+        <title>LaTeX: promille/permille sign - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -15,8 +15,7 @@
 
 
 
-        <meta name="tags" contents="linux"/>
-        <meta name="tags" contents="bash"/>
+        <meta name="tags" contents="latex"/>
 </head>
 
 <body>
@@ -37,49 +36,30 @@
     </nav>
 
     <header class="page-header">
-    <h1>cat with rot13 encoding</h1>
+    <h1>LaTeX: promille/permille sign</h1>
 
     <div class="article-meta">
                 <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2005-11-27T00:00:00+01:00"> on 2005/11/27</span>
+        <span class="publication-date" title="2008-06-12T00:00:00+02:00"> on 2008/06/12</span>
 
 
             <div class="tags">
                 Tagged:
-                    <a href="https://soxofaan.github.io/tag/linux.html">linux</a>,                    <a href="https://soxofaan.github.io/tag/bash.html">bash</a>            </div>
+                    <a href="https://soxofaan.github.io/tag/latex.html">latex</a>            </div>
     </div>
 
     </header>
 
     <main class="content">
     <div class="article-content">
-        <p>If you're familiar with the Unix or Linux commandline you probably know <code>cat</code> for printing files to standard output. <a href="http://en.wikipedia.org/wiki/Rot13" title="wikipedia about rot13">Rot13</a> is a  simple text encryption/cyphering/obfuscation (or whatever you want to call it) technique. It replaces each letter with the letter 13 places further in the alphabet. For example: 'a' becomes 'n', 'z' becomes 'm' and 'n' becomes 'a' (which illustrates the fact that the rot13 operation and its inverse are the same).</p>
-<p>The following (very) simple bash script combines the functionality of cat with rot13 encryption. Save it to a file called <code>catrot13</code> for example and store it to somewhere in your path.</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
-cat <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> tr <span class="s1">&#39;[a-m][n-z][A-M][N-Z]&#39;</span> <span class="s1">&#39;[n-z][a-m][N-Z][A-M]&#39;</span>
-</pre></div>
-
-
-<p>Usage example:</p>
-<div class="highlight"><pre><span></span>$&gt; cat hello.txt
-wello horld
-how do you do?
-
-$&gt; catrot13 hello.txt
-jryyb ubeyq
-ubj qb lbh qb?
-
-$&gt; catrot13 hello.txt | catrot13
-wello horld
-how do you do?
-
-$&gt; catrot13 -n hello.txt
-     1  jryyb ubeyq
-     2  ubj qb lbh qb?
-</pre></div>
-
-
-<p>The last command shows that you even can use the options of <code>cat</code>.</p>
+        <p>I needed the LaTeX code for the sign that is called the "promille" sign in Dutch. It's the sign like the percent sign "%" ("procent" in Dutch), but with two circles at the bottom. Googling for "latex promille" was not very successful, so I thought this would be a good botsnack. 
+(Googling for "permille" or "(parts) per thousand", yield better results however.)</p>
+<p>Anyway, I found two solutions:</p>
+<ul>
+<li><code>\textperthousand</code> from the package <code>textcomp</code>, also provides <code>\textpertenthousand</code> but both only work in text mode, not in math mode.</li>
+<li><code>\permil</code> from the package <code>wasysym</code>, works in both text mode as in math mode.</li>
+</ul>
+<p>That's all folks</p>
     </div>
 
     </main>

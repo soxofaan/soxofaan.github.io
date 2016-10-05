@@ -16,7 +16,6 @@
 
 
         <meta name="tags" contents="bash"/>
-        <meta name="tags" contents="linux"/>
 </head>
 
 <body>
@@ -46,14 +45,15 @@
 
             <div class="tags">
                 Tagged:
-                    <a href="https://soxofaan.github.io/tag/bash.html">bash</a>,                    <a href="https://soxofaan.github.io/tag/linux.html">linux</a>            </div>
+                    <a href="https://soxofaan.github.io/tag/bash.html">bash</a>            </div>
     </div>
 
     </header>
 
     <main class="content">
     <div class="article-content">
-        <p>Lets's start with a citation about the special parameters <code>$*</code> and <code>$@</code>  from the <a href="http://www.gnu.org/software/bash/manual/bashref.html#SEC25" title="bash manual about special parameters">bash manual</a>:</p>
+        <p>What's the difference between the special parameters <code>$*</code> and <code>$@</code> in bash?</p>
+<p>Lets's start with a citation from the <a href="http://www.gnu.org/software/bash/manual/bashref.html#SEC25" title="bash manual about special parameters">bash manual</a>:</p>
 <blockquote>
 <p><strong> Parameter <code>*</code> </strong></p>
 <p>Expands to the positional parameters, starting from one. 
@@ -115,7 +115,8 @@ cat <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&qu
 </pre></div>
 
 
-<p>In most cases you probably will need the last construct: <code>"$@"</code>.</p>
+<h2>Conclusion</h2>
+<p>In most cases you'll probably need the last construct: <code>"$@"</code>.</p>
     </div>
 
     </main>
