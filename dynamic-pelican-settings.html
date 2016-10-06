@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Dynamic Pelican settings - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="pelican"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Stefaan Lippens' Blog</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Dynamic Pelican settings</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2016-10-06T00:00:00+02:00"> on 2016/10/06</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://soxofaan.github.io/tag/pelican.html">pelican</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <h3>Context</h3>
+<p>When porting my blog from Drupal to Pelican, I wanted to preserve 
+my clean URLs as much as possible for old blog entries. 
+In Pelican you typically achieve this by making sure each article has
+a <code>slug</code> metadata entry with the desired clean URL and config settings
+like for example</p>
+<div class="highlight"><pre><span></span><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}/index.html&#39;</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}/&#39;</span>
+</pre></div>
+
+
+<p>In addition (or instead) you can also play with rewrite rules, 
+if you have control over this on your setup.</p>
+<p>However, the above <code>ARTICLE_URL</code> setting means that each article will 
+produce a directory with a single <code>index.html</code> file, which felt a
+bit too much as overkill to avoid where not necessary.</p>
+<p>So config-wise, for new articles I wanted something more like this
+(the default):</p>
+<div class="highlight"><pre><span></span><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
+</pre></div>
+
+
+<p>How to combine these?</p>
+<h3>Dynamic Pelican settings</h3>
+<p>Turns out it is possible to combine both with "dynamic" settings
+that allow you to add a touch of logic to the configuration settings.
+The trick below is based on the fact that Pelican interpolates 
+config variables like <code>ARTICLE_SAVE_AS</code> and <code>ARTICLE_URL</code> to 
+actual values for each article with something like</p>
+<div class="highlight"><pre><span></span><span class="n">setting</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+
+
+<p>So we just have to assign objects with a custom <code>.format(**kwargs)</code> 
+method to the config variables.</p>
+<p>First, let's define this helper class:</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DynamicSetting</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">metadata</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+
+
+<p>On construction of a <code>DynamicSetting</code> object, we pass it a function <code>f</code> 
+to generates a variation of the setting (e.g. <code>{slug}</code> or <code>{slug}.html</code>)
+based on metadata.</p>
+<p>For example, say that for articles where we want to enforce a 
+certain clean URL, we use a custom metadata entry <code>CleanUrl</code>, like:</p>
+<div class="highlight"><pre><span></span><span class="n">Title</span><span class="o">:</span> <span class="n">hello</span> <span class="n">world</span>
+<span class="n">CleanUrl</span><span class="o">:</span> <span class="n">hello</span>
+
+<span class="n">Hello</span> <span class="n">world</span>
+</pre></div>
+
+
+<p>and for articles where we don't need a particular clean URL we don't.</p>
+<p>With the helper class of above, we can now define  <code>ARTICLE_SAVE_AS</code> and
+<code>ARTICLE_URL</code> dynamically as follows:</p>
+<div class="highlight"><pre><span></span><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
+    <span class="s1">&#39;{cleanurl}/index.html&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span>
+<span class="p">)</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
+    <span class="s1">&#39;{cleanurl}/&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>So for articles where there is <code>CleanUrl</code> metadata we'll use that for
+output directory path and URL.
+For other articles we fall back on the normal <code>{slug}.html</code> way.</p>
+<p>Note that it is also possible to use the helper as a decorator</p>
+<div class="highlight"><pre><span></span><span class="nd">@DynamicSetting</span>
+<span class="k">def</span> <span class="nf">ARTICLE_URL</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;{cleanurl}&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;{slug}.html&#39;</span>
+</pre></div>
+
+
+<p>which gives bit more breathing room for the custom logic.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>
