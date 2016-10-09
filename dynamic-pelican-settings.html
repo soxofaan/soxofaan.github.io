@@ -56,15 +56,17 @@
 <p>When porting my blog from Drupal to Pelican, I wanted to preserve 
 my clean URLs as much as possible for old blog entries. 
 In Pelican you typically achieve this by making sure each article has
-a <code>slug</code> metadata entry with the desired clean URL and config settings
-like for example</p>
+a <code>slug</code> metadata entry with the desired clean URL and setting up
+<code>_SAVE_AS</code> and <code>_URL</code> configs in<code>pelicanconf.py</code> for example
+as follows:</p>
 <div class="highlight"><pre><span></span><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}/index.html&#39;</span>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}/&#39;</span>
 </pre></div>
 
 
 <p>In addition (or instead) you can also play with rewrite rules, 
-if you have control over this on your setup.</p>
+if you have control over this on your setup. Because I'm planning 
+to host my blog on <a href="https://pages.github.com/">GitHub Pages</a>, I don't.</p>
 <p>However, the above <code>ARTICLE_URL</code> setting means that each article will 
 produce a directory with a single <code>index.html</code> file, which felt a
 bit too much as overkill to avoid where not necessary.</p>
@@ -175,5 +177,14 @@ For other articles we fall back on the normal <code>{slug}.html</code> way.</p>
     });
 </script>
 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4807787-2', 'auto');
+  ga('send', 'pageview');
+</script>
 
 </html>
