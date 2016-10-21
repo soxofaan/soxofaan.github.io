@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Pretty CSV viewing on the Command Line - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="csv"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Pretty CSV viewing on the Command Line</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2016-10-21T00:00:00+02:00"> on 2016/10/21</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://soxofaan.github.io/tag/csv.html">csv</a>,                    <a href="https://soxofaan.github.io/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>CSV (comma separated values) files are to data formats what FAT32 is to
+file systems: everybody loves to hate them, but you can't find a more
+widely supported alternative.</p>
+<p>For example, viewing CSV files in a command line environment is typically pretty
+annoying. You can't make much from this, right?</p>
+<p><img alt="raw CSV file on the command line" src="https://soxofaan.github.io/articles/images/pretty-csv-head.png" /></p>
+<p>However, if you weld a couple of common command line tools together,
+you can create a handy viewer that make the data look like this:</p>
+<p><img alt="raw CSV file on the command line" src="https://soxofaan.github.io/articles/images/pretty-csv.gif" /></p>
+<h2>The basics</h2>
+<p>There is this well hidden command line tool called "<code>column</code>" that allows you
+to align the data nicely in properly sized columns.
+Combine this with a pager like <code>less</code> and we have a nice prototype already</p>
+<div class="highlight"><pre><span></span>cat data.csv | column -t -s, | less -S
+</pre></div>
+
+
+<p>One problem with this is that <code>column</code> ignores/merges empty cells in your data,
+which ruins the whole point of aligning all together.
+On Debian/Ubuntu, <code>column</code> provides an option <code>-n</code> to disable this behavior, but
+for other platforms (like with the BSD flavor of <code>column</code> on the Mac), we
+need some additional trickery.
+A simple solution is just adding a space before each comma:</p>
+<div class="highlight"><pre><span></span>cat data.csv | sed &#39;s/,/ ,/g&#39; | column -t -s, | less -S
+</pre></div>
+
+
+<p>Or, if you want to avoid wasting too much horizontal space, you can add
+a space only to the empty cells as follows:</p>
+<div class="highlight"><pre><span></span>cat data.csv | perl -pe &#39;s/((?&lt;=,)|(?&lt;=^)),/ ,/g;&#39; | column -t -s, | less -S
+</pre></div>
+
+
+<h2>Shortcuts</h2>
+<p>Time to create some shortcuts and put this in, for example, your <code>.bashrc</code>,
+<code>.bash_aliases</code> or whatever other customization options your favorite shell provides.
+I'll just cover bash here, because that's the shell I currently use most.</p>
+<p>In the end we'll have a tool <code>pretty_csv</code> which can be used in different ways:</p>
+<ul>
+<li><code>pretty_csv data.csv</code></li>
+<li><code>pretty_csv &lt; data.csv</code></li>
+<li><code>sort data.csv | pretty_csv</code> (to illustrate that the input doesn't necessary
+    have to be a file, you can also pipe the output of another process to it)</li>
+</ul>
+<h3>For Debian/Ubuntu</h3>
+<p>On Debian/Ubuntu systems I just put this in my <code>.bashrc</code>
+(note some additional <code>less</code> options, roughly based on how <code>git log</code> works):</p>
+<div class="highlight"><pre><span></span><span class="k">function</span> pretty_csv <span class="o">{</span>
+    column -t -s, -n <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> less -F -S -X -K
+<span class="o">}</span>
+</pre></div>
+
+
+<h3>For other platforms</h3>
+<p>For non-Debian systems we have to add preprocessing of empty cells:</p>
+<div class="highlight"><pre><span></span><span class="k">function</span> pretty_csv <span class="o">{</span>
+    perl -pe <span class="s1">&#39;s/((?&lt;=,)|(?&lt;=^)),/ ,/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s, <span class="p">|</span> less  -F -S -X -K
+<span class="o">}</span>
+</pre></div>
+
+
+<h3>Conflict with iTerm2 on <del>Mac OS X</del> macOS</h3>
+<p>On my Mac I use <a href="https://iterm2.com/">iTerm2</a> and I noticed that its
+<a href="https://iterm2.com/documentation-shell-integration.html">shell integration</a>
+conflicts in some weird ways with <code>less</code> in the above bash function if
+I apply it through a pipe (<code>cat data.csv | pretty_csv</code>).</p>
+<p>As workaround I use a bash script instead of a bash function.
+For example, create a file <code>~/.bash.d/pretty_csv.sh</code>, containing:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+perl -pe <span class="s1">&#39;s/((?&lt;=,)|(?&lt;=^)),/ ,/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s, <span class="p">|</span> <span class="nb">exec</span> less  -F -S -X -K
+</pre></div>
+
+
+<p>make it executable (<code>chmod u+x ~/.bash.d/pretty_csv.sh</code>)
+and create a bash alias for it (e.g in <code>.bashrc</code> or <code>.bash_aliases</code>)</p>
+<div class="highlight"><pre><span></span><span class="nb">alias</span> <span class="nv">pretty_csv</span><span class="o">=</span><span class="s1">&#39;~/.bash.d/pretty_csv.sh&#39;</span>
+</pre></div>
+
+
+<h2>TSV: tab separated values</h2>
+<p>I regularly also have to work with TSV files, where the columns are separated
+by the <em>tab</em> character. The tricky part here is passing this special character
+correctly to the parts of the pipeline.</p>
+<p>For Debian/Ubuntu:</p>
+<div class="highlight"><pre><span></span><span class="k">function</span> pretty_tsv <span class="o">{</span>
+    column -t -s <span class="s1">$&#39;\t&#39;</span> -n <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> less -F -S -X -K
+<span class="o">}</span>
+</pre></div>
+
+
+<p>For non-Debian systems:</p>
+<div class="highlight"><pre><span></span><span class="k">function</span> pretty_tsv <span class="o">{</span>
+    perl -pe <span class="s1">&#39;s/((?&lt;=\t)|(?&lt;=^))\t/ \t/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s <span class="s1">$&#39;\t&#39;</span> <span class="p">|</span> less  -F -S -X -K
+<span class="o">}</span>
+</pre></div>
+
+
+<p>As a bash script (<code>pretty_tsv.sh</code>):</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+perl -pe <span class="s1">&#39;s/((?&lt;=\t)|(?&lt;=^))\t/ \t/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s <span class="s1">$&#39;\t&#39;</span> <span class="p">|</span> <span class="nb">exec</span> less  -F -S -X -K
+</pre></div>
+
+
+<h2>Bye</h2>
+<p>Now you can enjoy the warm cosy feeling of browsing pretty, shiny CSV and TSV
+files in your terminal.</p>
+<p>I've put <a href="https://gist.github.com/soxofaan/af407f793382623d039805f50144af6e">the code and scripts on github</a> too.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2016
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4807787-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</html>
