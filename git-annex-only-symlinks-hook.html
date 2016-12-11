@@ -3,7 +3,7 @@
 <head>
             <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>Git annex: hook to prevent wrongly adding files - Stefaan Lippens inserts content here</title>
+        <title>Git annex: hook to prevent adding files the wrong way - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -37,7 +37,7 @@
     </nav>
 
     <header class="page-header">
-    <h1>Git annex: hook to prevent wrongly adding files</h1>
+    <h1>Git annex: hook to prevent adding files the wrong way</h1>
 
     <div class="article-meta">
                 <span class="author">By Stefaan Lippens</span>
@@ -53,15 +53,14 @@
 
     <main class="content">
     <div class="article-content">
-        <h2>Git annex</h2>
-<p>For managing my photo (and video) collection, which is too large to fit
+        <p>For managing my photo (and video) collection, which is too large to fit
 on my laptop drive, I use <a href="https://git-annex.branchable.com/">Git Annex</a>.
 It's a nerdy solution (a fair amount of git knowledge is required), but I
 like that I can sync a whole tree of files between multiple devices/backends
 without requiring that all content is present everywhere. For example:
 my repo covers more than 300GB in pictures and videos in total,
 but only 14GB of that is present on my laptop's disk at the moment.</p>
-<h3>Git annex add</h3>
+<h2>Git annex add</h2>
 <p>To add files to a git annex repo, you have to use <code>git annex add $filename</code>
 on the command line. You have to be careful not to forget the <code>annex</code> 
 part there. If you forget it (not unlikely if <code>git add</code> is baked in your muscle memory),
@@ -71,13 +70,14 @@ will end up on all clones, even if you remove it in later commits.
 In contrast, git annex does its magic by storing the content in a different place
 than the normal git repo, and only storing symlinks in the git repo.
 Bottom line: if you accidentally use <code>git add</code> instead of <code>git annex add</code>
-you're ruining the whole point of using git annex, and it is very hard
+you ruin the whole point of using git annex, and it is very hard
 to fix such a mistake if you discover it too late.</p>
 <h2>Foolproofing myself with a git hook</h2>
 <p>To prevent myself from making such mistakes, I set up a git <code>pre-commit</code> hook.
 In my case it's not too complex, because I <em>only</em> store "big files" 
-to be <code>git annex</code>ed in my repo. So I just have check that I 
-commit symlinks and no real files. This is my <code>.git/hooks/pre-commit</code>:</p>
+to be <code>git annex</code>'ed in my repo. I just have check that I 
+commit symlinks and no real files.</p>
+<p>This is my <code>.git/hooks/pre-commit</code>:</p>
 <div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
 <span class="c1"># automatically configured by git-annex</span>
 git annex pre-commit .
@@ -107,7 +107,7 @@ git diff --cached --name-only --diff-filter<span class="o">=</span>A -z <span cl
 
 
 <p>Note: the <code>git annex pre-commit .</code> part was the original hook implementation,
-added by <code>git annex init</code>. I of course kept it.</p>
+added by <code>git annex init</code>, which I kept of course.</p>
     </div>
 
     </main>
