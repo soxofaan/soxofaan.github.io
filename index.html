@@ -50,12 +50,18 @@
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>When developing a web application of non-trivial size
+                    <div class="article-content article-summary">
+                        <p>When developing a web application of non-trivial size
 it can be challenging to find the relevant source file
 or class that is responsible for something you see on a web page.</p>
 <p><a href="https://www.jetbrains.com/pycharm/">PyCharm</a> (currently
 my main development environment for python) provides a <code>pycharm://</code> protocol 
-handler, which makes it possible to link ...</p> </div>
+handler, which makes it possible to link ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/pycharm-protocol-handler.html"
+                               title="link to Open a source file from web page with PyCharm protocol handler">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -71,10 +77,16 @@ handler, which makes it possible to link ...</p> </div>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>For managing my photo (and video) collection, which is too large to fit
+                    <div class="article-content article-summary">
+                        <p>For managing my photo (and video) collection, which is too large to fit
 on my laptop drive, I use <a href="https://git-annex.branchable.com/">Git Annex</a>.
 It's a nerdy solution (a fair amount of git knowledge is required), but I
-like that I can sync a whole tree of files between multiple devices/backends ...</p> </div>
+like that I can sync a whole tree of files between multiple devices/backends ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/git-annex-only-symlinks-hook.html"
+                               title="link to Git annex: hook to prevent adding files the wrong way">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -90,11 +102,17 @@ like that I can sync a whole tree of files between multiple devices/backends ...
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>CSV (comma separated values) files are to data formats what FAT32 is to
+                    <div class="article-content article-summary">
+                        <p>CSV (comma separated values) files are to data formats what FAT32 is to
 file systems: everybody loves to hate them, but you can't find a more
 widely supported alternative.</p>
 <p>For example, viewing CSV files in a command line environment is typically pretty
-annoying. You can't make much from ...</p> </div>
+annoying. You can't make much from ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/pretty-csv.html"
+                               title="link to Pretty CSV viewing on the Command Line">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -110,12 +128,18 @@ annoying. You can't make much from ...</p> </div>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <h3>Context</h3>
+                    <div class="article-content article-summary">
+                        <h3>Context</h3>
 <p>When porting my blog from Drupal to Pelican, I wanted to preserve 
 my clean URLs as much as possible for old blog entries. 
 In Pelican you typically achieve this by making sure each article has
 a <code>slug</code> metadata entry with the desired clean URL and setting up
-<code>_SAVE_AS</code> and ...</p> </div>
+<code>_SAVE_AS</code> and ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/dynamic-pelican-settings.html"
+                               title="link to Dynamic Pelican settings">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -131,13 +155,19 @@ a <code>slug</code> metadata entry with the desired clean URL and setting up
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>While wrestling with a relatively large data set, visualised 
+                    <div class="article-content article-summary">
+                        <p>While wrestling with a relatively large data set, visualised 
 with <a href="http://bokeh.pydata.org/">Bokeh</a> in an
 <a href="https://ipython.org/">IPython</a>/<a href="http://jupyter.org/">Jupyter</a> 
 notebook, I needed a way to show some "copy-pastable"
 text dump when making a box selection on the graph.
 Some kind of popup or dialog seemed ideal for this.</p>
-<p>I didn't want to spend ...</p> </div>
+<p>I didn't want to spend ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/jupyter-notebook-dialog.html"
+                               title="link to Dialog popup in Jupyter notebook">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -153,14 +183,20 @@ Some kind of popup or dialog seemed ideal for this.</p>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>Here's a quick (and dirty?) trick to create a tag cloud 
+                    <div class="article-content article-summary">
+                        <p>Here's a quick (and dirty?) trick to create a tag cloud 
 in <a href="http://getpelicam.com">Pelican</a>
 without plugins and minimal amount of code.</p>
 <p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag's article count
 to a CSS <code>font-size</code> value. For example like this:</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="n">JINJA_FILTERS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c ...</span></pre></div> </div>
+    <span class="s1">&#39;count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c ...</span></pre></div>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/quick-and-easy-tag-cloud-in-pelican.html"
+                               title="link to Quick and easy tag cloud in Pelican">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -176,11 +212,17 @@ to a CSS <code>font-size</code> value. For example like this:</p>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>For several years my blog was powered by <a href="https://www.drupal.org">Drupal</a>.
+                    <div class="article-content article-summary">
+                        <p>For several years my blog was powered by <a href="https://www.drupal.org">Drupal</a>.
 At the time (when I studied and worked in academia) I was an active
 Drupal developer, so that was a logical choice, and Drupal served me well.</p>
 <p>When occupation and family situation changed however, my Drupal interest 
-and involvement slowly decreased ...</p> </div>
+and involvement slowly decreased ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/switching-my-blog-to-pelican.html"
+                               title="link to Switching my blog to Pelican">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -196,7 +238,13 @@ and involvement slowly decreased ...</p> </div>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>Just a quick note that I whipped up a PhantomJS script to capture screenshots of Reveal.js powered slide show slides.</p> </div>
+                    <div class="article-content article-summary">
+                        <p>Just a quick note that I whipped up a PhantomJS script to capture screenshots of Reveal.js powered slide show slides.</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/phantomjs-script-to-capture-revealjs-slideshow-slides.html"
+                               title="link to PhantomJS script to capture Reveal.js slideshow slides">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -212,8 +260,14 @@ and involvement slowly decreased ...</p> </div>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>Even if you are in an automated context, not using a typical browser, fetching the data/webpage from an URL is easy. There are command line tools like wget and curl, and every programming library has its share of libraries to build on.</p>
-<p>But what if you need the HTML ...</p> </div>
+                    <div class="article-content article-summary">
+                        <p>Even if you are in an automated context, not using a typical browser, fetching the data/webpage from an URL is easy. There are command line tools like wget and curl, and every programming library has its share of libraries to build on.</p>
+<p>But what if you need the HTML ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/spider-javascript-manipulated-html-with-phantomjs/"
+                               title="link to Spidering JavaScript-manipulated HTML with PhantomJS">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -229,7 +283,13 @@ and involvement slowly decreased ...</p> </div>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>A colleague of mine at work has set up his IDE to clean up all trailing whitespace on save. Nothing wrong with that, except that he is the only one, which very often means in practice that his commits are sprinkled with fixes of other people's whitespace mixups. Because ...</p> </div>
+                    <div class="article-content article-summary">
+                        <p>A colleague of mine at work has set up his IDE to clean up all trailing whitespace on save. Nothing wrong with that, except that he is the only one, which very often means in practice that his commits are sprinkled with fixes of other people's whitespace mixups. Because ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/git-cherry-pick-without-whitespace.html"
+                               title="link to Git cherry-pick without whitespace">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
     </ul>

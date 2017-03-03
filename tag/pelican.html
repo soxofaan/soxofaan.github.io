@@ -50,12 +50,18 @@
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <h3>Context</h3>
+                    <div class="article-content article-summary">
+                        <h3>Context</h3>
 <p>When porting my blog from Drupal to Pelican, I wanted to preserve 
 my clean URLs as much as possible for old blog entries. 
 In Pelican you typically achieve this by making sure each article has
 a <code>slug</code> metadata entry with the desired clean URL and setting up
-<code>_SAVE_AS</code> and ...</p> </div>
+<code>_SAVE_AS</code> and ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/dynamic-pelican-settings.html"
+                               title="link to Dynamic Pelican settings">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -71,14 +77,20 @@ a <code>slug</code> metadata entry with the desired clean URL and setting up
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>Here's a quick (and dirty?) trick to create a tag cloud 
+                    <div class="article-content article-summary">
+                        <p>Here's a quick (and dirty?) trick to create a tag cloud 
 in <a href="http://getpelicam.com">Pelican</a>
 without plugins and minimal amount of code.</p>
 <p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag's article count
 to a CSS <code>font-size</code> value. For example like this:</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="n">JINJA_FILTERS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c ...</span></pre></div> </div>
+    <span class="s1">&#39;count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c ...</span></pre></div>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/quick-and-easy-tag-cloud-in-pelican.html"
+                               title="link to Quick and easy tag cloud in Pelican">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
             <li class="article-list">
@@ -94,11 +106,17 @@ to a CSS <code>font-size</code> value. For example like this:</p>
 
                         </div>
                     </header>
-                    <div class="article-content article-summary"> <p>For several years my blog was powered by <a href="https://www.drupal.org">Drupal</a>.
+                    <div class="article-content article-summary">
+                        <p>For several years my blog was powered by <a href="https://www.drupal.org">Drupal</a>.
 At the time (when I studied and worked in academia) I was an active
 Drupal developer, so that was a logical choice, and Drupal served me well.</p>
 <p>When occupation and family situation changed however, my Drupal interest 
-and involvement slowly decreased ...</p> </div>
+and involvement slowly decreased ...</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/switching-my-blog-to-pelican.html"
+                               title="link to Switching my blog to Pelican">Read more</a>
+                        </div>
+                    </div>
                 </article>
             </li>
     </ul>
