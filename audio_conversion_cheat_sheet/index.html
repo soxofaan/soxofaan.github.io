@@ -68,20 +68,20 @@ sox input.mp3 output.wav
 <span class="c1"># Convert to mono (two possibilities: by specifying output format</span>
 <span class="c1"># or with the &#39;channels&#39; effect.</span>
 sox input.mp3 -c <span class="m">1</span> output.wav
-sox input.mp3 output.wav channels 1
+sox input.mp3 output.wav channels <span class="m">1</span>
 
 <span class="c1"># Change sample rate (again two possibilities)</span>
 sox input.mp3 -r <span class="m">8000</span> output.wav
-sox input.mp3 output.wav rate 8000
+sox input.mp3 output.wav rate <span class="m">8000</span>
 <span class="c1"># Newer versions of SoX also support</span>
 sox input.mp3 output.wav rate 8k
 
 <span class="c1"># Trim a fragment of 30 seconds at an offset of 60 seconds</span>
 <span class="c1"># with the &#39;trim&#39; effect</span>
-sox input.mp3 output.wav trim <span class="m">60</span> 30
+sox input.mp3 output.wav trim <span class="m">60</span> <span class="m">30</span>
 
 <span class="c1"># All together now (trimmed fragment in mono, 22.05 Hz sample rate)</span>
-sox input.mp3 output.wav trim <span class="m">60</span> <span class="m">30</span> channels <span class="m">1</span> rate 22050
+sox input.mp3 output.wav trim <span class="m">60</span> <span class="m">30</span> channels <span class="m">1</span> rate <span class="m">22050</span>
 </pre></div>
 
 
@@ -99,7 +99,7 @@ mplayer <span class="se">\</span>
 <span class="c1"># and mix down to mono.</span>
 mplayer <span class="se">\</span>
     -ao pcm:fast:waveheader:file<span class="o">=</span>output.wav <span class="se">\</span>
-    -af <span class="nv">resample</span><span class="o">=</span>22050,pan<span class="o">=</span>1:0.5:0.5 <span class="se">\</span>
+    -af <span class="nv">resample</span><span class="o">=</span><span class="m">22050</span>,pan<span class="o">=</span><span class="m">1</span>:0.5:0.5 <span class="se">\</span>
     -vo null -vc null <span class="se">\</span>
     input.mp3
 <span class="c1"># By default, one expects 16 bits per sample. On some setups however,</span>
@@ -136,7 +136,7 @@ ffmpeg -i input.wav -ac <span class="m">1</span> -ab <span class="m">64000</span
 <span class="c1"># In seconds</span>
 ffmpeg -i input.mp3 -ss <span class="m">60</span> -t <span class="m">30</span> output.wav
 <span class="c1"># In HH:MM:SS format</span>
-ffmpeg -i input.mp3 -ss 0:01:00 -t 0:00:30 output.wav
+ffmpeg -i input.mp3 -ss <span class="m">0</span>:01:00 -t <span class="m">0</span>:00:30 output.wav
 </pre></div>
 
 
@@ -259,7 +259,7 @@ Sample Encoding: MPEG audio (layer I, II or III)
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

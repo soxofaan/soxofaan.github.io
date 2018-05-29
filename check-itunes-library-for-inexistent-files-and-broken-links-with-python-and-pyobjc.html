@@ -76,24 +76,24 @@ the tracks in my iTunes library and complain about local files it can't find:</p
     <span class="n">db</span> <span class="o">=</span> <span class="n">Foundation</span><span class="o">.</span><span class="n">NSDictionary</span><span class="o">.</span><span class="n">dictionaryWithContentsOfFile_</span><span class="p">(</span><span class="n">library_file</span><span class="p">)</span>
 
     <span class="c1"># Check track info.</span>
-    <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">db</span><span class="p">[</span><span class="s1">u&#39;Tracks&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">db</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Tracks&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
 
-        <span class="k">if</span> <span class="s1">u&#39;Location&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">track</span><span class="p">:</span>
+        <span class="k">if</span> <span class="sa">u</span><span class="s1">&#39;Location&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">track</span><span class="p">:</span>
             <span class="k">print</span> <span class="s1">&#39;No location info in track info&#39;</span><span class="p">,</span> <span class="n">track</span>
             <span class="k">continue</span>
 
         <span class="c1"># Resolve location</span>
-        <span class="n">nsurl</span> <span class="o">=</span> <span class="n">Foundation</span><span class="o">.</span><span class="n">NSURL</span><span class="o">.</span><span class="n">URLWithString_</span><span class="p">(</span><span class="n">track</span><span class="p">[</span><span class="s1">u&#39;Location&#39;</span><span class="p">])</span>
+        <span class="n">nsurl</span> <span class="o">=</span> <span class="n">Foundation</span><span class="o">.</span><span class="n">NSURL</span><span class="o">.</span><span class="n">URLWithString_</span><span class="p">(</span><span class="n">track</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Location&#39;</span><span class="p">])</span>
 
         <span class="c1"># Check local file paths</span>
-        <span class="k">if</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">scheme</span><span class="p">()</span> <span class="o">==</span> <span class="s1">u&#39;file&#39;</span> <span class="ow">and</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">host</span><span class="p">()</span> <span class="o">==</span> <span class="s1">u&#39;localhost&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">scheme</span><span class="p">()</span> <span class="o">==</span> <span class="sa">u</span><span class="s1">&#39;file&#39;</span> <span class="ow">and</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">host</span><span class="p">()</span> <span class="o">==</span> <span class="sa">u</span><span class="s1">&#39;localhost&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">nsurl</span><span class="o">.</span><span class="n">path</span><span class="p">()):</span>
                 <span class="k">print</span> <span class="s2">&quot;Location does not exist:&quot;</span><span class="p">,</span> <span class="n">nsurl</span><span class="o">.</span><span class="n">path</span><span class="p">(),</span> <span class="s1">&#39;from track&#39;</span><span class="p">,</span> <span class="n">track</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">print</span> <span class="s2">&quot;Don&#39;t know how to check&quot;</span><span class="p">,</span> <span class="n">nsurl</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">scan_itunes_library</span><span class="p">(</span><span class="n">library_file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
@@ -105,7 +105,7 @@ the tracks in my iTunes library and complain about local files it can't find:</p
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

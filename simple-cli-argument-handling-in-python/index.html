@@ -63,7 +63,7 @@ In Python, the <a href="http://docs.python.org/library/optparse.html" title="Opt
     <span class="k">print</span> <span class="s1">&#39;y:&#39;</span><span class="p">,</span> <span class="n">y</span>
     <span class="k">print</span> <span class="s1">&#39;z:&#39;</span><span class="p">,</span> <span class="n">z</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="c1"># Map command line arguments to function arguments.</span>
     <span class="n">do_something</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 </pre></div>
@@ -88,8 +88,8 @@ z: ZAZAZAZA
 <p>Run it with one, zero, four or more arguments and Python will complain about argument mismatch:</p>
 <div class="highlight"><pre><span></span>$ python dosomething.py one
 Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
-  File <span class="s2">&quot;./dosomething.py&quot;</span>, line 11, in &lt;module&gt;
-    do_something<span class="o">(</span>*sys.argv<span class="o">[</span>1:<span class="o">])</span>
+  File <span class="s2">&quot;./dosomething.py&quot;</span>, line <span class="m">11</span>, in &lt;module&gt;
+    do_something<span class="o">(</span>*sys.argv<span class="o">[</span><span class="m">1</span>:<span class="o">])</span>
 TypeError: do_something<span class="o">()</span> takes at least <span class="m">2</span> arguments <span class="o">(</span><span class="m">1</span> given<span class="o">)</span>
 </pre></div>
 
@@ -100,7 +100,7 @@ TypeError: do_something<span class="o">()</span> takes at least <span class="m">
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

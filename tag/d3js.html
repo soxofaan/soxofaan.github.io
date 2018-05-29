@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-            <meta charset="utf-8">
+        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>My experiences with hosting a Drupal website on One.com - Stefaan Lippens inserts content here</title>
+        <title>d3.js - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -12,11 +12,6 @@
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-
-
-
-        <meta name="tags" contents="hosting"/>
-        <meta name="tags" contents="drupal"/>
 </head>
 
 <body>
@@ -37,41 +32,39 @@
     </nav>
 
     <header class="page-header">
-    <h1>My experiences with hosting a Drupal website on One.com</h1>
-
-    <div class="article-meta">
-                <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2008-02-23T00:00:00+01:00"> on 2008/02/23</span>
-
-
-            <div class="tags">
-                Tagged:
-                    <a href="https://soxofaan.github.io/tag/hosting.html">hosting</a>,                    <a href="https://soxofaan.github.io/tag/drupal.html">drupal</a>            </div>
-    </div>
-
+    <h1>Articles tagged<br />&ldquo;d3.js&rdquo;</h1>
     </header>
 
     <main class="content">
-    <div class="article-content">
-        <p>Drupal didn't work out of the box and gave the following white screen of death:</p>
-<div class="highlight"><pre><span></span>500 Internal Server Error
-The server encountered an internal error or misconfiguration and was unable to complete your request.
-</pre></div>
+    <ul id="article-list">
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://soxofaan.github.io/jupyter-custom-d3-visualization.html"
+                               title="link to Custom D3.js Visualization in a Jupyter Notebook">Custom D3.js Visualization in a Jupyter Notebook</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2018-05-29T00:00:00+02:00"> on 2018/05/29</span>
 
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Sometimes you want to create a visualization that is far from straightforward with the standard data visualisation tools like matplotlib, pandas, seaborn or bokeh. In this article I'll discuss an approach to create custom D3.js powered visualizations withing a Jupyter notebook.</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/jupyter-custom-d3-visualization.html"
+                               title="link to Custom D3.js Visualization in a Jupyter Notebook">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+    </ul>
 
-<p>After some research I found out that One.com hosting didn't like Drupal's default <code>.htaccess</code> file. I had to disable the following lines to make it work:</p>
-<div class="highlight"><pre><span></span># Don&#39;t show directory listings for URLs which map to a directory.
-Options -Indexes
+    <div class="pager">
 
-# Follow symbolic links in this directory.
-Options +FollowSymLinks
-</pre></div>
+        page 1 / 1
 
-
-<p>I also had to disable the following in the <code>.htaccess</code> file in the files directory.</p>
-<div class="highlight"><pre><span></span>Options None
-Options +FollowSymLinks
-</pre></div>
     </div>
 
     </main>

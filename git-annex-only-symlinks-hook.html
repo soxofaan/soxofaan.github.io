@@ -87,7 +87,7 @@ git annex pre-commit .
 <span class="c1"># Prevent that real files are committed, only accept symlinks.</span>
 <span class="c1">###############################################################</span>
 <span class="c1"># Standard git pre-commit stuff to find what to take a diff against.</span>
-<span class="k">if</span> git rev-parse --verify HEAD &gt;/dev/null 2&gt;<span class="p">&amp;</span>1
+<span class="k">if</span> git rev-parse --verify HEAD &gt;/dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 <span class="k">then</span>
     <span class="nv">against</span><span class="o">=</span>HEAD
 <span class="k">else</span>
@@ -99,8 +99,8 @@ git annex pre-commit .
 <span class="c1"># this funky &quot;-z while IFS read&quot; construct.</span>
 git diff --cached --name-only --diff-filter<span class="o">=</span>A -z <span class="nv">$against</span> <span class="p">|</span> <span class="k">while</span> <span class="nv">IFS</span><span class="o">=</span> <span class="nb">read</span> -r -d <span class="s1">&#39;&#39;</span> file<span class="p">;</span> <span class="k">do</span>
     <span class="k">if</span> <span class="nb">test</span> ! -h <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Aborting commit: for this git-annex repo we only want symlinks and this file is not: </span><span class="nv">$file</span><span class="s2">&quot;</span> &gt;<span class="p">&amp;</span>2
-        <span class="nb">exit</span> 1
+        <span class="nb">echo</span> <span class="s2">&quot;Aborting commit: for this git-annex repo we only want symlinks and this file is not: </span><span class="nv">$file</span><span class="s2">&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+        <span class="nb">exit</span> <span class="m">1</span>
     <span class="k">fi</span>
 <span class="k">done</span>
 </pre></div>
@@ -113,7 +113,7 @@ added by <code>git annex init</code>, which I kept of course.</p>
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

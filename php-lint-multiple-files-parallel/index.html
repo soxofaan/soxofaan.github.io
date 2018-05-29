@@ -55,7 +55,7 @@
     <div class="article-content">
         <p>When programming, lint checking your source code can be useful to detect low level issues like syntax errors, undefined or unused variables. The PHP command line interpreter has an option <code>-l</code>/<code>--syntax-check</code> to do a syntax check of the provided PHP file, instead of executing it:</p>
 <div class="highlight"><pre><span></span>$ php -l file_with_syntax_error.php 
-PHP Parse error:  syntax error, unexpected T_VARIABLE in file_with_syntax_error.php on line 5
+PHP Parse error:  syntax error, unexpected T_VARIABLE in file_with_syntax_error.php on line <span class="m">5</span>
 Errors parsing file_with_syntax_error.php
 </pre></div>
 
@@ -96,7 +96,7 @@ lint: <span class="cp">${</span><span class="n">files</span><span class="cp">}</
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

@@ -64,13 +64,13 @@ running in some kind of dev or debug mode.</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;pycharm://open?file={f}&amp;line={n}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">f</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">),</span>
-            <span class="n">n</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">f</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">),</span>
+            <span class="n">n</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
 
 <span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
@@ -87,14 +87,14 @@ running in some kind of dev or debug mode.</p>
 a link to itself in the format <code>pycharm://open?file=/absolute/path/to/file&amp;line=123</code>.
 When you put this in a web page, and click it, PyCharm helpfully opens
 the file and puts the cursor on the first line of the class:</p>
-<p><img alt="PyCharm protocol handler in action" src="https://soxofaan.github.io/articles/images/pycharmlink.gif" /></p>
+<p><img alt="PyCharm protocol handler in action" src="https://soxofaan.github.io/articles/images/pycharmlink.gif"></p>
 <p>Handy.</p>
     </div>
 
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

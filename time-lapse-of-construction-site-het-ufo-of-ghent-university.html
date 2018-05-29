@@ -66,7 +66,7 @@ This is the part when there is no concrete yet.</p>
 <p>The bash script to capture a frame from the publicly accessible webcam (which I won't disclose) was:</p>
 <div class="highlight"><pre><span></span><span class="nv">filename</span><span class="o">=</span>~/ufo-webcam/frame-<span class="k">$(</span>date +<span class="s2">&quot;%Y&quot;</span><span class="k">)</span>/frame-<span class="k">$(</span>date +<span class="s2">&quot;%Y-%m-%d-%H-%M-%S&quot;</span><span class="k">)</span>.jpg
 
-wget -O <span class="nv">$filename</span> --timeout<span class="o">=</span><span class="m">60</span>  http://webcamurl 2&gt;<span class="p">&amp;</span>1
+wget -O <span class="nv">$filename</span> --timeout<span class="o">=</span><span class="m">60</span>  http://webcamurl <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 </pre></div>
 
 
@@ -77,7 +77,7 @@ wget -O <span class="nv">$filename</span> --timeout<span class="o">=</span><span
 
 
 <p>And then "convert" this list file <code>framelist.txt</code> to a real video:</p>
-<div class="highlight"><pre><span></span>transcode -i framelist.txt -x imlist,null -g640x480 --use_rgb -z -y xvid,null -f5 -o frames.avi -H 0
+<div class="highlight"><pre><span></span>transcode -i framelist.txt -x imlist,null -g640x480 --use_rgb -z -y xvid,null -f5 -o frames.avi -H <span class="m">0</span>
 </pre></div>
 
 
@@ -87,7 +87,7 @@ wget -O <span class="nv">$filename</span> --timeout<span class="o">=</span><span
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

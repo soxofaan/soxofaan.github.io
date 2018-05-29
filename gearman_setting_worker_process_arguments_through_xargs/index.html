@@ -67,15 +67,15 @@
 <p>The worker runs in foreground here (and keeps running until we kill it with CTRL-C for example), so for the remainder of the experiment we have to open a new shell.</p>
 <p>You can then consume the 'wordcount' service as a client with</p>
 <div class="highlight"><pre><span></span>$ gearman -f wordcount &lt; /etc/passwd
-     <span class="m">62</span>     <span class="m">114</span>    3306
+     <span class="m">62</span>     <span class="m">114</span>    <span class="m">3306</span>
 </pre></div>
 
 
 <p>Note that the gearman command line workflow employs the standard input and output to communicate: the worker process receives its input through the standard input, generates "results" on its standard output, which is redirected to the client. In the example given above we also used the standard input of the client to provide the data to the client. We can also provide data to the client as command line arguments, but note how it will launch a job for each argument separately (also note that the jobs will not be run in parallel this way):</p>
 <div class="highlight"><pre><span></span>$ gearman -f wordcount foo barr <span class="s2">&quot;a string with spaces&quot;</span>
-      <span class="m">0</span>       <span class="m">1</span>       3
-      <span class="m">0</span>       <span class="m">1</span>       4
-      <span class="m">0</span>       <span class="m">4</span>      20
+      <span class="m">0</span>       <span class="m">1</span>       <span class="m">3</span>
+      <span class="m">0</span>       <span class="m">1</span>       <span class="m">4</span>
+      <span class="m">0</span>       <span class="m">4</span>      <span class="m">20</span>
 </pre></div>
 
 
@@ -160,7 +160,7 @@ $ gearman -f name -- <span class="s1">&#39;-a foo &quot;bar baz&quot;&#39;</span
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

@@ -55,7 +55,7 @@
         <p>How to undo/rollback a Subversion commit? A fairly basic question, but every time I need the answer, I can't manage to remember it from the previous time I did it. Asking Google helps eventually, but the signal to noise ratio of the top hits is a bit disappointing. This time I couldn't resist the urge to throw my own bot snack in the intertubes.</p>
 <p>Say you just made a commit (revision 123 for file <code>apple.py</code>), you discovered (after the fact) that it was just crap and you want the previous version (revision 122) back. </p>
 <p>The <a href="http://svnbook.red-bean.com/en/1.0/ch04s04.html#svn-ch-4-sect-4.2">common way</a> to do it is with a merge of a reverse changeset (or something):</p>
-<div class="highlight"><pre><span></span>svn merge -r 123:122 apple.py
+<div class="highlight"><pre><span></span>svn merge -r <span class="m">123</span>:122 apple.py
 </pre></div>
 
 
@@ -79,7 +79,7 @@ with version 1.5.1 for example) it is also possible to use the
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

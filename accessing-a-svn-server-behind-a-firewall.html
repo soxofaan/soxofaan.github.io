@@ -60,7 +60,7 @@ within the LAN, not directly reachable from the outside evil internet. T
 his makes it a bit difficult to access the subversion server when 
 working from home. SSH Tunneling to the rescue!</p>
 <p>To setup an SSH tunnel (on computer <code>home</code>):</p>
-<div class="highlight"><pre><span></span>ssh -l username -L 8910:svnserver:80 gateway cat -
+<div class="highlight"><pre><span></span>ssh -l username -L <span class="m">8910</span>:svnserver:80 gateway cat -
 </pre></div>
 
 
@@ -74,14 +74,14 @@ TCP port 80 from computer <code>svnserver</code> (as seen from computer <code>ga
 
 
 <p>In a nice diagram:</p>
-<p><img alt="ssh tunneling" src="https://soxofaan.github.io/articles/from-drupal-blog/images/schema_1.png" /></p>
+<p><img alt="ssh tunneling" src="https://soxofaan.github.io/articles/from-drupal-blog/images/schema_1.png"></p>
 <p>Graphics used in diagram from <a href="http://tango.freedesktop.org/Tango_Icon_Gallery" title="Tango Icon Gallery">Tango icon gallery</a>.</p>
     </div>
 
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

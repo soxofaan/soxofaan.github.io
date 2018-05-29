@@ -41,6 +41,49 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://soxofaan.github.io/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Python: hiding attribute getters and setters behind standard attribute access</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-22T00:00:00+02:00"> on 2009/09/22</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Look at this small snippet of Python code:</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+
+<p>Seems like nothing special, but look what it spits out:</p>
+<div class="highlight"><pre><span></span>20
+foofoo
+[1, 2, 3, 1, 2, 3]
+</pre></div>
+
+
+<p>Oh my …</p>
+                        <div class="read-more">
+                            <a href="https://soxofaan.github.io/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://soxofaan.github.io/how-to-find-out-which-version-of-ubuntu-you-are-running.html"
                                title="link to How to find out which version of Ubuntu you are running?">How to find out which version of Ubuntu you are running?</a>
                         </h2>
@@ -81,7 +124,7 @@ cat /etc/issue
                         </div>
                     </header>
                     <div class="article-content article-summary">
-                        <p>For some small tools or jobs I use <a href="http://jython.org">Jython</a> so I can (re)use some existing Java code, while still writing in <a href="http://python.org">Python</a>. I also have various custom Python modules, of which I put the paths in my <code>PYTHONPATH</code> environment variable, so those modules are easily available in Python scripts ...</p>
+                        <p>For some small tools or jobs I use <a href="http://jython.org">Jython</a> so I can (re)use some existing Java code, while still writing in <a href="http://python.org">Python</a>. I also have various custom Python modules, of which I put the paths in my <code>PYTHONPATH</code> environment variable, so those modules are easily available in Python scripts …</p>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/jython_and_pythonpath/"
                                title="link to Jython and PYTHONPATH">Read more</a>
@@ -103,7 +146,7 @@ cat /etc/issue
                         </div>
                     </header>
                     <div class="article-content article-summary">
-                        <p>Today, I wanted to do some profiling of a Java application in Eclipse (3.4 aka Ganymede) on my Ubuntu 8.10 box at work. Google pointed me to the Eclipse <a href="http://www.eclipse.org/tptp/">TPTP (Test &amp; Performance Tools)</a> platform, which I installed through the Eclipse plug-in installer thingy, that weird acting constantly blocking ...</p>
+                        <p>Today, I wanted to do some profiling of a Java application in Eclipse (3.4 aka Ganymede) on my Ubuntu 8.10 box at work. Google pointed me to the Eclipse <a href="http://www.eclipse.org/tptp/">TPTP (Test &amp; Performance Tools)</a> platform, which I installed through the Eclipse plug-in installer thingy, that weird acting constantly blocking …</p>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/eclipse-tptp-woes-in-ubuntu-and-how-to-solve-it-as-non-root.html"
                                title="link to Eclipse TPTP woes in Ubuntu and how to solve it as non-root">Read more</a>
@@ -125,7 +168,7 @@ cat /etc/issue
                         </div>
                     </header>
                     <div class="article-content article-summary">
-                        <p>In the introduction chapter of my PhD dissertation, I had to make a listing of my publications. The obvious brain dead way to achieve this is just typing everything manually in a list. But this feels just so wrong when you're already using BibTeX for managing references and bibliographical ...</p>
+                        <p>In the introduction chapter of my PhD dissertation, I had to make a listing of my publications. The obvious brain dead way to achieve this is just typing everything manually in a list. But this feels just so wrong when you're already using BibTeX for managing references and bibliographical stuff …</p>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/bibentry/"
                                title="link to LaTeX: inline BibTeX entries with the bibentry package">Read more</a>
@@ -148,7 +191,7 @@ cat /etc/issue
                     </header>
                     <div class="article-content article-summary">
                         <p>At work, I'm trying out <a href="http://www.elec.qmul.ac.uk/people/simond/beatroot/">BeatRoot</a>, an application written in Java, for its BPM estimation capabilities. The data set I'm working with is encoded in MP3 format and getting this Java tool to work with the MP3 data was not an easy ride.</p>
-<p>Java does not support MP3 ...</p>
+<p>Java does not support MP3 en/decoding …</p>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/javasmp3/"
                                title="link to Reading MP3 files in Java">Read more</a>
@@ -171,7 +214,7 @@ cat /etc/issue
                     </header>
                     <div class="article-content article-summary">
                         <p>Bash scripts are handy for putting a bunch of longer running jobs in one batch. In some occasions it can be useful to know which command is running at the moment, especially when the commands do not generate output themselves or this output is redirected to files. </p>
-<p>Bash has a ...</p>
+<p>Bash has a …</p>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/set-x/"
                                title="link to Showing the running command in a bash script with "set -x"">Read more</a>
@@ -193,7 +236,7 @@ cat /etc/issue
                         </div>
                     </header>
                     <div class="article-content article-summary">
-                        <p>I'm experimenting with using a Subversion repository through Git. That way I can keep better track of my own (experimental) work, without polluting/destabilizing the central Subversion repository with small incremental commits. Git comes with a <code>svn</code> sub-tool that takes care of all the interfacing between the local git ...</p>
+                        <p>I'm experimenting with using a Subversion repository through Git. That way I can keep better track of my own (experimental) work, without polluting/destabilizing the central Subversion repository with small incremental commits. Git comes with a <code>svn</code> sub-tool that takes care of all the interfacing between the local git repository …</p>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/git-svn/"
                                title="link to Working with a Subversion repository through Git">Read more</a>
@@ -215,7 +258,7 @@ cat /etc/issue
                         </div>
                     </header>
                     <div class="article-content article-summary">
-                        <p>When you're working on a software development project where not all parties use the same code style conventions or editor setting (like tabs vs. spaces, removing trailing spaces, etc), the signal to noise ratio of a source code diff can be a bit frustrating. Luckily, most diff programs have ...</p>
+                        <p>When you're working on a software development project where not all parties use the same code style conventions or editor setting (like tabs vs. spaces, removing trailing spaces, etc), the signal to noise ratio of a source code diff can be a bit frustrating. Luckily, most diff programs have an …</p>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/ignore-whitespace-in-subversion-diffs.html"
                                title="link to Ignore whitespace in Subversion diffs">Read more</a>
@@ -238,43 +281,16 @@ cat /etc/issue
                     </header>
                     <div class="article-content article-summary">
                         <p>Today I struggled a bit with <a href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.plot_date">pylab's plot_date</a> function and overlapping date tick labels:</p>
-<p><img alt="overlapping plot_date xticks" src="https://soxofaan.github.io/articles/from-drupal-blog/images/data_critical_D7_issues_before.png" /></p>
+<p><img alt="overlapping plot_date xticks" src="https://soxofaan.github.io/articles/from-drupal-blog/images/data_critical_D7_issues_before.png"></p>
 <p>After some googling, I found that matplotlib offers 
 <a href="http://matplotlib.sourceforge.net/api/dates_api.html#date-tickers">nice flexible date tick control and formatting</a>. 
 I added a date tick locator and a date formatter to the mix as follows:</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">import ...</span></pre></div>
+<span class="kn">import</span> <span class="nn">matplotlib …</span></pre></div>
                         <div class="read-more">
                             <a href="https://soxofaan.github.io/pylab_date_tick_control/"
                                title="link to Date tick control in pylab/matplotlib">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://soxofaan.github.io/setting-global-xfig-defaults-for-working-with-lyxlatex.html"
-                               title="link to Setting global XFig defaults for working with LyX/LaTeX">Setting global XFig defaults for working with LyX/LaTeX</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-05-15T00:00:00+02:00"> on 2009/05/15</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>When making a document with <a href="http://www.lyx.org">Lyx</a> (or LaTeX), 
-I often create figures and diagrams in <a href="http://www.xfig.org/">XFig</a>. 
-I know, Xfig's user interface looks and feels very dated.
-(I tried the Java port <a href="http://tams-www.informatik.uni-hamburg.de/applets/jfig/">JFig</a>, 
-but that one even feels worse to me.) 
-However, the main reason I bite the bullet is ...</p>
-                        <div class="read-more">
-                            <a href="https://soxofaan.github.io/setting-global-xfig-defaults-for-working-with-lyxlatex.html"
-                               title="link to Setting global XFig defaults for working with LyX/LaTeX">Read more</a>
                         </div>
                     </div>
                 </article>
@@ -292,7 +308,7 @@ However, the main reason I bite the bullet is ...</p>
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

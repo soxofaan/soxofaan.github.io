@@ -61,7 +61,7 @@
 <span class="n">svnid</span> <span class="o">=</span> <span class="s1">&#39;$Id: svnidparse.py 1234 2008-02-19 09:59:27Z joske $&#39;</span>
 
 <span class="c1"># bow for the mighty regular expression</span>
-<span class="n">svnidrep</span> <span class="o">=</span> <span class="s1">r&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision&gt;\d+) (?P&lt;date&gt;\d{4}-\d{2}-\d{1,2}) (?P&lt;time&gt;\d{2}:\d{2}:\d{2})Z (?P&lt;user&gt;\w+) \$$&#39;</span>
+<span class="n">svnidrep</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision&gt;\d+) (?P&lt;date&gt;\d{4}-\d{2}-\d{1,2}) (?P&lt;time&gt;\d{2}:\d{2}:\d{2})Z (?P&lt;user&gt;\w+) \$$&#39;</span>
 
 <span class="c1"># parse the svn Id</span>
 <span class="n">mo</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">svnidrep</span><span class="p">,</span> <span class="n">svnid</span><span class="p">)</span>
@@ -77,7 +77,7 @@
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>

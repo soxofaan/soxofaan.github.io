@@ -54,7 +54,7 @@
     <main class="content">
     <div class="article-content">
         <p>Consider a program <code>hello_and_error</code> that writes to both stdout and to stderr. To redirect both to stdout:</p>
-<div class="highlight"><pre><span></span>hello_and_error 2&gt;<span class="p">&amp;</span>1
+<div class="highlight"><pre><span></span>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 </pre></div>
 
 
@@ -64,12 +64,12 @@
 
 
 <p>If you want to do this in a more obvious (but longer) way you should do</p>
-<div class="highlight"><pre><span></span>hello_and_error 1&gt;hello.txt 2&gt;<span class="p">&amp;</span>1
+<div class="highlight"><pre><span></span>hello_and_error <span class="m">1</span>&gt;hello.txt <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 </pre></div>
 
 
 <p>and  <em>not</em> </p>
-<div class="highlight"><pre><span></span>hello_and_error 2&gt;<span class="p">&amp;</span><span class="m">1</span> 1&gt;hello.txt
+<div class="highlight"><pre><span></span>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="m">1</span>&gt;hello.txt
 </pre></div>
 
 
@@ -107,7 +107,7 @@
     </main>
 
     <footer class="page-footer">
-            &copy; Stefaan Lippens 2005-2017
+            &copy; Stefaan Lippens 2005-2018
     </footer>
 
 </div>
