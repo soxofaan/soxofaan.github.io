@@ -49,14 +49,14 @@
 
             <div class="tags">
                 Tagged:
-                    <a href="https://soxofaan.github.io/tag/sox.html">sox</a>,                    <a href="https://soxofaan.github.io/tag/ffmpeg.html">ffmpeg</a>,                    <a href="https://soxofaan.github.io/tag/music.html">music</a>,                    <a href="https://soxofaan.github.io/tag/mplayer.html">mplayer</a>,                    <a href="https://soxofaan.github.io/tag/audio.html">audio</a>            </div>
+                    <a href="https://www.stefaanlippens.net/tag/sox.html">sox</a>,                    <a href="https://www.stefaanlippens.net/tag/ffmpeg.html">ffmpeg</a>,                    <a href="https://www.stefaanlippens.net/tag/music.html">music</a>,                    <a href="https://www.stefaanlippens.net/tag/mplayer.html">mplayer</a>,                    <a href="https://www.stefaanlippens.net/tag/audio.html">audio</a>            </div>
     </div>
 
     </header>
 
     <main class="content">
     <div class="article-content">
-        <p>In <a href="https://soxofaan.github.io/audio_conversion_cheat_sheet/">a previous post</a>
+        <p>In <a href="https://www.stefaanlippens.net/audio_conversion_cheat_sheet/">a previous post</a>
 I listed some options for audio data manipulation (conversion of format, 
 sample rate, bitrate, trimming, etc), with 
 <a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX</a>, 
@@ -89,7 +89,7 @@ sox <span class="nv">$input_file</span> -c <span class="m">1</span> -r <span cla
 
 <p>I tried this with fragment lengths of 5, 10, 20, 30 and 60 seconds. I ran each command several times for each fragment length, timed the execution (the "user time" reported by the command line tool "<code>time</code>") and calculated the average execution time (the standard deviation was small enough to only consider the average execution time). </p>
 <h3>The result (lower is better)</h3>
-<p><img alt="None" src="https://soxofaan.github.io/articles/from-drupal-blog/images/cahors.png"></p>
+<p><img alt="None" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/cahors.png"></p>
 <p>MPlayer is clearly fastest option for this use case. For 30 second fragments, FFmpeg is 1.8 times slower and SoX is 2.4 times slower. For smaller fragments, the speed difference is even larger. Also note that the execution time with MPlayer is almost proportional to the desired fragment length. SoX and FFmpeg on the other hand suffer from a non neglectable "startup" time, which disfavors small fragment lengths. However, the proportional part of FFmpeg's "curve" is less inclined than MPlayer's and for larger fragment lengths FFmpeg becomes more interesting. The crossing point is at a fragment length of roughly 2 minutes.</p>
 <h3>Setup info</h3>
 <p>Used hardware: dual core Intel Xeon, 3 GHz. Used software: FFmpeg 0.5, SoX v14.2.0 and MPlayer 1.0rc2-4.3.3 (default packages on Ubuntu 9.04).</p>

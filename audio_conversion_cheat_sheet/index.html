@@ -51,7 +51,7 @@
 
             <div class="tags">
                 Tagged:
-                    <a href="https://soxofaan.github.io/tag/audio.html">audio</a>,                    <a href="https://soxofaan.github.io/tag/ogg-vorbis.html">ogg vorbis</a>,                    <a href="https://soxofaan.github.io/tag/ffmpeg.html">ffmpeg</a>,                    <a href="https://soxofaan.github.io/tag/mp3.html">mp3</a>,                    <a href="https://soxofaan.github.io/tag/mplayer.html">mplayer</a>,                    <a href="https://soxofaan.github.io/tag/sox.html">sox</a>,                    <a href="https://soxofaan.github.io/tag/music.html">music</a>            </div>
+                    <a href="https://www.stefaanlippens.net/tag/audio.html">audio</a>,                    <a href="https://www.stefaanlippens.net/tag/ogg-vorbis.html">ogg vorbis</a>,                    <a href="https://www.stefaanlippens.net/tag/ffmpeg.html">ffmpeg</a>,                    <a href="https://www.stefaanlippens.net/tag/mp3.html">mp3</a>,                    <a href="https://www.stefaanlippens.net/tag/mplayer.html">mplayer</a>,                    <a href="https://www.stefaanlippens.net/tag/sox.html">sox</a>,                    <a href="https://www.stefaanlippens.net/tag/music.html">music</a>            </div>
     </div>
 
     </header>
@@ -59,7 +59,7 @@
     <main class="content">
     <div class="article-content">
         <p>In my day job, I regularly have to convert/transcode/re-encode audio data from one format to another. Because I typically have to do this in batch jobs, I'm mostly dealing with command line tools (on Linux) like <a href="http://lame.sourceforge.net/" title="Lame MP3 encoder homepage">Lame</a>, <a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX (Sound eXchange)</a>, <a href="http://www.mplayerhq.hu" title="MPlayer homepage">MPlayer</a> and <a href="http://ffmpeg.org/" title="FFmpeg homepage">FFmpeg</a>.  Having a cheat sheet of how to invoke them with the desired options has proven to be very useful, so here is mine. Note that I only cover the operations I mostly need, like format conversion, sample rate conversion, conversion to mono and trimming/cropping. If you need more/other functionality, look in the man pages or ask your favorite search engine.</p>
-<p><em>Update:</em> also see a <a href="https://soxofaan.github.io/audio_conversion_execution_speed_comparison_of_SoX_FFmpeg_MPlayer/">follow up blog post</a> about an execution time comparison between SoX, FFmpeg and MPlayer.</p>
+<p><em>Update:</em> also see a <a href="https://www.stefaanlippens.net/audio_conversion_execution_speed_comparison_of_SoX_FFmpeg_MPlayer/">follow up blog post</a> about an execution time comparison between SoX, FFmpeg and MPlayer.</p>
 <h3>Audio manipulation with SoX</h3>
 <p><a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX (Sound eXchange)</a> calls itself "the Swiss Army knife of sound processing programs" and offers, apart from standard audio format and sample rate conversion, a basic set of effects (e.g. pitch shifting, reverb, low pass filtering, flanger, etc). It's available for Linux (search for 'sox' in your package manager), Mac OS X and Windows. </p>
 <div class="highlight"><pre><span></span><span class="c1"># Minimal conversion example</span>
