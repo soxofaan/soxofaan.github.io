@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Hadoop 3 default ports - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="hadoop"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Hadoop 3 default ports</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2018-11-16T00:00:00+01:00"> on 2018/11/16</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/hadoop.html">hadoop</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Hadoop comes with quite a bunch of services
+listening on various ports. 
+For your entertainment I extracted the default port numbers 
+from these Hadoop 3 (default) config files:</p>
+<ul>
+<li><a href="https://hadoop.apache.org/docs/r3.1.1/hadoop-project-dist/hadoop-common/core-default.xml">core-default.xml</a></li>
+<li><a href="https://hadoop.apache.org/docs/r3.1.1/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml">hdfs-default.xml</a></li>
+<li><a href="https://hadoop.apache.org/docs/r3.1.1/hadoop-project-dist/hadoop-hdfs-rbf/hdfs-rbf-default.xml">hdfs-rbf-default.xml</a></li>
+<li><a href="https://hadoop.apache.org/docs/r3.1.1/hadoop-yarn/hadoop-yarn-common/yarn-default.xml">yarn-default.xml</a></li>
+<li><a href="https://hadoop.apache.org/docs/r3.1.1/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml">mapred-default.xml</a></li>
+</ul>
+<style>
+    .article-content td {padding: 0 1ex;}
+    .article-content th {text-align: left;}
+</style>
+
+<table>
+<thead>
+<tr>
+<th>port</th>
+<th>config name</th>
+<th>config value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>dfs.balancer.address</td>
+<td><code>0.0.0.0:0</code></td>
+</tr>
+<tr>
+<td>9866</td>
+<td>dfs.datanode.address</td>
+<td><code>0.0.0.0:9866</code></td>
+</tr>
+<tr>
+<td>9864</td>
+<td>dfs.datanode.http.address</td>
+<td><code>0.0.0.0:9864</code></td>
+</tr>
+<tr>
+<td>9865</td>
+<td>dfs.datanode.https.address</td>
+<td><code>0.0.0.0:9865</code></td>
+</tr>
+<tr>
+<td>9867</td>
+<td>dfs.datanode.ipc.address</td>
+<td><code>0.0.0.0:9867</code></td>
+</tr>
+<tr>
+<td>8111</td>
+<td>dfs.federation.router.admin-address</td>
+<td><code>0.0.0.0:8111</code></td>
+</tr>
+<tr>
+<td>50071</td>
+<td>dfs.federation.router.http-address</td>
+<td><code>0.0.0.0:50071</code></td>
+</tr>
+<tr>
+<td>50072</td>
+<td>dfs.federation.router.https-address</td>
+<td><code>0.0.0.0:50072</code></td>
+</tr>
+<tr>
+<td>8888</td>
+<td>dfs.federation.router.rpc-address</td>
+<td><code>0.0.0.0:8888</code></td>
+</tr>
+<tr>
+<td>8480</td>
+<td>dfs.journalnode.http-address</td>
+<td><code>0.0.0.0:8480</code></td>
+</tr>
+<tr>
+<td>8481</td>
+<td>dfs.journalnode.https-address</td>
+<td><code>0.0.0.0:8481</code></td>
+</tr>
+<tr>
+<td>8485</td>
+<td>dfs.journalnode.rpc-address</td>
+<td><code>0.0.0.0:8485</code></td>
+</tr>
+<tr>
+<td>0</td>
+<td>dfs.mover.address</td>
+<td><code>0.0.0.0:0</code></td>
+</tr>
+<tr>
+<td>50100</td>
+<td>dfs.namenode.backup.address</td>
+<td><code>0.0.0.0:50100</code></td>
+</tr>
+<tr>
+<td>50105</td>
+<td>dfs.namenode.backup.http-address</td>
+<td><code>0.0.0.0:50105</code></td>
+</tr>
+<tr>
+<td>9870</td>
+<td>dfs.namenode.http-address</td>
+<td><code>0.0.0.0:9870</code></td>
+</tr>
+<tr>
+<td>9871</td>
+<td>dfs.namenode.https-address</td>
+<td><code>0.0.0.0:9871</code></td>
+</tr>
+<tr>
+<td>9868</td>
+<td>dfs.namenode.secondary.http-address</td>
+<td><code>0.0.0.0:9868</code></td>
+</tr>
+<tr>
+<td>9869</td>
+<td>dfs.namenode.secondary.https-address</td>
+<td><code>0.0.0.0:9869</code></td>
+</tr>
+<tr>
+<td>50200</td>
+<td>dfs.provided.aliasmap.inmemory.dnrpc-address</td>
+<td><code>0.0.0.0:50200</code></td>
+</tr>
+<tr>
+<td>2181</td>
+<td>hadoop.registry.zk.quorum</td>
+<td><code>localhost:2181</code></td>
+</tr>
+<tr>
+<td>10020</td>
+<td>mapreduce.jobhistory.address</td>
+<td><code>0.0.0.0:10020</code></td>
+</tr>
+<tr>
+<td>10033</td>
+<td>mapreduce.jobhistory.admin.address</td>
+<td><code>0.0.0.0:10033</code></td>
+</tr>
+<tr>
+<td>19888</td>
+<td>mapreduce.jobhistory.webapp.address</td>
+<td><code>0.0.0.0:19888</code></td>
+</tr>
+<tr>
+<td>19890</td>
+<td>mapreduce.jobhistory.webapp.https.address</td>
+<td><code>0.0.0.0:19890</code></td>
+</tr>
+<tr>
+<td>0</td>
+<td>yarn.nodemanager.address</td>
+<td><code>${yarn.nodemanager.hostname}:0</code></td>
+</tr>
+<tr>
+<td>8049</td>
+<td>yarn.nodemanager.amrmproxy.address</td>
+<td><code>0.0.0.0:8049</code></td>
+</tr>
+<tr>
+<td>8048</td>
+<td>yarn.nodemanager.collector-service.address</td>
+<td><code>${yarn.nodemanager.hostname}:8048</code></td>
+</tr>
+<tr>
+<td>8040</td>
+<td>yarn.nodemanager.localizer.address</td>
+<td><code>${yarn.nodemanager.hostname}:8040</code></td>
+</tr>
+<tr>
+<td>8042</td>
+<td>yarn.nodemanager.webapp.address</td>
+<td><code>${yarn.nodemanager.hostname}:8042</code></td>
+</tr>
+<tr>
+<td>8044</td>
+<td>yarn.nodemanager.webapp.https.address</td>
+<td><code>0.0.0.0:8044</code></td>
+</tr>
+<tr>
+<td>8032</td>
+<td>yarn.resourcemanager.address</td>
+<td><code>${yarn.resourcemanager.hostname}:8032</code></td>
+</tr>
+<tr>
+<td>8033</td>
+<td>yarn.resourcemanager.admin.address</td>
+<td><code>${yarn.resourcemanager.hostname}:8033</code></td>
+</tr>
+<tr>
+<td>8031</td>
+<td>yarn.resourcemanager.resource-tracker.address</td>
+<td><code>${yarn.resourcemanager.hostname}:8031</code></td>
+</tr>
+<tr>
+<td>8030</td>
+<td>yarn.resourcemanager.scheduler.address</td>
+<td><code>${yarn.resourcemanager.hostname}:8030</code></td>
+</tr>
+<tr>
+<td>8088</td>
+<td>yarn.resourcemanager.webapp.address</td>
+<td><code>${yarn.resourcemanager.hostname}:8088</code></td>
+</tr>
+<tr>
+<td>8090</td>
+<td>yarn.resourcemanager.webapp.https.address</td>
+<td><code>${yarn.resourcemanager.hostname}:8090</code></td>
+</tr>
+<tr>
+<td>8089</td>
+<td>yarn.router.webapp.address</td>
+<td><code>0.0.0.0:8089</code></td>
+</tr>
+<tr>
+<td>8091</td>
+<td>yarn.router.webapp.https.address</td>
+<td><code>0.0.0.0:8091</code></td>
+</tr>
+<tr>
+<td>8047</td>
+<td>yarn.sharedcache.admin.address</td>
+<td><code>0.0.0.0:8047</code></td>
+</tr>
+<tr>
+<td>8045</td>
+<td>yarn.sharedcache.client-server.address</td>
+<td><code>0.0.0.0:8045</code></td>
+</tr>
+<tr>
+<td>8046</td>
+<td>yarn.sharedcache.uploader.server.address</td>
+<td><code>0.0.0.0:8046</code></td>
+</tr>
+<tr>
+<td>8788</td>
+<td>yarn.sharedcache.webapp.address</td>
+<td><code>0.0.0.0:8788</code></td>
+</tr>
+<tr>
+<td>10200</td>
+<td>yarn.timeline-service.address</td>
+<td><code>${yarn.timeline-service.hostname}:10200</code></td>
+</tr>
+<tr>
+<td>8188</td>
+<td>yarn.timeline-service.webapp.address</td>
+<td><code>${yarn.timeline-service.hostname}:8188</code></td>
+</tr>
+<tr>
+<td>8190</td>
+<td>yarn.timeline-service.webapp.https.address</td>
+<td><code>${yarn.timeline-service.hostname}:8190</code></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2018
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4807787-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</html>

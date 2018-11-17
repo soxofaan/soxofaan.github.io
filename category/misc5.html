@@ -41,6 +41,168 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Python: hiding attribute getters and setters behind standard attribute access</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-22T00:00:00+02:00"> on 2009/09/22</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Look at this small snippet of Python code:</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+
+<p>Seems like nothing special, but look what it spits out:</p>
+<div class="highlight"><pre><span></span>20
+foofoo
+[1, 2, 3, 1, 2, 3]
+</pre></div>
+
+
+<p>Oh my …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/how-to-find-out-which-version-of-ubuntu-you-are-running.html"
+                               title="link to How to find out which version of Ubuntu you are running?">How to find out which version of Ubuntu you are running?</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-11T00:00:00+02:00"> on 2009/09/11</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>How to find out which version of Ubuntu you are running?</p>
+<p>Use one of the commands below:</p>
+<div class="highlight"><pre><span></span>lsb_release -a
+cat /etc/lsb-release
+cat /etc/issue
+</pre></div>
+
+
+<p>kthxbye </p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/how-to-find-out-which-version-of-ubuntu-you-are-running.html"
+                               title="link to How to find out which version of Ubuntu you are running?">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/jython_and_pythonpath/"
+                               title="link to Jython and PYTHONPATH">Jython and PYTHONPATH</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-09T00:00:00+02:00"> on 2009/09/09</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>For some small tools or jobs I use <a href="http://jython.org">Jython</a> so I can (re)use some existing Java code, while still writing in <a href="http://python.org">Python</a>. I also have various custom Python modules, of which I put the paths in my <code>PYTHONPATH</code> environment variable, so those modules are easily available in Python scripts …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/jython_and_pythonpath/"
+                               title="link to Jython and PYTHONPATH">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/eclipse-tptp-woes-in-ubuntu-and-how-to-solve-it-as-non-root.html"
+                               title="link to Eclipse TPTP woes in Ubuntu and how to solve it as non-root">Eclipse TPTP woes in Ubuntu and how to solve it as non-root</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-08-19T00:00:00+02:00"> on 2009/08/19</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Today, I wanted to do some profiling of a Java application in Eclipse (3.4 aka Ganymede) on my Ubuntu 8.10 box at work. Google pointed me to the Eclipse <a href="http://www.eclipse.org/tptp/">TPTP (Test &amp; Performance Tools)</a> platform, which I installed through the Eclipse plug-in installer thingy, that weird acting constantly blocking …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/eclipse-tptp-woes-in-ubuntu-and-how-to-solve-it-as-non-root.html"
+                               title="link to Eclipse TPTP woes in Ubuntu and how to solve it as non-root">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/bibentry/"
+                               title="link to LaTeX: inline BibTeX entries with the bibentry package">LaTeX: inline BibTeX entries with the bibentry package</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-07-17T00:00:00+02:00"> on 2009/07/17</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>In the introduction chapter of my PhD dissertation, I had to make a listing of my publications. The obvious brain dead way to achieve this is just typing everything manually in a list. But this feels just so wrong when you're already using BibTeX for managing references and bibliographical stuff …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/bibentry/"
+                               title="link to LaTeX: inline BibTeX entries with the bibentry package">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/javasmp3/"
+                               title="link to Reading MP3 files in Java">Reading MP3 files in Java</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-07-15T00:00:00+02:00"> on 2009/07/15</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>At work, I'm trying out <a href="http://www.elec.qmul.ac.uk/people/simond/beatroot/">BeatRoot</a>, an application written in Java, for its BPM estimation capabilities. The data set I'm working with is encoded in MP3 format and getting this Java tool to work with the MP3 data was not an easy ride.</p>
+<p>Java does not support MP3 en/decoding …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/javasmp3/"
+                               title="link to Reading MP3 files in Java">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/set-x/"
                                title="link to Showing the running command in a bash script with "set -x"">Showing the running command in a bash script with "set -x"</a>
                         </h2>
@@ -133,155 +295,12 @@ I added a date tick locator and a date formatter to the mix as follows:</p>
                     </div>
                 </article>
             </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/setting-global-xfig-defaults-for-working-with-lyxlatex.html"
-                               title="link to Setting global XFig defaults for working with LyX/LaTeX">Setting global XFig defaults for working with LyX/LaTeX</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-05-15T00:00:00+02:00"> on 2009/05/15</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>When making a document with <a href="http://www.lyx.org">Lyx</a> (or LaTeX), 
-I often create figures and diagrams in <a href="http://www.xfig.org/">XFig</a>. 
-I know, Xfig's user interface looks and feels very dated.
-(I tried the Java port <a href="http://tams-www.informatik.uni-hamburg.de/applets/jfig/">JFig</a>, 
-but that one even feels worse to me.) 
-However, the main reason I bite the bullet is that …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/setting-global-xfig-defaults-for-working-with-lyxlatex.html"
-                               title="link to Setting global XFig defaults for working with LyX/LaTeX">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/url-shortening-chain-reaction.html"
-                               title="link to URL shortening chain reaction">URL shortening chain reaction</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-05-13T00:00:00+02:00"> on 2009/05/13</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>You know those <a href="http://en.wikipedia.org/wiki/URL_redirection">URL shortening services</a> like tinyurl.com, is.gd and bit.ly? Here is an example: http://twurl.nl/jvuncl. Looks like a pretty normal shortened URL, right? Now eat this:</p>
-<div class="highlight"><pre><span></span>~/tmp$ wget http://twurl.nl/jvuncl
---13:56:22--  http://twurl.nl/jvuncl
-           =&gt; `jvuncl&#39;
-Resolving twurl.nl …</pre></div>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/url-shortening-chain-reaction.html"
-                               title="link to URL shortening chain reaction">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/subversion-undo-committed-changes.html"
-                               title="link to Subversion: undo committed changes">Subversion: undo committed changes</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-05-12T00:00:00+02:00"> on 2009/05/12</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>How to undo/rollback a Subversion commit? A fairly basic question, but every time I need the answer, I can't manage to remember it from the previous time I did it. Asking Google helps eventually, but the signal to noise ratio of the top hits is a bit disappointing. This …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/subversion-undo-committed-changes.html"
-                               title="link to Subversion: undo committed changes">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/color_highlighted_diffs_with_git_svn_cvs/"
-                               title="link to Color highlighted diffs with git, svn and cvs">Color highlighted diffs with git, svn and cvs</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-05-04T00:00:00+02:00"> on 2009/05/04</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>At first it felt annoying, but now I really like that <a href="http://git-scm.com/">git</a> uses a pager when it has to present something (e.g. a log or a diff) that is longer than your screen. Git even provides a built in option <code>--color</code> to show you a diff with helpful colors …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/color_highlighted_diffs_with_git_svn_cvs/"
-                               title="link to Color highlighted diffs with git, svn and cvs">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/how_to_be_a_better_grepper/"
-                               title="link to How to be a better grepper">How to be a better grepper</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-04-28T00:00:00+02:00"> on 2009/04/28</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>If you're not afraid of a a bit o' Unix/Linux/OSX command line delight, you're probably having <code>grep</code> hanging on your tool belt. </p>
-<p>One option you'll wonder how you could live without is <code>--color</code>, which enables highlighting of the word or pattern you are grepping for. I find it …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/how_to_be_a_better_grepper/"
-                               title="link to How to be a better grepper">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/accented-characters-on-qwerty-keyboard/"
-                               title="link to Accented characters with qwerty keyboard (Ubuntu Linux)">Accented characters with qwerty keyboard (Ubuntu Linux)</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-03-23T00:00:00+01:00"> on 2009/03/23</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>I prefer a qwerty keyboard for programming, but to write in my native language (Dutch) I need sometimes accented characters like &euml;, &iuml;, &eacute;, etc, which do not have dedicated keys on a qwerty layout.</p>
-<p>A handy way under Linux is to use a "compose key" (<code>[Alt Gr]</code> on my …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/accented-characters-on-qwerty-keyboard/"
-                               title="link to Accented characters with qwerty keyboard (Ubuntu Linux)">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
     </ul>
 
     <div class="pager">
             <a href="https://www.stefaanlippens.net/category/misc4.html">&laquo; previous</a>
 
-        page 5 / 11
+        page 5 / 12
 
             <a href="https://www.stefaanlippens.net/category/misc6.html">next &raquo;</a>
     </div>
