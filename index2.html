@@ -41,6 +41,35 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/quick-and-easy-tag-cloud-in-pelican.html"
+                               title="link to Quick and easy tag cloud in Pelican">Quick and easy tag cloud in Pelican</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2016-09-28T00:00:00+02:00"> on 2016/09/28</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Here's a quick (and dirty?) trick to create a tag cloud 
+in <a href="http://getpelicam.com">Pelican</a>
+without plugins and minimal amount of code.</p>
+<p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag's article count
+to a CSS <code>font-size</code> value. For example like this:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="n">JINJA_FILTERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;count_to_font_size&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="s1">&#39;{p:.1f …</span></pre></div>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/quick-and-easy-tag-cloud-in-pelican.html"
+                               title="link to Quick and easy tag cloud in Pelican">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/switching-my-blog-to-pelican.html"
                                title="link to Switching my blog to Pelican">Switching my blog to Pelican</a>
                         </h2>
@@ -266,35 +295,6 @@ in a way you can manipulate?</p>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/python-determine-installation-prefix.html"
                                title="link to Python: determine installation prefix">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/python-asynchronous-subprocess-pipe-reading/"
-                               title="link to Python trick: asynchronously reading subprocess pipes">Python trick: asynchronously reading subprocess pipes</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2012-03-09T00:00:00+01:00"> on 2012/03/09</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p><em>Update:</em> I reworked the code below a bit and put it on 
-<a href="https://github.com/soxofaan/asynchronousfilereader">github</a> and 
-<a href="https://pypi.python.org/pypi/asynchronousfilereader">pypi</a> to make it
-pip installable</p>
-<p>As its name suggests, the Python
- <a href="http://docs.python.org/library/subprocess.html">subprocess</a> allows you 
- to spawn a child/sub process and keep an eye on its standard output 
- through a pipe for example. Very handy …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/python-asynchronous-subprocess-pipe-reading/"
-                               title="link to Python trick: asynchronously reading subprocess pipes">Read more</a>
                         </div>
                     </div>
                 </article>
