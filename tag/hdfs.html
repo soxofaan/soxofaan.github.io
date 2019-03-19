@@ -3,7 +3,7 @@
 <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>hive - Stefaan Lippens inserts content here</title>
+        <title>hdfs - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -32,7 +32,7 @@
     </nav>
 
     <header class="page-header">
-    <h1>Articles tagged<br />&ldquo;hive&rdquo;</h1>
+    <h1>Articles tagged<br />&ldquo;hdfs&rdquo;</h1>
     </header>
 
     <main class="content">
@@ -41,25 +41,27 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/hiveserver2-impersonation-issues.html"
-                               title="link to HiveServer2 User Impersonation Issues">HiveServer2 User Impersonation Issues</a>
+                            <a href="https://www.stefaanlippens.net/hadoop-getmerge-spark-partitioned-csv.html"
+                               title="link to Header duplication in Spark partitioned CSV files">Header duplication in Spark partitioned CSV files</a>
                         </h2>
                         <div class="article-meta">
                                     <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2019-02-16T00:00:00+01:00"> on 2019/02/16</span>
+        <span class="publication-date" title="2019-03-19T00:00:00+01:00"> on 2019/03/19</span>
 
                         </div>
                     </header>
                     <div class="article-content article-summary">
-                        <p>While setting up Apache Hive, HiveServer2 and Beeline (using vanilla packages
-instead of some  kind of prepackaged Hadoop distribution), 
-I struggled with some permission/user related problems. 
-The error message I got stuck with was something like this:</p>
-<div class="highlight"><pre><span></span>org.apache.hadoop.security.authorize.AuthorizationException
-User: hive is not allowed to …</pre></div>
+                        <p>You are writing a Spark DataFrame to a CSV file with header line on HDFS.</p>
+<div class="highlight"><pre><span></span>df.write.csv(&#39;output_folder&#39;, header=True)
+</pre></div>
+
+
+<p>Because your DataFrame is partitioned, you get multiple CSV files
+in your output folder. Each file will get a header with column names.</p>
+<p>So far so good, but now …</p>
                         <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/hiveserver2-impersonation-issues.html"
-                               title="link to HiveServer2 User Impersonation Issues">Read more</a>
+                            <a href="https://www.stefaanlippens.net/hadoop-getmerge-spark-partitioned-csv.html"
+                               title="link to Header duplication in Spark partitioned CSV files">Read more</a>
                         </div>
                     </div>
                 </article>

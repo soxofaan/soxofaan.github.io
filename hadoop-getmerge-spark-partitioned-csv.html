@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Header duplication in Spark partitioned CSV files - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="hadoop"/>
+        <meta name="tags" contents="hdfs"/>
+        <meta name="tags" contents="spark"/>
+        <meta name="tags" contents="csv"/>
+        <meta name="tags" contents="pandas"/>
+        <meta name="tags" contents="awk"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Header duplication in Spark partitioned CSV files</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2019-03-19T00:00:00+01:00"> on 2019/03/19</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/hadoop.html">hadoop</a>,                    <a href="https://www.stefaanlippens.net/tag/hdfs.html">hdfs</a>,                    <a href="https://www.stefaanlippens.net/tag/spark.html">spark</a>,                    <a href="https://www.stefaanlippens.net/tag/csv.html">csv</a>,                    <a href="https://www.stefaanlippens.net/tag/pandas.html">pandas</a>,                    <a href="https://www.stefaanlippens.net/tag/awk.html">awk</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>You are writing a Spark DataFrame to a CSV file with header line on HDFS.</p>
+<div class="highlight"><pre><span></span>df.write.csv(&#39;output_folder&#39;, header=True)
+</pre></div>
+
+
+<p>Because your DataFrame is partitioned, you get multiple CSV files
+in your output folder. Each file will get a header with column names.</p>
+<p>So far so good, but now you want to dump that to a single local CSV file.
+The straightforward way is using HDFS's <code>getmerge</code>, which will concatenate
+all the files to a local file:</p>
+<div class="highlight"><pre><span></span>hadoop fs -getmerge output_folder result.csv
+</pre></div>
+
+
+<p>Unfortunately, because <code>getmerge</code> just concatenates the HDFS files,
+the CSV header will be repeated in various places in the output file.
+This will cause quite some headaches when loading the data
+in tools like for example pandas.</p>
+<p>A typical solution is making sure that the DataFrame has only a single
+partition before writing to HDFS, so that there is only a single output file:</p>
+<div class="highlight"><pre><span></span>df.coalesce(1).write.csv(&#39;output_folder&#39;, header=True)
+</pre></div>
+
+
+<p>But sometimes you can not or don't want to repartition the DataFrame before
+writing to HDFS (e.g. to avoid memory issues).
+For these cases you can use the following little awk snippet
+to get rid of duplicated header lines in your CSV file:</p>
+<div class="highlight"><pre><span></span>awk &#39;BEGIN{f=&quot;&quot;}{if($0!=f){print $0}if(NR==1){f=$0}}&#39; result.csv &gt; postprocessed.csv
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2019
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4807787-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</html>
