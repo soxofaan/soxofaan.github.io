@@ -41,6 +41,49 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Python: hiding attribute getters and setters behind standard attribute access</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-22T00:00:00+02:00"> on 2009/09/22</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Look at this small snippet of Python code:</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+
+<p>Seems like nothing special, but look what it spits out:</p>
+<div class="highlight"><pre><span></span>20
+foofoo
+[1, 2, 3, 1, 2, 3]
+</pre></div>
+
+
+<p>Oh my …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/jython_and_pythonpath/"
                                title="link to Jython and PYTHONPATH">Jython and PYTHONPATH</a>
                         </h2>
@@ -268,28 +311,6 @@ Handy for logging or debugging purposes. A simple script to illustrate:</p>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/scipy_unscaledimsave/"
                                title="link to Saving of images in scipy and preventing dynamic range rescaling">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/opendocumentpython/"
-                               title="link to Reading OpenDocument office files from Python">Reading OpenDocument office files from Python</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2006-01-20T00:00:00+01:00"> on 2006/01/20</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>The <a href="http://en.wikipedia.org/wiki/Opendocument">OpenDocument file format</a>  (aka "<a href="http://www.oasis-open.org">OASIS</a> Open Document Format for Office Applications"), is an open and free standard for office files. It's fairly easy to read OpenDocument files in/from <a href="http://www.python.org">Python</a>. Basicly, an OpenDocument file is just a zip archive but with another extension (".ods" spreadsheets, ".odt" for text documents …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/opendocumentpython/"
-                               title="link to Reading OpenDocument office files from Python">Read more</a>
                         </div>
                     </div>
                 </article>

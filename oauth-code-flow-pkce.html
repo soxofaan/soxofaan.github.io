@@ -3,7 +3,7 @@
 <head>
             <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>Custom D3.js Visualization in a Jupyter Notebook - Stefaan Lippens inserts content here</title>
+        <title>Step by Step OAuth 2.0 Authorization Code Flow with PKCE - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -15,8 +15,10 @@
 
 
 
-        <meta name="tags" contents="jupyter"/>
-        <meta name="tags" contents="d3.js"/>
+        <meta name="tags" contents="OAuth"/>
+        <meta name="tags" contents="OpenID Connect"/>
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="HTTP"/>
 </head>
 
 <body>
@@ -37,16 +39,16 @@
     </nav>
 
     <header class="page-header">
-    <h1>Custom D3.js Visualization in a Jupyter Notebook</h1>
+    <h1>Step by Step OAuth 2.0 Authorization Code Flow with PKCE</h1>
 
     <div class="article-meta">
                 <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2018-05-11T00:00:00+02:00"> on 2018/05/11</span>
+        <span class="publication-date" title="2019-09-24T00:00:00+02:00"> on 2019/09/24</span>
 
 
             <div class="tags">
                 Tagged:
-                    <a href="https://www.stefaanlippens.net/tag/jupyter.html">jupyter</a>,                    <a href="https://www.stefaanlippens.net/tag/d3js.html">d3.js</a>            </div>
+                    <a href="https://www.stefaanlippens.net/tag/oauth.html">OAuth</a>,                    <a href="https://www.stefaanlippens.net/tag/openid-connect.html">OpenID Connect</a>,                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/http.html">HTTP</a>            </div>
     </div>
 
     </header>
@@ -1031,34 +1033,13 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>TL;DR: If you want to skip the detailed mumbo jumbo, go straight to the code example in the <a href="#All-together-now">conclusion</a>.</p>
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>When doing data science in a Jupyter notebook, there are plenty 
-of options for the standard data visualization needs:
-matplotlib, pandas, seaborn, bokeh, etc. 
-Occasionally you might be stuck in a situation where you can not 
-easily express the desired visualization with the 
-standard vocabulary provided by these tools.
-In these cases I like to leverage the flexibility
-of <a href="https://d3js.org/">D3.js</a> to build a custom graph or diagram.</p>
-<p>In this article, I'll discuss an approach how to 
-implement a <strong>custom do-it-yourself D3.js visualization</strong> in a <strong>Jupyter Notebook</strong>.
-This topic is covered in some other places around the web,
-but I couldn't find a complete approach that
-connects all the dots and isn't too hackish.</p>
-<p>In particular, I'll try to keep these things in mind here:</p>
-<ul>
-<li>Leverage the <a href="http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/JavaScript%20Notebook%20Extensions.html">existing Jupyter functionality</a>,
-like a <a href="http://requirejs.org/">RequireJS</a> environment 
-to have clean dependency handling 
-and to avoid <code>&lt;script src="..."&gt;</code> loading/order headaches.</li>
-<li>No additional packages or dependencies to install</li>
-<li>The visualisation should work both in an interactive notebook context
-and in the exported HTML version.</li>
-<li>Avoid the typical D3.js boilerplate to insert the drawing at the desired
-location (insert a <code>&lt;div id="..."&gt;</code> in the markup and use the corresponding id in the javascript code).
-Keeping these id's properly in sync is annoying to maintain, 
-especially if you iterate a lot or want multiple drawings in the same notebook.</li>
-</ul>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>The last days I spent quite a bit of time reading up on <em>OAuth2</em> and <em>OpenID Connect</em>. There are a lot of pointers online on this topic, but unfortunately it's not easy to find easy digestible explanations.
+In case you are still in an unenlighted state and you don't want to read all those dry RFC documents, I can highly recommend the talk <a href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a> by Nate Barbettini, which gives a very good introduction of OAuth2, OpenID Connect and how they should be used for authentication and authorization.</p>
+<p>When I was looking into the <em>OAuth Implicit flow</em> to use OpenID Connect in a sort of Single Page Application setup, I quickly stumbled on articles recommending against the implicit flow because of security issues. Instead, one should use the <strong>authorization code flow with PKCE</strong> ("Proof Key for Code Exchange" and apparently to be pronounced as "pixy"). PKCE replaces the static secret used in the authorization flow with a temporary one-time challenge, making it feasible to use in public clients.</p>
+<h2 id="Step-by-step-walkthrough-in-Python">Step by step walkthrough in Python<a class="anchor-link" href="#Step-by-step-walkthrough-in-Python">&#182;</a></h2><p>In this notebook, I will dive into the <em>OAuth 2.0 Authorization Code flow with PKCE</em> step by step in Python, using a local Keycloak setup as authorization provider.
+Basic knowledge about OAuth flows and PKCE is assumed, as the discussion will not go into much theoretical details.
+There is already enough material online on this, written by more knowledgeable people. 
+The focus lies on practical, step by step low-level HTTP operations. We wont even use an actual browser nor need an actual HTTP server for the redirect URL.</p>
 
 </div>
 </div>
@@ -1067,190 +1048,8 @@ especially if you iterate a lot or want multiple drawings in the same notebook.<
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-basics-with-inline-%%javascript-snippets">The basics with inline <code>%%javascript</code> snippets<a class="anchor-link" href="#The-basics-with-inline-%%javascript-snippets">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To cover the basics, let's start simple with just inline <code>%%javascript</code> snippet cells.</p>
-<p>First, we tell the RequireJS environment where to find the version of D3.js we want.
-Note that the <code>.js</code> extension is <a href="http://requirejs.org/docs/api.html#config-paths">omitted</a> in the URL.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
-        <span class="nx">d3</span><span class="o">:</span> <span class="s1">&#39;https://d3js.org/d3.v5.min&#39;</span>
-    <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="59b13f25-3c42-461a-875a-dbae35a37792"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#59b13f25-3c42-461a-875a-dbae35a37792');
-require.config({
-    paths: {
-        d3: 'https://d3js.org/d3.v5.min'
-    }
-});
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We can now create a D3.js powered SVG drawing, for example as follows:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">require</span><span class="p">([</span><span class="s1">&#39;d3&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d3</span><span class="p">)</span> <span class="p">{</span>   
-        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-        <span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
-        <span class="nx">svg</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s1">&#39;circle&#39;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">enter</span><span class="p">()</span>
-            <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;circle&#39;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;cx&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="mi">40</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);})</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;cy&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);})</span>
-            <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;#1570a4&quot;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">transition</span><span class="p">().</span><span class="nx">duration</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="nx">d</span><span class="p">;})</span>
-        <span class="p">;</span>
-    <span class="p">})</span>
-<span class="p">})(</span><span class="nx">element</span><span class="p">);</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="84e8981d-6f07-4fc7-a81b-9618ba13cf1c"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#84e8981d-6f07-4fc7-a81b-9618ba13cf1c');
-(function(element) {
-    require(['d3'], function(d3) {   
-        var data = [1, 2, 4, 8, 16, 8, 4, 2, 1]
-
-        var svg = d3.select(element.get(0)).append('svg')
-            .attr('width', 400)
-            .attr('height', 200);
-        svg.selectAll('circle')
-            .data(data)
-            .enter()
-            .append('circle')
-            .attr("cx", function(d, i) {return 40 * (i + 1);})
-            .attr("cy", function(d, i) {return 100 + 30 * (i % 3 - 1);})
-            .style("fill", "#1570a4")
-            .transition().duration(2000)
-            .attr("r", function(d) {return 2*d;})
-        ;
-    })
-})(element);
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Note:</p>
-<ul>
-<li>We leverage RequireJS to hand us a loaded <code>d3</code> library in a closure.</li>
-<li>The SVG drawing is appended to the current output cell:<ul>
-<li><code>element</code> is the jQuery powered wrapper for this</li>
-<li><code>element.get(0)</code> is the DOM node itself that can be handed to <code>d3.select()</code></li>
-</ul>
-</li>
-<li>The <code>element</code> variable is a global variable and overwritten on each rendering of a Javascript cell, so to make sure we capture the correct <code>element</code> inside our D3.js code (which could be executed in a different context), we wrap the whole thing in a closure.</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="And-now,-the-real-work">And now, the real work<a class="anchor-link" href="#And-now,-the-real-work">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Unless you're just toying around with simple visualizations,
-these D3.js scripts can get very extensive,
-which is not very ideal to work on directly in a interactive notebook.
-You probably want to develop the D3.js script in an editor or IDE 
-that gives you a bit more code intelligence.</p>
-<p>Let's cover how to get things working with an separate <code>.js</code> script
-and, additionally, with data that is initially defined or constructed in Python.</p>
-<p>First, we'll need these imports:</p>
+<h2 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h2><p>We don't require special libraries, just the standard library will do, 
+except for the well known <code>requests</code> library to make the HTTP operations a bit simpler.</p>
 
 </div>
 </div>
@@ -1260,8 +1059,14 @@ and, additionally, with data that is initially defined or constructed in Python.
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">HTML</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">html</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
 
 </div>
@@ -1273,7 +1078,20 @@ and, additionally, with data that is initially defined or constructed in Python.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>and we set up the RequireJS search path (repeated here for completeness)</p>
+<p>We need an OAuth/OpenID Connect provider obviously. Let's run a local instance of <a href="https://www.keycloak.org/">Keycloak</a> through docker, for example as follows:</p>
+
+<pre><code>docker run --rm -it -p 9090:8080 \
+    -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin \
+    jboss/keycloak:7.0.0
+
+</code></pre>
+<p>A detailed discussion of Keycloak is a bit out of scope for this walkthrough.
+The most important information is that it will act as an OAuth/OpenID Connect provider.
+Through the administration console (a <a href="http://localhost:9090/auth/admin/">http://localhost:9090/auth/admin/</a>), we:</p>
+<ul>
+<li>set up a client "pkce-test" (in the "master" realm) with access type "public" (to be able to use PKCE) and the catch-all "*" as valid redirect URIs (which is a required field).</li>
+<li>create a user "john" with non-temporary password.</li>
+</ul>
 
 </div>
 </div>
@@ -1283,44 +1101,14 @@ and, additionally, with data that is initially defined or constructed in Python.
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span> 
-        <span class="nx">d3</span><span class="o">:</span> <span class="s1">&#39;https://d3js.org/d3.v5.min&#39;</span>
-    <span class="p">}</span>
-<span class="p">});</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">provider</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:9090/auth/realms/master&quot;</span>
+<span class="n">client_id</span> <span class="o">=</span> <span class="s2">&quot;pkce-test&quot;</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;john&quot;</span>
+<span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;j0hn&quot;</span>
+<span class="n">redirect_uri</span> <span class="o">=</span> <span class="s2">&quot;http://localhost/foobar&quot;</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="e9e785f8-18ae-4283-b431-eaba7c74715e"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#e9e785f8-18ae-4283-b431-eaba7c74715e');
-require.config({
-    paths: { 
-        d3: 'https://d3js.org/d3.v5.min'
-    }
-});
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -1329,23 +1117,17 @@ require.config({
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's say we have a script <code>circles.js</code> that implements a certain visualisation, rougly with this structure:</p>
+<h2 id="Connect-to-authentication-provider">Connect to authentication provider<a class="anchor-link" href="#Connect-to-authentication-provider">&#182;</a></h2><p>The first phase of the flow is to connect to the OAuth/OpenID Connect provider and authenticate.
+For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 
-<pre><code>define('circles', ['d3'], function (d3) {
-    function draw(container, data) {
-        var svg = d3.select(container).append("svg");
-        // D3.js drawing stuff here ...
-    }
-    return draw;
-});
-
-</code></pre>
-<p>In addition to declaring a dependency on the <code>d3</code> library like before, we now <code>define</code> a "module" called <code>circles</code>. 
-This explicit naming is <a href="http://requirejs.org/docs/api.html#modulename">not the standard RequireJS</a> way, 
-but we have to do it because we will embed the Javascript code in the HTML document directly, instead of loading the file with a separate request.
-For simplicity, the defined module is just a single function (internally called <code>draw</code>), 
-which expects a container to append the SVG element to and a data object.</p>
-<p>Assuming that this script <code>circles.js</code> lives alongside the notebook file, we can inject the javascript code in the notebook like this:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="PKCE-code-verifier-and-challenge">PKCE code verifier and challenge<a class="anchor-link" href="#PKCE-code-verifier-and-challenge">&#182;</a></h3><p>We need a <em>code verifier</em>, which is a long enough random alphanumeric string, only to be used "client side". We'll use a simple urandom/base64 trick to generate one:</p>
 
 </div>
 </div>
@@ -1355,7 +1137,9 @@ which expects a container to append the SVG element to and a data object.</p>
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Javascript</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;circles.js&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">code_verifier</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">40</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">code_verifier</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^a-zA-Z0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">code_verifier</span><span class="p">)</span>
+<span class="n">code_verifier</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">code_verifier</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1373,61 +1157,8 @@ which expects a container to append the SVG element to and a data object.</p>
 
 
 
-
-<div id="3b5ae0c1-bddb-422b-a52b-0d5329e02415"></div>
-<div class="output_subarea output_javascript output_execute_result">
-<script type="text/javascript">
-var element = $('#3b5ae0c1-bddb-422b-a52b-0d5329e02415');
-// First undefine 'circles' so we can easily reload this file.
-require.undef('circles');
-
-define('circles', ['d3'], function (d3) {
-
-    function draw(container, data, width, height) {
-        width = width || 600;
-        height = height || 200;
-        var svg = d3.select(container).append("svg")
-            .attr('width', width)
-            .attr('height', height)
-            .append("g");
-
-        var x = d3.scaleLinear()
-            .domain([0, data.length - 1])
-            .range([50, width - 50]);
-
-        var circles = svg.selectAll('circle').data(data);
-
-        circles.enter()
-            .append('circle')
-            .attr("cx", function (d, i) {return x(i);})
-            .attr("cy", height / 2)
-            .attr("r", 20)
-            .style("fill", "#1f77b4")
-            .style("opacity", 0.7)
-            .on('mouseover', function() {
-                d3.select(this)
-                  .interrupt('fade')
-                  .style('fill', '#ff850e')
-                  .style("opacity", 1)
-                  .attr("r", function (d) {return 1.1 * d + 10;});
-            })
-            .on('mouseout', function() {
-                d3.select(this)
-                    .transition('fade').duration(500)
-                    .style("fill", "#1f77b4")
-                    .style("opacity", 0.7)
-                    .attr("r", function (d) {return d;});
-            })
-            .transition().duration(2000)
-            .attr("r", function (d) {return d;});
-    }
-
-    return draw;
-});
-
-element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x25CE; &#x25CF;</small>');
-
-</script>
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;bH21EpCsRcdTX7n6qLzEs7N5IiN5yDC1amVGJQCwdZIdb7EzQVJA&#39;, 52)</pre>
 </div>
 
 </div>
@@ -1440,7 +1171,108 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now, we define some data in Python space:</p>
+<p>To create the PKCE <em>code challenge</em> we hash the code verifier with SHA256 and encode the result in URL-safe base64 (without padding)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">code_challenge</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">code_verifier</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+<span class="n">code_challenge</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">code_challenge</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">code_challenge</span> <span class="o">=</span> <span class="n">code_challenge</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">code_challenge</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">code_challenge</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&#39;hjooUY_1tBlE_dBuCKGUK8XuSRrc_zNByH-roC5sIXA&#39;, 43)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Request-login-page">Request login page<a class="anchor-link" href="#Request-login-page">&#182;</a></h3><p>We now have all the pieces for the initial request, which will give us the login page of the authentication provider. Adding the <em>code challenge</em> signals to the OAuth provider that we are expecting the PKCE based flow.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;fooobarbaz&quot;</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="n">provider</span> <span class="o">+</span> <span class="s2">&quot;/protocol/openid-connect/auth&quot;</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;response_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_id&quot;</span><span class="p">:</span> <span class="n">client_id</span><span class="p">,</span>
+        <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;openid&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;redirect_uri&quot;</span><span class="p">:</span> <span class="n">redirect_uri</span><span class="p">,</span>
+        <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
+        <span class="s2">&quot;code_challenge&quot;</span><span class="p">:</span> <span class="n">code_challenge</span><span class="p">,</span>
+        <span class="s2">&quot;code_challenge_method&quot;</span><span class="p">:</span> <span class="s2">&quot;S256&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">status_code</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>200</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Parse-login-page-(response)">Parse login page (response)<a class="anchor-link" href="#Parse-login-page-(response)">&#182;</a></h3><p>Get cookie data from response headers (requires a bit of manipulation).</p>
 
 </div>
 </div>
@@ -1450,10 +1282,32 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cookie</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Set-Cookie&#39;</span><span class="p">]</span>
+<span class="n">cookie</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cookie</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">))</span>
+<span class="n">cookie</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;AUTH_SESSION_ID=af09d80d-9901-445f-b789-c6dfa33ec175.4a821131b1a5; KC_RESTART=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwZjBlNjZiZS1hOWNkLTRhMjktODdiNS00NTAwMGZjYzk1NjcifQ.eyJjaWQiOiJwa2NlLXRlc3QiLCJwdHkiOiJvcGVuaWQtY29ubmVjdCIsInJ1cmkiOiJodHRwOi8vbG9jYWxob3N0L2Zvb2JhciIsImFjdCI6IkFVVEhFTlRJQ0FURSIsIm5vdGVzIjp7InNjb3BlIjoib3BlbmlkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL2F1dGgvcmVhbG1zL21hc3RlciIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiY29kZV9jaGFsbGVuZ2VfbWV0aG9kIjoiUzI1NiIsInJlZGlyZWN0X3VyaSI6Imh0dHA6Ly9sb2NhbGhvc3QvZm9vYmFyIiwic3RhdGUiOiJmb29vYmFyYmF6IiwiY29kZV9jaGFsbGVuZ2UiOiJoam9vVVlfMXRCbEVfZEJ1Q0tHVUs4WHVTUnJjX3pOQnlILXJvQzVzSVhBIn19.fh7zYDiNvXtZrzAW9mfDp1PgoSkIWm_zZhQvZHPZ2NM&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1462,7 +1316,8 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>And we draw the circles like this:</p>
+<p>Extract the login URL to post to from the page HTML code.
+Because the the Keycloak login page is straightforward HTML we can get away with some simple regexes.</p>
 
 </div>
 </div>
@@ -1472,13 +1327,9 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">(function(element){</span>
-<span class="s2">    require([&#39;circles&#39;], function(circles) {</span>
-<span class="s2">        circles(element.get(0), </span><span class="si">%s</span><span class="s2">)</span>
-<span class="s2">    });</span>
-<span class="s2">})(element);</span>
-<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">page</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span>
+<span class="n">form_action</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;form\s+.*?\s+action=&quot;(.*?)&quot;&#39;</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">form_action</span>
 </pre></div>
 
 </div>
@@ -1496,19 +1347,8 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 
 
 
-
-<div id="aea7ef35-a42b-461d-9452-062229e4e4aa"></div>
-<div class="output_subarea output_javascript output_execute_result">
-<script type="text/javascript">
-var element = $('#aea7ef35-a42b-461d-9452-062229e4e4aa');
-
-(function(element){
-    require(['circles'], function(circles) {
-        circles(element.get(0), [5, 10, 20, 40, 50, 30, 10, 20, 40, 10, 5])
-    });
-})(element);
-
-</script>
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;http://localhost:9090/auth/realms/master/login-actions/authenticate?session_code=CVE8m4drDjMKiwNLmEYR_iHsIoPIn45X9xBM38-U3Fc&amp;execution=368ecffb-b7a2-4c42-a339-53a88db0b897&amp;client_id=pkce-test&amp;tab_id=BkeNO89TWqw&#39;</pre>
 </div>
 
 </div>
@@ -1521,14 +1361,7 @@ var element = $('#aea7ef35-a42b-461d-9452-062229e4e4aa');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Note:</p>
-<ul>
-<li>We use RequireJS again to get our <code>circles</code> "module" which is just our drawing function</li>
-<li>The container to add the drawing to is <code>element.get(0)</code> as discussed above</li>
-<li>We convert the data to JSON and inject it in the <code>circles</code> function call in Javascript. For simplicity, I used basic Python string formatting with <code>%</code>, but other templating solutions are possible of course.</li>
-<li>If you want multiple drawings for different data sets, you probably want to put the <code>Javascript</code> thing in a reusable function. Don't forget to return the <code>Javascript</code> object so it rendered properly.</li>
-</ul>
-
+<h3 id="Do-the-login-(aka-authenticate)">Do the login (aka authenticate)<a class="anchor-link" href="#Do-the-login-(aka-authenticate)">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -1536,25 +1369,7 @@ var element = $('#aea7ef35-a42b-461d-9452-062229e4e4aa');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Some-additional-practical-details">Some additional practical details<a class="anchor-link" href="#Some-additional-practical-details">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Add-CSS">Add CSS<a class="anchor-link" href="#Add-CSS">&#182;</a></h3><p>Apart from your D3.js script, you usually also want to add some custom CSS to the mix, preferably in a separate file as well. Define the CSS in a HTML file, e.g. <code>circles.css.html</code> as follows</p>
-
-<pre><code>&lt;style&gt;
-svg circle {
-  stroke: #16527b;
-  stroke-width: 1px;
-}
-&lt;/style&gt;
-
-</code></pre>
-<p>and load it like this:</p>
+<p>Now, we post the login form with the user we created earlier, passing it the extracted cookie as well.</p>
 
 </div>
 </div>
@@ -1564,7 +1379,16 @@ svg circle {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;circles.css.html&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="n">form_action</span><span class="p">,</span> 
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+    <span class="p">},</span> 
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Cookie&quot;</span><span class="p">:</span> <span class="n">cookie</span><span class="p">},</span>
+    <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">status_code</span>
 </pre></div>
 
 </div>
@@ -1581,14 +1405,9 @@ svg circle {
 
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<style>
-svg circle {
-  stroke: #16527b;
-  stroke-width: 1px;
-}
-</style>
 
+<div class="output_text output_subarea output_execute_result">
+<pre>302</pre>
 </div>
 
 </div>
@@ -1601,42 +1420,7 @@ svg circle {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Easy-reloading">Easy reloading<a class="anchor-link" href="#Easy-reloading">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Reloading the code from the separate script while developing can be very cumbersome. RequireJS will not automatically "reload" a module that is already defined. For a full hard refresh you should: clear the output of the <code>Javascript(filename=..)</code> cell (or clear all outputs of the whole notebook), save the notebook and refresh the page in your browser.</p>
-<p>Luckily there is a much easier way using <a href="http://requirejs.org/docs/api.html#undef"><code>require.undef</code></a>. Put it at the top of the script file, before the <code>define</code> to "unload" the module before redefining it again. In our example:</p>
-
-<pre><code>require.undef('circles');
-
-define('circles', ['d3'], function (d3) {
-    // ...
-});
-
-</code></pre>
-<p>Now you just have the re-execute the <code>Javascript(filename=..)</code> cell and the code will be reloaded, which is a lot more intuitive during development.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="All-together-now">All together now<a class="anchor-link" href="#All-together-now">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To conclude, all the bits together, in a more compact way.</p>
+<p>As expected we are forwarded, let's get the redirect URL.</p>
 
 </div>
 </div>
@@ -1646,11 +1430,31 @@ define('circles', ['d3'], function (d3) {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">HTML</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">redirect</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Location&#39;</span><span class="p">]</span>
+<span class="n">redirect</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;http://localhost/foobar?state=fooobarbaz&amp;session_state=af09d80d-9901-445f-b789-c6dfa33ec175&amp;code=478296a3-c3ea-4a2f-bd2e-69f3181fb78c.af09d80d-9901-445f-b789-c6dfa33ec175.294e60a6-9596-406b-9eae-1912aebe04dd&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1660,9 +1464,39 @@ define('circles', ['d3'], function (d3) {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;require.config({paths: {d3: &#39;https://d3js.org/d3.v5.min&#39;}});&quot;</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;circles.js&quot;</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;circles.css.html&quot;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">redirect</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">redirect_uri</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Extract-authorization-code-from-redirect">Extract authorization code from redirect<a class="anchor-link" href="#Extract-authorization-code-from-redirect">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The redirect URL contains the authentication code.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">redirect</span><span class="p">)</span><span class="o">.</span><span class="n">query</span>
+<span class="n">redirect_params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qs</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="n">redirect_params</span>
 </pre></div>
 
 </div>
@@ -1675,126 +1509,19 @@ define('circles', ['d3'], function (d3) {
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[11]:</div>
 
 
 
 
-
-<div id="09297433-f5b0-4ebb-8c53-785c058fff1b"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#09297433-f5b0-4ebb-8c53-785c058fff1b');
-require.config({paths: {d3: 'https://d3js.org/d3.v5.min'}});
-</script>
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;code&#39;: [&#39;478296a3-c3ea-4a2f-bd2e-69f3181fb78c.af09d80d-9901-445f-b789-c6dfa33ec175.294e60a6-9596-406b-9eae-1912aebe04dd&#39;],
+ &#39;session_state&#39;: [&#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;],
+ &#39;state&#39;: [&#39;fooobarbaz&#39;]}</pre>
 </div>
 
 </div>
 
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="b54e7337-7d2a-4b07-b488-3c2d6ba737e2"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#b54e7337-7d2a-4b07-b488-3c2d6ba737e2');
-// First undefine 'circles' so we can easily reload this file.
-require.undef('circles');
-
-define('circles', ['d3'], function (d3) {
-
-    function draw(container, data, width, height) {
-        width = width || 600;
-        height = height || 200;
-        var svg = d3.select(container).append("svg")
-            .attr('width', width)
-            .attr('height', height)
-            .append("g");
-
-        var x = d3.scaleLinear()
-            .domain([0, data.length - 1])
-            .range([50, width - 50]);
-
-        var circles = svg.selectAll('circle').data(data);
-
-        circles.enter()
-            .append('circle')
-            .attr("cx", function (d, i) {return x(i);})
-            .attr("cy", height / 2)
-            .attr("r", 20)
-            .style("fill", "#1f77b4")
-            .style("opacity", 0.7)
-            .on('mouseover', function() {
-                d3.select(this)
-                  .interrupt('fade')
-                  .style('fill', '#ff850e')
-                  .style("opacity", 1)
-                  .attr("r", function (d) {return 1.1 * d + 10;});
-            })
-            .on('mouseout', function() {
-                d3.select(this)
-                    .transition('fade').duration(500)
-                    .style("fill", "#1f77b4")
-                    .style("opacity", 0.7)
-                    .attr("r", function (d) {return d;});
-            })
-            .transition().duration(2000)
-            .attr("r", function (d) {return d;});
-    }
-
-    return draw;
-});
-
-element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x25CE; &#x25CF;</small>');
-
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<style>
-svg circle {
-  stroke: #16527b;
-  stroke-width: 1px;
-}
-</style>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">draw_circles</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">):</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        (function(element){</span>
-<span class="s2">            require([&#39;circles&#39;], function(circles) {</span>
-<span class="s2">                circles(element.get(0), </span><span class="si">%s</span><span class="s2">, </span><span class="si">%d</span><span class="s2">, </span><span class="si">%d</span><span class="s2">);</span>
-<span class="s2">            });</span>
-<span class="s2">        })(element);</span>
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)))</span>
-</pre></div>
-
-</div>
 </div>
 </div>
 
@@ -1804,7 +1531,8 @@ svg circle {
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">draw_circles</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">auth_code</span> <span class="o">=</span> <span class="n">redirect_params</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">auth_code</span>
 </pre></div>
 
 </div>
@@ -1817,24 +1545,13 @@ svg circle {
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[12]:</div>
 
 
 
 
-
-<div id="0ac4b3c7-ceb3-4856-be90-1ae9243bb3a8"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#0ac4b3c7-ceb3-4856-be90-1ae9243bb3a8');
-
-        (function(element){
-            require(['circles'], function(circles) {
-                circles(element.get(0), [10, 60, 40, 5, 30, 10], 500, 200);
-            });
-        })(element);
-    
-</script>
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;478296a3-c3ea-4a2f-bd2e-69f3181fb78c.af09d80d-9901-445f-b789-c6dfa33ec175.294e60a6-9596-406b-9eae-1912aebe04dd&#39;</pre>
 </div>
 
 </div>
@@ -1847,10 +1564,244 @@ var element = $('#0ac4b3c7-ceb3-4856-be90-1ae9243bb3a8');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="References">References<a class="anchor-link" href="#References">&#182;</a></h2><ul>
-<li><a href="https://github.com/soxofaan/jupyter-playground/tree/master/jupyter-custom-d3-visualization">Source of this notebook on GitHub</a></li>
-<li><a href="https://nbviewer.jupyter.org/github/soxofaan/jupyter-playground/blob/master/jupyter-custom-d3-visualization/jupyter-custom-d3-visualization.ipynb">This notebook in NBViewer</a></li>
-</ul>
+<h2 id="Exchange-authorization-code-for-an-access-token">Exchange authorization code for an access token<a class="anchor-link" href="#Exchange-authorization-code-for-an-access-token">&#182;</a></h2><p>We can now exchange the authorization code for an access token. In the normal OAuth authorization flow we should include a static secret here, but instead we provide the <em>code verifier</em> here which acts proof that the initial request was done by us.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="n">provider</span> <span class="o">+</span> <span class="s2">&quot;/protocol/openid-connect/token&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;grant_type&quot;</span><span class="p">:</span> <span class="s2">&quot;authorization_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_id&quot;</span><span class="p">:</span> <span class="n">client_id</span><span class="p">,</span>
+        <span class="s2">&quot;redirect_uri&quot;</span><span class="p">:</span> <span class="n">redirect_uri</span><span class="p">,</span>
+        <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">auth_code</span><span class="p">,</span>
+        <span class="s2">&quot;code_verifier&quot;</span><span class="p">:</span> <span class="n">code_verifier</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">status_code</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>200</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the response we get, among others, the access token and id token:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">result</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;access_token&#39;: &#39;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjd05fNm5WaEQyM0U4WWVnUGJob1pBU2c2Ynd4a2ktSkNsMHJlWFdJUEE4In0.eyJqdGkiOiIyZDA3OTBhNS1hNjMwLTQ2MDYtOTI5Ni1kNGQ0Y2M4NDg5NDgiLCJleHAiOjE1NjkzOTg0OTksIm5iZiI6MCwiaWF0IjoxNTY5Mzk4NDM5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwOTAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjEwMzMzNmJmLWM0NzEtNGRkNS1iMzllLTQ2NTJhMDAzMmJlOCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBrY2UtdGVzdCIsImF1dGhfdGltZSI6MTU2OTM5ODQzOCwic2Vzc2lvbl9zdGF0ZSI6ImFmMDlkODBkLTk5MDEtNDQ1Zi1iNzg5LWM2ZGZhMzNlYzE3NSIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImpvaG4ifQ.C0723Ejex8k8dVGzTT2IRtEYXymAONBMkpoRCAGwd_E253L8WZGsEJ5-qkGgzpafgen85XpAD6c_x44QsD_q0P74J_9FqQPikY6JmpcUMNYD9eXjzZo21USVD2DKV7JOZ9Wp3N9GwcV50KCYZIcoIgHfGpHbCnhVppdHn5tuH936WsBGQL7tQ5zDFuT3fO1Op01XdJBg77LT91HTDq1zh42kH1fzgTO3zDzKKxlOJN6d7yBiMDCSIdZ3CVDRMSl65FK-7433SLWoJmNAQHIlH8RYrtvkNIfUZmABXe3CVBWQ2HJXG4Y-gocxkaiFxDoRwoYC6YfwiXKmjnita2vfSw&#39;,
+ &#39;expires_in&#39;: 60,
+ &#39;id_token&#39;: &#39;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjd05fNm5WaEQyM0U4WWVnUGJob1pBU2c2Ynd4a2ktSkNsMHJlWFdJUEE4In0.eyJqdGkiOiI5NmFkMmFiOS02ZDU0LTRjYmItYTIzYi01Y2ZkYWY1MDI0OTciLCJleHAiOjE1NjkzOTg0OTksIm5iZiI6MCwiaWF0IjoxNTY5Mzk4NDM5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwOTAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoicGtjZS10ZXN0Iiwic3ViIjoiMTAzMzM2YmYtYzQ3MS00ZGQ1LWIzOWUtNDY1MmEwMDMyYmU4IiwidHlwIjoiSUQiLCJhenAiOiJwa2NlLXRlc3QiLCJhdXRoX3RpbWUiOjE1NjkzOTg0MzgsInNlc3Npb25fc3RhdGUiOiJhZjA5ZDgwZC05OTAxLTQ0NWYtYjc4OS1jNmRmYTMzZWMxNzUiLCJhY3IiOiIxIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIn0.HAPQmX_ZxmTNxhxOst4U5STJZEEP-GgSfOh303p5oCYZ4y-jhk1SG4BMXW1dU7GWaTh9ccI2aVt8kYjOOsqin3jYvELoZRUxnMk0VftgARNcmb0vb-v2uCdSftSYUGvxmqU0TXeYL2hz7lELIJQSbH3C_DGg476yvRzWh7LEk2bdx8K3yS07jA6w0clDoB79uztfSrwnmtsB1S0soIsE14CaNwI93kiD40m6p9WU5EdPfIu0VaNqQrsCzQrt4LojqN5zAIwDLdBScZBukhWYn0WKmTqcw1djGZBWKHvwV9kP4m27T_0DKpa9Bwi0AomlFjhDK_b41ERuE-3-7MNH5A&#39;,
+ &#39;not-before-policy&#39;: 0,
+ &#39;refresh_expires_in&#39;: 1800,
+ &#39;refresh_token&#39;: &#39;eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwZjBlNjZiZS1hOWNkLTRhMjktODdiNS00NTAwMGZjYzk1NjcifQ.eyJqdGkiOiJiOGYxZDJmZi1mNmYzLTRiYTEtYjU3OC0zMmMxZDZlMjllN2IiLCJleHAiOjE1Njk0MDAyMzksIm5iZiI6MCwiaWF0IjoxNTY5Mzk4NDM5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwOTAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL2F1dGgvcmVhbG1zL21hc3RlciIsInN1YiI6IjEwMzMzNmJmLWM0NzEtNGRkNS1iMzllLTQ2NTJhMDAzMmJlOCIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJwa2NlLXRlc3QiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiJhZjA5ZDgwZC05OTAxLTQ0NWYtYjc4OS1jNmRmYTMzZWMxNzUiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUifQ.KmzF-T3meYK1m72ShHQGA3G0VGVA6GYXNIMZVoHkx9Q&#39;,
+ &#39;scope&#39;: &#39;openid email profile&#39;,
+ &#39;session_state&#39;: &#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;,
+ &#39;token_type&#39;: &#39;bearer&#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Decode-the-JWT-tokens">Decode the JWT tokens<a class="anchor-link" href="#Decode-the-JWT-tokens">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The access and id tokens are JWT tokens apparently. Let's decode the payload.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">_b64_decode</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">+=</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">jwt_payload_decode</span><span class="p">(</span><span class="n">jwt</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">_b64_decode</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jwt_payload_decode</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;access_token&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;acr&#39;: &#39;1&#39;,
+ &#39;aud&#39;: &#39;account&#39;,
+ &#39;auth_time&#39;: 1569398438,
+ &#39;azp&#39;: &#39;pkce-test&#39;,
+ &#39;email_verified&#39;: False,
+ &#39;exp&#39;: 1569398499,
+ &#39;iat&#39;: 1569398439,
+ &#39;iss&#39;: &#39;http://localhost:9090/auth/realms/master&#39;,
+ &#39;jti&#39;: &#39;2d0790a5-a630-4606-9296-d4d4cc848948&#39;,
+ &#39;nbf&#39;: 0,
+ &#39;preferred_username&#39;: &#39;john&#39;,
+ &#39;realm_access&#39;: {&#39;roles&#39;: [&#39;offline_access&#39;, &#39;uma_authorization&#39;]},
+ &#39;resource_access&#39;: {&#39;account&#39;: {&#39;roles&#39;: [&#39;manage-account&#39;,
+    &#39;manage-account-links&#39;,
+    &#39;view-profile&#39;]}},
+ &#39;scope&#39;: &#39;openid email profile&#39;,
+ &#39;session_state&#39;: &#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;,
+ &#39;sub&#39;: &#39;103336bf-c471-4dd5-b39e-4652a0032be8&#39;,
+ &#39;typ&#39;: &#39;Bearer&#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jwt_payload_decode</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;id_token&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;acr&#39;: &#39;1&#39;,
+ &#39;aud&#39;: &#39;pkce-test&#39;,
+ &#39;auth_time&#39;: 1569398438,
+ &#39;azp&#39;: &#39;pkce-test&#39;,
+ &#39;email_verified&#39;: False,
+ &#39;exp&#39;: 1569398499,
+ &#39;iat&#39;: 1569398439,
+ &#39;iss&#39;: &#39;http://localhost:9090/auth/realms/master&#39;,
+ &#39;jti&#39;: &#39;96ad2ab9-6d54-4cbb-a23b-5cfdaf502497&#39;,
+ &#39;nbf&#39;: 0,
+ &#39;preferred_username&#39;: &#39;john&#39;,
+ &#39;session_state&#39;: &#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;,
+ &#39;sub&#39;: &#39;103336bf-c471-4dd5-b39e-4652a0032be8&#39;,
+ &#39;typ&#39;: &#39;ID&#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>That's it. We worked client-side-style and managed thanks to PKCE to do a non-implicit authorization flow without having to work with a static secret.</p>
 
 </div>
 </div>
