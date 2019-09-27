@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Yet another solution to dig you out of a circular import hole in Python - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="python"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Yet another solution to dig you out of a circular import hole in Python</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2019-09-27T00:00:00+02:00"> on 2019/09/27</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>The circular import problem in Python. 
+Some module <code>foo</code> imports module <code>bar</code>, but <code>bar</code> also imports <code>foo</code>.
+On itself, it's not necessarily a problem. Python allows it.
+Depending on how both modules interact, 
+you might not even notice there is cycle in the dependency chain.</p>
+<p>However, when you have a problem, some serious hair-pulling might ensue.</p>
+<p>There are enough places around the web that elaborate on this issue,
+play the blame game ("bad design!") and offer possible solutions.
+These solutions have varying degrees of ugliness or architectural itchiness:
+rethink your coupling/dependencies, introduce abstract interfaces, 
+merge modules, split modules, use local imports, defer imports, etc. 
+Sometimes a cleaner design or better decoupling might indeed get you out
+of the circular import hole.
+But sometimes there is an <em>inherent circular dependency</em>
+and the only way out are ugly hacks. But we digress.</p>
+<h2>Circular imports and type hinting</h2>
+<p>Since I started using <em>type hinting</em> more, I noticed that it
+is easier to get into circular import troubles.
+It's not so unexpected since class type hints typically require you to import more.
+Also, they have to be imported at top level
+so you can not leverage tricks with local or deferred imports.</p>
+<h3>Example</h3>
+<p>When you have a circular import issue <em>only</em> because of type hinting,
+there is lesser known solution I want to show here. </p>
+<p>Let's take this simple artificial example with two modules that
+need each other: <code>connection.py</code> defines an interface to something
+like a REST API, and it can create some kind of entity in this API, called <code>Thing</code>:</p>
+<div class="highlight"><pre><span></span><span class="c1"># connection.py</span>
+<span class="kn">from</span> <span class="nn">thing</span> <span class="kn">import</span> <span class="n">Thing</span>
+
+<span class="k">class</span> <span class="nc">ApiConnection</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_thing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Thing</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Thing</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This <code>Thing</code> (defined in <code>thing.py</code>) keeps a reference to the connection
+so that operations on a <code>Thing</code> can be send to the API.</p>
+<div class="highlight"><pre><span></span><span class="c1"># thing.py</span>
+<span class="kn">from</span> <span class="nn">connection</span> <span class="kn">import</span> <span class="n">ApiConnection</span>
+
+<span class="k">class</span> <span class="nc">Thing</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="n">ApiConnection</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_conn</span> <span class="o">=</span> <span class="n">connection</span>
+</pre></div>
+
+
+<p>No surprise that the circular dependency here will cause failure,
+resulting in a classic circular import stack trace like:</p>
+<div class="highlight"><pre><span></span>  File &quot;main.py&quot;
+    from connection import ApiConnection
+  File &quot;connection.py&quot;
+    from thing import Thing
+  File &quot;thing.py&quot;
+    from connection import ApiConnection
+ImportError: cannot import name &#39;ApiConnection&#39; from &#39;connection&#39;
+</pre></div>
+
+
+<p>In <code>thing.py</code>, the import of the <code>connection</code> module is only there for the <code>ApiConnection</code> type hint.
+That means that if you don't care too much about that type hint,
+you could drop it an break the cycle of doom.</p>
+<h3>Conditional import for type hints</h3>
+<p>A lesser know solution for this case is to use a <em>conditional import</em>
+that is only active in "type hinting mode", but doesn't interfere at run time.
+The <a href="https://docs.python.org/3/library/typing.html#typing.TYPE_CHECKING"><code>typing.TYPE_CHECKING</code></a>
+constant makes this easily possible.
+In our example we change <code>thing.py</code> to:</p>
+<div class="highlight"><pre><span></span><span class="c1"># thing.py</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">connection</span> <span class="kn">import</span> <span class="n">ApiConnection</span>
+
+<span class="k">class</span> <span class="nc">Thing</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="s1">&#39;ApiConnection&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_conn</span> <span class="o">=</span> <span class="n">connection</span>
+</pre></div>
+
+
+<p>The code will now execute properly as there is no circular import issue anymore.
+Type hinting tools on the other hand should still be 
+able to resolve the <code>ApiConnection</code> type hint in <code>Thing.__init__</code>.
+My current IDE (PyCharm) for example picks it up just fine for code intelligence features.</p>
+<p>Unfortunately the type hint has to be specified as a "forward reference" string
+which is bit uglier than a normal type hint. 
+Since Python 3.7 however, thanks to<br>
+<a href="https://www.python.org/dev/peps/pep-0563">PEP563 Postponed Evaluation of Annotations</a>
+it is possible to specify the type hint without the quotes, but that requires an additional import first:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+</pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2019
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4807787-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</html>
