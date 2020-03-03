@@ -3,7 +3,7 @@
 <head>
             <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>Rising spam level on my UGent email account - Stefaan Lippens inserts content here</title>
+        <title>Disable pytest's log/print capturing - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -15,9 +15,9 @@
 
 
 
-        <meta name="tags" contents="ugent"/>
-        <meta name="tags" contents="email"/>
-        <meta name="tags" contents="spam"/>
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="pytest"/>
+        <meta name="tags" contents="note-to-self"/>
 </head>
 
 <body>
@@ -38,24 +38,40 @@
     </nav>
 
     <header class="page-header">
-    <h1>Rising spam level on my UGent email account</h1>
+    <h1>Disable pytest's log/print capturing</h1>
 
     <div class="article-meta">
                 <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2006-11-17T00:00:00+01:00"> on 2006/11/17</span>
+        <span class="publication-date" title="2020-03-03T00:00:00+01:00"> on 2020/03/03</span>
 
 
             <div class="tags">
                 Tagged:
-                    <a href="https://www.stefaanlippens.net/tag/ugent.html">ugent</a>,                    <a href="https://www.stefaanlippens.net/tag/email.html">email</a>,                    <a href="https://www.stefaanlippens.net/tag/spam.html">spam</a>            </div>
+                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/pytest.html">pytest</a>,                    <a href="https://www.stefaanlippens.net/tag/note-to-self.html">note-to-self</a>            </div>
     </div>
 
     </header>
 
     <main class="content">
     <div class="article-content">
-        <p>Almost two years ago, UGent implemented <a href="http://helpdesk.ugent.be/email/spam.php">anti spam measures</a> that reduced the amount of spam messages in my UGent email account considerably from 20 something each day to zero. But recently the daily amount of spam that reaches my inbox is growing again in an unfavorable way:</p>
-<p><img alt="graph of spam messages per day and weekly average" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/spamcounter.png"></p>
+        <p>Yet another note to self. </p>
+<p>You're working on some unit tests in <a href="https://docs.pytest.org/en/latest/">pytest</a>
+and its default log/print capturing is getting a bit in the way.
+You want to see print or logging calls immediately when they happen
+and not in some captured/delayed fashion.</p>
+<p>Add these command line options:</p>
+<div class="highlight"><pre><span></span>pytest --capture=no --log-cli-level=INFO
+</pre></div>
+
+
+<p>Short explanation:</p>
+<ul>
+<li><code>--capture=no</code> (or shortcut <code>-s</code>)  disables capturing of <code>print</code> calls</li>
+<li><code>--log-cli-level</code> enables "live logs": logging records are shown immediately as they happen </li>
+</ul>
+<p>For in-depth information and more related options
+see pytest's docs on <a href="https://docs.pytest.org/en/latest/capture.html">output capturing</a> 
+and <a href="https://docs.pytest.org/en/latest/logging.html">logging</a>.</p>
     </div>
 
     </main>
