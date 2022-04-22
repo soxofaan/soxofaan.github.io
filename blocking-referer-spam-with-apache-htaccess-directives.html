@@ -56,10 +56,10 @@
     <div class="article-content">
         <p>The logs of my (drupal powered) website show a lot of <a href="http://en.wikipedia.org/wiki/Referer_spam" title="Wikipedia about referer spam">referer spam</a>. Some time ago I had <a href="/visitors">this statistics page</a> which contained a listing of the last 10 pages my site's visitors came from (aka referers). Soon spambots found out and spammed this list. I made the list invisible for anonymous visitors, but nevertheless spambots stil target my site (less frequent than when the list was visible, however), polute my stats, use bandwidth, use processing power and kill those cute little puppies. Now I went a bit further to block those dirty spambots ...</p>
 <p>There are some drupal modules concerning different sorts of spam, but I found another solution that blocks the spambots  <em>before</em>  drupal kicks in to generate webpages. The trick is using the <code>.htaccess</code> file to tweak the  <a href="http://httpd.apache.org/">Apache http server's</a> behavoir. I added the following lines to drupal's <code>.htaccess</code> file (inside the <code>mod_rewrite</code> block):</p>
-<div class="highlight"><pre><span></span><code><span class="nb">RewriteCond</span> %{HTTP_REFERER} (poker) [NC,OR]
-<span class="nb">RewriteCond</span> %{HTTP_REFERER} (viagra) [NC,OR]
-<span class="nb">RewriteCond</span> %{HTTP_REFERER} (casino) [NC]
-<span class="nb">RewriteRule</span> .* - [F]
+<div class="highlight"><pre><span></span><code><span class="nb">RewriteCond</span><span class="w"> </span>%{HTTP_REFERER}<span class="w"> </span>(poker)<span class="w"> </span>[NC,OR]<span class="w"></span>
+<span class="nb">RewriteCond</span><span class="w"> </span>%{HTTP_REFERER}<span class="w"> </span>(viagra)<span class="w"> </span>[NC,OR]<span class="w"></span>
+<span class="nb">RewriteCond</span><span class="w"> </span>%{HTTP_REFERER}<span class="w"> </span>(casino)<span class="w"> </span>[NC]<span class="w"></span>
+<span class="nb">RewriteRule</span><span class="w"> </span>.*<span class="w"> </span>-<span class="w"> </span>[F]<span class="w"></span>
 </code></pre></div>
 
 <p>What this means: if the HTTP referer contains 'viagra', 'poker' or 'casino' (typical words in spam referers), the webserver answers with "forbidden" (HTTP response 403).  The <code>NC</code> makes the patterns case insensitive ( <em>n</em> o  <em>c</em> ase), the <code>OR</code> is the glue between the different conditions (it makes an or-combination, that's why the last condition does not need an <code>OR</code>) and the <code>F</code> stands for "forbidden". The result is that the corresponding spambots don't get in.</p>

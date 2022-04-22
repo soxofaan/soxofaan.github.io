@@ -55,26 +55,26 @@
     <div class="article-content">
         <p>This weekend I encountered a weird problem during programming C extension modules for <a href="http://www.python.org" title="Python homepage">Python</a>. For some obscure reason floats from my C extension modules were formatted with a comma as separater (e.g. <code>123,456</code>) instead of with the more familiar point (e.g. <code>123.456</code>). Obviously some locale related problem. Most of my desktop and applications are set up for Dutch (my native language), but when I'm programming/working I use English and scientific conventions (e.g. a point as decimal separator). After isolating the problem I found out it was related to importing the <a href="http://matplotlib.sourceforge.net/" title="Matplotlib homepage">pylab (aka Matplotlib)</a> module (which I started using for plotting graphs and figures from Python). The following situation illustrates the problem.</p>
 <p>The very minimal but operational C extension module <code>pylabproblem.c</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
-<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span>
-<span class="n">hello</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello there, check out this float: %.3f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mf">123.456</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nf">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="k">static</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="nf">hello</span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello there, check out this float: %.3f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">123.456</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">Methods</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="p">{</span><span class="s">&quot;hello&quot;</span><span class="p">,</span>  <span class="n">hello</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">&quot;Say hello and show a float.&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
-<span class="p">};</span>
+<span class="k">static</span><span class="w"> </span><span class="n">PyMethodDef</span><span class="w"> </span><span class="n">Methods</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;hello&quot;</span><span class="p">,</span><span class="w">  </span><span class="n">hello</span><span class="p">,</span><span class="w"> </span><span class="n">METH_VARARGS</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Say hello and show a float.&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 
-<span class="n">PyMODINIT_FUNC</span>
-<span class="nf">initpylabproblem</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;pylabproblem&quot;</span><span class="p">,</span> <span class="n">Methods</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="n">PyMODINIT_FUNC</span><span class="w"></span>
+<span class="nf">initpylabproblem</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">Py_InitModule</span><span class="p">(</span><span class="s">&quot;pylabproblem&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Methods</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>which I compiled (under <a href="http://www.kubuntu.org/" title="Kubuntu Linux">Kubuntu Linux</a>) to a shared library <code>pylabproblem.os</code> as follows:</p>
