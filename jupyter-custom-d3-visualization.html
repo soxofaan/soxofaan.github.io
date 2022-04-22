@@ -920,9 +920,9 @@ h6:hover .anchor-link {
 }
 </style>
 <style type="text/css">pre { line-height: 125%; }
-td.linenos pre { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-span.linenos { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-td.linenos pre.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 .highlight .hll { background-color: #ffffcc }
 .highlight { background: #f8f8f8; }
@@ -1116,10 +1116,10 @@ Note that the <code>.js</code> extension is <a href="http://requirejs.org/docs/a
 
 
 
-<div id="21bda41f-b054-46d3-a55a-328bcb2db03f"></div>
+<div id="a239ef49-4024-4bc5-aa56-c932f3193a3e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#21bda41f-b054-46d3-a55a-328bcb2db03f');
+var element = $('#a239ef49-4024-4bc5-aa56-c932f3193a3e');
 require.config({
     paths: {
         d3: 'https://d3js.org/d3.v5.min'
@@ -1186,10 +1186,10 @@ require.config({
 
 
 
-<div id="41e2dcf2-7be8-42a8-9eda-27ff45581a36"></div>
+<div id="26dec56c-948b-4eb6-8a71-f16cd88dbcc7"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#41e2dcf2-7be8-42a8-9eda-27ff45581a36');
+var element = $('#26dec56c-948b-4eb6-8a71-f16cd88dbcc7');
 (function(element) {
     require(['d3'], function(d3) {   
         var data = [1, 2, 4, 8, 16, 8, 4, 2, 1]
@@ -1312,10 +1312,10 @@ and, additionally, with data that is initially defined or constructed in Python.
 
 
 
-<div id="2a83eeb5-2a4b-49ee-aac2-cdf479179c64"></div>
+<div id="7d436be4-cec5-49e4-874f-e5b94e2345ef"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2a83eeb5-2a4b-49ee-aac2-cdf479179c64');
+var element = $('#7d436be4-cec5-49e4-874f-e5b94e2345ef');
 require.config({
     paths: { 
         d3: 'https://d3js.org/d3.v5.min'
@@ -1379,10 +1379,10 @@ which expects a container to append the SVG element to and a data object.</p>
 
 
 
-<div id="e6049fd6-ebc9-4a80-804b-a3e134c93ffd"></div>
+<div id="1b2320af-7606-4505-a25c-fdc297458dc8"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#e6049fd6-ebc9-4a80-804b-a3e134c93ffd');
+var element = $('#1b2320af-7606-4505-a25c-fdc297458dc8');
 // First undefine 'circles' so we can easily reload this file.
 require.undef('circles');
 
@@ -1502,10 +1502,10 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 
 
 
-<div id="82023630-efe3-48ca-91d5-1e63f8ed4c24"></div>
+<div id="c18c2c92-69b0-47c6-8f59-50d474ab48d9"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#82023630-efe3-48ca-91d5-1e63f8ed4c24');
+var element = $('#c18c2c92-69b0-47c6-8f59-50d474ab48d9');
 
 (function(element){
     require(['circles'], function(circles) {
@@ -1686,10 +1686,10 @@ define('circles', ['d3'], function (d3) {
 
 
 
-<div id="31cede10-12f8-4d6c-9c54-74ee376fe860"></div>
+<div id="c1663e25-cd71-4e92-9a97-98eb5d22693a"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#31cede10-12f8-4d6c-9c54-74ee376fe860');
+var element = $('#c1663e25-cd71-4e92-9a97-98eb5d22693a');
 require.config({paths: {d3: 'https://d3js.org/d3.v5.min'}});
 </script>
 </div>
@@ -1704,10 +1704,10 @@ require.config({paths: {d3: 'https://d3js.org/d3.v5.min'}});
 
 
 
-<div id="ee84ad02-0477-4130-a619-b40109438410"></div>
+<div id="19b4efcf-33a7-4b58-a111-a8b5cb643864"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#ee84ad02-0477-4130-a619-b40109438410');
+var element = $('#19b4efcf-33a7-4b58-a111-a8b5cb643864');
 // First undefine 'circles' so we can easily reload this file.
 require.undef('circles');
 
@@ -1828,10 +1828,10 @@ svg circle {
 
 
 
-<div id="69b5eea0-cea6-4ac3-84ab-6ec2f4b9f55c"></div>
+<div id="586f61a3-f0ce-4288-8acb-c8a1b9739e8a"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#69b5eea0-cea6-4ac3-84ab-6ec2f4b9f55c');
+var element = $('#586f61a3-f0ce-4288-8acb-c8a1b9739e8a');
 
         (function(element){
             require(['circles'], function(circles) {
