@@ -59,9 +59,9 @@ In Pelican you typically achieve this by making sure each article has
 a <code>slug</code> metadata entry with the desired clean URL and setting up
 <code>_SAVE_AS</code> and <code>_URL</code> configs in <code>pelicanconf.py</code> for example
 as follows:</p>
-<div class="highlight"><pre><span></span><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}/index.html&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}/index.html&#39;</span>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}/&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>In addition (or instead) you can also play with rewrite rules, 
@@ -72,9 +72,9 @@ produce a directory with a single <code>index.html</code> file, which felt a
 bit too much as overkill to avoid where not necessary.</p>
 <p>So config-wise, for new articles I wanted something more like this
 (the default):</p>
-<div class="highlight"><pre><span></span><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>How to combine these?</p>
@@ -84,19 +84,19 @@ that allow you to add a touch of logic to the configuration settings.
 The trick below is based on the fact that Pelican interpolates 
 config variables like <code>ARTICLE_SAVE_AS</code> and <code>ARTICLE_URL</code> to 
 actual values for each article with something like</p>
-<div class="highlight"><pre><span></span><span class="n">setting</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">setting</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
+</code></pre></div>
 
 
 <p>So we just have to assign objects with a custom <code>.format(**kwargs)</code> 
 method to the config variables.</p>
 <p>First, let's define this helper class:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DynamicSetting</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DynamicSetting</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
     <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">metadata</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>On construction of a <code>DynamicSetting</code> object, we pass it a function <code>f</code> 
@@ -104,36 +104,36 @@ to generates a variation of the setting (e.g. <code>{slug}</code> or <code>{slug
 based on metadata.</p>
 <p>For example, say that for articles where we want to enforce a 
 certain clean URL, we use a custom metadata entry <code>CleanUrl</code>, like:</p>
-<div class="highlight"><pre><span></span>Title: hello world
+<div class="highlight"><pre><span></span><code>Title: hello world
 CleanUrl: hello
 
 Hello world
-</pre></div>
+</code></pre></div>
 
 
 <p>and for articles where we don't need a particular clean URL we don't.</p>
 <p>With the helper class of above, we can now define  <code>ARTICLE_SAVE_AS</code> and
 <code>ARTICLE_URL</code> dynamically as follows:</p>
-<div class="highlight"><pre><span></span><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
+<div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
     <span class="s1">&#39;{cleanurl}/index.html&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span>
 <span class="p">)</span>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
     <span class="s1">&#39;{cleanurl}/&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span>
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>So for articles where there is <code>CleanUrl</code> metadata we'll use that for
 output directory path and URL.
 For other articles we fall back on the normal <code>{slug}.html</code> way.</p>
 <p>Note that it is also possible to use the helper as a decorator</p>
-<div class="highlight"><pre><span></span><span class="nd">@DynamicSetting</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@DynamicSetting</span>
 <span class="k">def</span> <span class="nf">ARTICLE_URL</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;{cleanurl}&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;{slug}.html&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>which gives bit more breathing room for the custom logic.</p>

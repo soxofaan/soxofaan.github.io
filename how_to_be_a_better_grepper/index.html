@@ -54,15 +54,15 @@
     <div class="article-content">
         <p>If you're not afraid of a a bit o' Unix/Linux/OSX command line delight, you're probably having <code>grep</code> hanging on your tool belt. </p>
 <p>One option you'll wonder how you could live without is <code>--color</code>, which enables highlighting of the word or pattern you are grepping for. I find it so useful that I've put the following alias in my <code>.bashrc</code>:</p>
-<div class="highlight"><pre><span></span><span class="nb">alias</span> <span class="nv">grep</span><span class="o">=</span><span class="s1">&#39;grep --color=auto&#39;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">alias</span> <span class="nv">grep</span><span class="o">=</span><span class="s1">&#39;grep --color=auto&#39;</span>
+</code></pre></div>
 
 
 <p>Another useful trick when you're working on version controlled source code (with Subversion for example) is disabling the recursive walk through the <code>.svn</code> directories. For this I have the following in my <code>.bashrc</code>:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Exclude grepping through .svn folders.</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Exclude grepping through .svn folders.</span>
 <span class="nv">GREP_OPTIONS</span><span class="o">=</span><span class="s2">&quot;--exclude-dir=\.svn&quot;</span>
 <span class="nb">export</span> GREP_OPTIONS
-</pre></div>
+</code></pre></div>
 
 
 <p>If the above makes you scream "good heavens, I wish I knew this decades ago", you should also consider the grep-killer <a href="http://betterthangrep.com/" title="Ack, better than grep">ack</a>, which offers the above (and many more) by default.</p>

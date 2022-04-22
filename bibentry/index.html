@@ -57,7 +57,7 @@
 <p>With the bibentry package (which is part of the <a href="http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=natbib">natlib package</a> actually) it is possible to put bibliographic entries anywhere in the text. As far as I know and experienced, the bibentry package is included in a default LaTeX setup, so you don't have to install something, just enable it in your document. </p>
 <p>Getting it work as desired can take some trial and error, so I thought it may be a good idea to feed "them search engines" with a working example.</p>
 <p>Here is a simple proof of concept example LaTeX document <code>test_bibentry.tex</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
 
 <span class="k">\usepackage</span><span class="nb">{</span>bibentry<span class="nb">}</span>
 <span class="k">\nobibliography*</span>
@@ -82,7 +82,7 @@ yada yada, and <span class="k">\cite</span><span class="nb">{</span>marilyn<span
 <span class="k">\bibliography</span><span class="nb">{</span>test<span class="nb">_</span>bibentry.bib<span class="nb">}</span>
 
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The stuff that's important here:
@@ -90,7 +90,7 @@ yada yada, and <span class="k">\cite</span><span class="nb">{</span>marilyn<span
 - <code>\nobibliography*</code>: tells bibentry to (re)use the bibliographic data from the standard BibTeX setup by <code>\bibliography{test_bibentry.bib}</code>.
 - <code>\bibentry{foo}</code>: an inline bibliographic entry will be put here.</p>
 <p>Here is the accompanying BibTeX file <code>test_bibentry.bib</code>:</p>
-<div class="highlight"><pre><span></span>@Book{michael,
+<div class="highlight"><pre><span></span><code>@Book{michael,
     author = &quot;Michael Jackson&quot;,
     title = &quot;My Kingdom For A Lollypop&quot;,
     publisher = &quot;Neverland \&amp; Everland Publishing&quot;,
@@ -117,7 +117,7 @@ yada yada, and <span class="k">\cite</span><span class="nb">{</span>marilyn<span
     publisher = &quot;Pinc \&amp; Cuddley Press&quot;,
     year = 2005
 }
-</pre></div>
+</code></pre></div>
 
 
 <p>And here is what it looks like in the end:</p>

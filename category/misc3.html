@@ -52,8 +52,8 @@
                     </header>
                     <div class="article-content article-summary">
                         <p>Here is some Python powered unicode fun (command line oneliner version):</p>
-<div class="highlight"><pre><span></span>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
+</code></pre></div>
 
 
 <p>result:</p>
@@ -81,8 +81,8 @@
                     <div class="article-content article-summary">
                         <p>In git, when you do <code>git stash pop</code> of unfinished code after upstream merges, you might get a conflict between the stash and the upstream changes you pulled in.</p>
 <p>You git clone now has "unmerged paths" aka is in conflict state. For example, <code>git status</code> shows:</p>
-<div class="highlight"><pre><span></span># Unmerged paths:
-#   (use &quot;git …</pre></div>
+<div class="highlight"><pre><span></span><code># Unmerged paths:
+#   (use &quot;git …</code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/resolve-git-unmerged-paths-after-stash-pop/"
                                title="link to Git: resolve conflict after stash pop in working directory (no staging/index)">Read more</a>
@@ -105,8 +105,8 @@
                     </header>
                     <div class="article-content article-summary">
                         <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
-<div class="highlight"><pre><span></span>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
+</code></pre></div>
 
 
 <p>(Replace "python" with the actual python executable you want to investigate …</p>
@@ -252,7 +252,7 @@ In Python, the <a href="http://docs.python.org/library/optparse.html" title="Opt
                     </header>
                     <div class="article-content article-summary">
                         <p>When programming, lint checking your source code can be useful to detect low level issues like syntax errors, undefined or unused variables. The PHP command line interpreter has an option <code>-l</code>/<code>--syntax-check</code> to do a syntax check of the provided PHP file, instead of executing it:</p>
-<div class="highlight"><pre><span></span>$ php -l file_with_syntax_error.php …</pre></div>
+<div class="highlight"><pre><span></span><code>$ php -l file_with_syntax_error.php …</code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/php-lint-multiple-files-parallel/"
                                title="link to PHP lint checking multiple files in parallel">Read more</a>

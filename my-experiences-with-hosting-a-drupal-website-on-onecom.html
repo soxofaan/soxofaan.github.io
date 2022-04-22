@@ -54,24 +54,24 @@
     <main class="content">
     <div class="article-content">
         <p>Drupal didn't work out of the box and gave the following white screen of death:</p>
-<div class="highlight"><pre><span></span>500 Internal Server Error
+<div class="highlight"><pre><span></span><code>500 Internal Server Error
 The server encountered an internal error or misconfiguration and was unable to complete your request.
-</pre></div>
+</code></pre></div>
 
 
 <p>After some research I found out that One.com hosting didn't like Drupal's default <code>.htaccess</code> file. I had to disable the following lines to make it work:</p>
-<div class="highlight"><pre><span></span># Don&#39;t show directory listings for URLs which map to a directory.
+<div class="highlight"><pre><span></span><code># Don&#39;t show directory listings for URLs which map to a directory.
 Options -Indexes
 
 # Follow symbolic links in this directory.
 Options +FollowSymLinks
-</pre></div>
+</code></pre></div>
 
 
 <p>I also had to disable the following in the <code>.htaccess</code> file in the files directory.</p>
-<div class="highlight"><pre><span></span>Options None
+<div class="highlight"><pre><span></span><code>Options None
 Options +FollowSymLinks
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>

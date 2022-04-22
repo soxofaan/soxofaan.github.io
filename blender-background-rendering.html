@@ -54,8 +54,8 @@
     <div class="article-content">
         <p>Yesterday I had to render a 3d animation for a colleague working on 3D television. He needed a short street-view video with depth map. Because there were some problems with some real world footage he wanted to use, he asked me to create an artificial video in <a href="http://www.blender.org" title="Blender">Blender</a>. After I created a simple scene with some models from <a href="http://www.katorlegaz.com/3d_models/">www.katorlegaz.com</a>, I wanted to render the whole animation overnight on one of the computers in our lab. I had some trouble with getting the command line arguments right and wanted to share this, in case someone else has the same problem.</p>
 <p>I first tried</p>
-<div class="highlight"><pre><span></span>blender -b -a foo.blend
-</pre></div>
+<div class="highlight"><pre><span></span><code>blender -b -a foo.blend
+</code></pre></div>
 
 
 <p>the option <code>-b</code> is for background mode, so I could log out from the computer after I started the job, the options <code>-a</code> is for (according to the command line help):</p>
@@ -63,29 +63,29 @@
 <p>render frames from start to end (inclusive), only works when used after -b</p>
 </blockquote>
 <p>I thought this was the bare minimum to get the job done. However, nothing happened but this:</p>
-<div class="highlight"><pre><span></span>Compiled with Python version 2.5.
+<div class="highlight"><pre><span></span><code>Compiled with Python version 2.5.
 Checking for installed Python... got it!
 ERROR: No camera
 
 Blender quit
-</pre></div>
+</code></pre></div>
 
 
 <p>Huh, no camera? There was an active camera, the scene rendered just fine from the UI, I checked my file over and over and everything seemed all right. </p>
 <p>The problem is that, unlike most command line tools I'm used to, command line Blender consumes the arguments in the given order. So with the command <code>blender -b -a foo.blend</code> Blender executes the <code>-a</code> before it loads the file <code>foo.blender</code>, which explains why it can't find a camera.</p>
 <p>The solution is to put the <code>-a</code> and other optionally arguments after the file name:</p>
-<div class="highlight"><pre><span></span>blender -b foo.blend -a
-</pre></div>
+<div class="highlight"><pre><span></span><code>blender -b foo.blend -a
+</code></pre></div>
 
 
 <p>The help info you get from <code>blender -h</code> gives another example:</p>
-<div class="highlight"><pre><span></span>Note: Arguments are executed in the order they are given. eg:
+<div class="highlight"><pre><span></span><code>Note: Arguments are executed in the order they are given. eg:
     &quot;blender -b test.blend -f 1 -o /tmp&quot;
   ...may not render to /tmp because &#39;-f 1&#39; renders before the output path is set
     &quot;blender -b -o /tmp test.blend -f 1&quot;
   ...may not render to /tmp because loading the blend file overwrites the output path that was set
     &quot;blender -b test.blend -o /tmp -f 1&quot; works as expected.
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>

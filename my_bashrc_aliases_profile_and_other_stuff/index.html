@@ -58,7 +58,7 @@
 <h3><code>.bashrc</code></h3>
 <p>In <code>.bashrc</code>, I put the things that are related to  <em>interactive</em>  Bash usage. You'll also find a lot of references that configure environment variables like <code>PATH</code> in <code>.bashrc</code>, but I prefer to put these in <code>.profile</code> (see lower).
 <code>.bashrc</code> should be loaded when opening a new interactive Bash shell.</p>
-<div class="highlight"><pre><span></span><span class="c1"># Enable programmable completion features.</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Enable programmable completion features.</span>
 <span class="k">if</span> <span class="o">[</span> -f /etc/bash_completion <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">source</span> /etc/bash_completion
 <span class="k">fi</span>
@@ -86,12 +86,12 @@
 <span class="k">if</span> <span class="o">[</span> -f ~/.bash_aliases <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">source</span> ~/.bash_aliases
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3><code>.bash_aliases</code></h3>
 <p>I use a separate file <code>.bash_aliases</code> for my favorite Bash aliases, to keep things more tidy. This file is "sourced" by <code>.bashrc</code> (see higher).</p>
-<div class="highlight"><pre><span></span><span class="c1"># Make some possibly destructive commands more interactive.</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Make some possibly destructive commands more interactive.</span>
 <span class="nb">alias</span> <span class="nv">rm</span><span class="o">=</span><span class="s1">&#39;rm -i&#39;</span>
 <span class="nb">alias</span> <span class="nv">mv</span><span class="o">=</span><span class="s1">&#39;mv -i&#39;</span>
 <span class="nb">alias</span> <span class="nv">cp</span><span class="o">=</span><span class="s1">&#39;cp -i&#39;</span>
@@ -107,12 +107,12 @@
 
 <span class="c1"># Shortcut for using the Kdiff3 tool for svn diffs.</span>
 <span class="nb">alias</span> <span class="nv">svnkdiff3</span><span class="o">=</span><span class="s1">&#39;svn diff --diff-cmd kdiff3&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3><code>.profile</code></h3>
 <p>I put the "run time modifying" stuff (<code>PATH</code> and friends) in <code>.profile</code>, so that these things are also easily available outside interactive Bash sessions, like non-interactive Bash sessions, other command line shells sessions and even the graphical shell/desktop environment. The <code>.profile</code> file should be loaded on login on Linux setups.</p>
-<div class="highlight"><pre><span></span><span class="c1"># Add some more custom software to PATH.</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Add some more custom software to PATH.</span>
 <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/usr/bin
 <span class="nb">export</span> PATH
 
@@ -137,22 +137,22 @@
 <span class="c1"># Java;s CLASSPATH customization</span>
 <span class="nv">CLASSPATH</span><span class="o">=</span><span class="nv">$CLASSPATH</span>:~/foo/bar.jar
 <span class="nb">export</span> CLASSPATH
-</pre></div>
+</code></pre></div>
 
 
 <h3><code>.bash_profile</code></h3>
 <p>As I've described in <a href="/bashrc_and_others">a separate blog post about <code>.bashrc</code>, <code>.profile</code> and others</a>, deciding where to put things may seem a bit hairy. I limit myself to <code>.bashrc</code> and <code>.profile</code>, and use  <code>.bash_profile</code> to reuse these for (textual) login shells (see <a href="/bashrc_and_others">that blog post for more info</a>).</p>
-<div class="highlight"><pre><span></span><span class="c1"># Load .profile, containing login, non-bash related initializations.</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Load .profile, containing login, non-bash related initializations.</span>
 <span class="nb">source</span> ~/.profile
 
 <span class="c1"># Load .bashrc, containing non-login related bash initializations.</span>
 <span class="nb">source</span> ~/.bashrc
-</pre></div>
+</code></pre></div>
 
 
 <h3>.screenrc</h3>
 <p><a href="http://en.wikipedia.org/wiki/GNU_Screen" title="Wikipedia on GNU Screen">GNU Screen</a> is a very handy tool I should have learned earlier about. It lets you have persistent shell sessions, so you can log out on one computer and reconnect to the still running session from an other computer. Recommended if you're "commandlining" a lot in an networked environment. Anyway, here is my <code>.screenrc</code> to have a handy caption bar, listing the available windows.</p>
-<div class="highlight"><pre><span></span># Set the default window name to empty string instead of the arbitrary &quot;bash&quot;
+<div class="highlight"><pre><span></span><code># Set the default window name to empty string instead of the arbitrary &quot;bash&quot;
 shelltitle &#39;&#39;
 
 # Set the window caption.
@@ -168,7 +168,7 @@ caption always &quot;%{= KW}%-Lw%{= wb}%n %t %{= KW}%+Lw %-=| ${USER}@%H | %M%d 
 # %-=         pad remaining spaces.
 # %H          hostname.
 # %M%d %s     month and day (MmmDD) and current time (HH:MM).
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>

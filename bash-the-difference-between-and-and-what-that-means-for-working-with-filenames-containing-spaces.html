@@ -75,16 +75,16 @@ When there are no positional parameters, <code>"$@"</code> and <code>$@</code> e
 to nothing (i.e., they are removed).</p>
 </blockquote>
 <p>Apparently both <code>$*</code> and <code>$@</code> expand to the positional parameters. The difference about the expanding between double quotes can be important if you have to deal with filenames with spaces. The following example should clarify the difference. Consider the two files <code>filename.txt</code> and <code>filename with spaces.txt</code>:</p>
-<div class="highlight"><pre><span></span>$&gt; cat filename.txt
+<div class="highlight"><pre><span></span><code>$&gt; cat filename.txt
 hello
 
 $&gt; cat &quot;filename with spaces.txt&quot;
 hi there
-</pre></div>
+</code></pre></div>
 
 
 <p>We now write the following simple bash script, which we will give the fancy name <code>test.sh</code>:</p>
-<div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;--- cat $* ---&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s1">&#39;--- cat $* ---&#39;</span>
 cat <span class="nv">$*</span>
 
 <span class="nb">echo</span> <span class="s1">&#39;--- cat $@ ---&#39;</span>
@@ -95,11 +95,11 @@ cat <span class="s2">&quot;</span><span class="nv">$*</span><span class="s2">&qu
 
 <span class="nb">echo</span> <span class="s1">&#39;--- cat &quot;$@&quot; ---&#39;</span>
 cat <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>and execute it with the two files above as arguments:</p>
-<div class="highlight"><pre><span></span>$&gt; ./test.sh filename.txt &quot;filename with spaces.txt&quot;
+<div class="highlight"><pre><span></span><code>$&gt; ./test.sh filename.txt &quot;filename with spaces.txt&quot;
 --- cat $* ---
 hello
 cat: filename: No such file or directory
@@ -115,7 +115,7 @@ cat: filename.txt filename with spaces.txt: No such file or directory
 --- cat &quot;$@&quot; ---
 hello
 hi there
-</pre></div>
+</code></pre></div>
 
 
 <h2>Conclusion</h2>

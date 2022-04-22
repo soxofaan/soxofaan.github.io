@@ -55,7 +55,7 @@
     <div class="article-content">
         <p><a href="http://www.scipy.org/">Scipy</a> is a (set of) open source <a href="http://www.python.org">Python</a> modules for scientific/mathematical/engineering stuff. I (try to) use it instead of <a href="http://www.mathworks.com">Matlab</a> or its open source clone <a href="http://www.octave.org/">Octave</a> because I don't like  Matlab's scripting language and prefer Python's programming features.</p>
 <p>If you want to store a 2D array (aka matrix) to an image file, the default behaviour of Scipy's <code>imsave()</code> function is to rescale the matrix to a 0-255 range (like Matlab's <code>imagesc()</code> function). For example:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">scipy</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">scipy</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">80</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">a</span>
@@ -68,31 +68,31 @@
  <span class="p">[</span><span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span><span class="p">]</span>
  <span class="p">[</span><span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span> <span class="mi">200</span><span class="p">]]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">scipy</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="s2">&quot;tmp.png&quot;</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>An enlarged version of the image <code>tmp.png</code> we just generated would look like</p>
 <p><img alt="the image values are rescaled to the 0-255 range" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/scipyimsave_default.png"></p>
 <p>As you can see the dynamic range of the pixel values is rescaled to 0-255 before saving: the values 80 become totally black (value 0) and the values 200 become totally white (value 255). Sometimes this is what you want, sometimes it is not.</p>
 <p>To prevent the rescaling of the dynamic range (or impose your own rescaling), you can use the following workaround:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># long version:</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># long version:</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">im</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmax</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;tmp.png&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># in short:</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">scipy</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmax</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;tmp.png&quot;</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>In the first step we transform the array <code>a</code> to a <a href="http://www.pythonware.com/products/pil/">PIL image</a>, while imposing our own value range with the arguments <code>cmin</code> and <code>cmax</code>. The second step is just saving the PIL image to a file. The result is:</p>
 <p><img alt="the original pixel values" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/scipyimsave_workaround.png"></p>
 <p>We are not doing anything special here. It's just based on Scipy's implementation of <code>imsave()</code> (in the file <code>pilutils.py</code>):</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">imsave</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arr</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">imsave</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Save an array to an image file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">im</span> <span class="o">=</span> <span class="n">toimage</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
     <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span>
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>

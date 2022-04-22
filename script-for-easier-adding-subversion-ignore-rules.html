@@ -54,15 +54,15 @@
     <main class="content">
     <div class="article-content">
         <p>It's possible to make <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.ignore.html">Subversion ignore unversioned files</a>, so they don't show up in the status overview and you get a better signal to noise ratio. The command line interface to add ignore rules this is however a bit clunky. First, you need to remember following command:</p>
-<div class="highlight"><pre><span></span>svn propedit svn:ignore .
-</pre></div>
+<div class="highlight"><pre><span></span><code>svn propedit svn:ignore .
+</code></pre></div>
 
 
 <p>(which can be quite confusing, especially with the slightly similar looking but different <code>propset</code> command).
 Then you get a file editor where you have to add the rule (make sure you remembered the file name or pattern you want to ignore), save the file and exit the editor.
 A bit too much hoops to jump through for something that could be just one command like <code>svn-ignore filename</code>.</p>
 <p>I wrote this simple python script to get this functionality:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Script to make it easier to add svn-ignore rules.</span>
@@ -103,12 +103,12 @@ A bit too much hoops to jump through for something that could be just one comman
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>I saved it as <code>svn-ignore.py</code>, made it executable, put it somewhere in my <code>PATH</code> and now I can just do</p>
-<div class="highlight"><pre><span></span>svn-ignore.py foo.txt bar.zzs &quot;*.backup&quot;
-</pre></div>
+<div class="highlight"><pre><span></span><code>svn-ignore.py foo.txt bar.zzs &quot;*.backup&quot;
+</code></pre></div>
 
 
 <p>Note that it also supports wildcard rules, but these have to be put in quotes, so the shell does not expands them.</p>

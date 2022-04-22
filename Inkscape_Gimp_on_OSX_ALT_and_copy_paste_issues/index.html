@@ -85,11 +85,11 @@
     modification file <code>.xmodmap</code> in your personal home directory. 
     Create or edit this file <code>.xmodmap</code> and add the following 
     (lines beginning with "!" are comments):</p>
-<div class="highlight"><pre><span></span>! Change the left OPTION/ALT key (keycode 66) to be Alt 
+<div class="highlight"><pre><span></span><code>! Change the left OPTION/ALT key (keycode 66) to be Alt 
 ! and leave the right OPTION/ALT key (keycode 69) untouched 
 ! as Mode_switch for OS X style entering of accents.
 keycode 66 = Alt_L
-</pre></div>
+</code></pre></div>
 
 
 <p>After restarting X11.app (and Inkscape), you should be able to do 
@@ -101,7 +101,7 @@ entering accented characters with help of the right OPTION/ALT key.</p>
 <p>Switching the CONTROL and COMMAND key, so you can do copy/paste
     with COMMAND-C/COMMAND-V can also be done with some tweaks in your 
     <code>.xmodmap</code> file:</p>
-<div class="highlight"><pre><span></span>! Switch meta and control:
+<div class="highlight"><pre><span></span><code>! Switch meta and control:
 ! Assign the Meta_L event to the (right) CONTROL key (keycode 67),
 ! assign the Control_L and Control_R events to the COMMAND keys
 ! (keycodes 63 and 71).
@@ -114,7 +114,7 @@ clear mod2
 clear control
 add mod2 = Meta_L
 add control = Control_L Control_R
-</pre></div>
+</code></pre></div>
 
 
 <p>Again, a restart of X11.app is required for these changes to take effect.</p>

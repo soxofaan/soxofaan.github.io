@@ -54,7 +54,7 @@
     <div class="article-content">
         <p>Writing a LaTeX document that you want to feed to both plain <code>latex</code>  <em>and</em>  <code>pdflatex</code> can be sometimes a conflicting task. If you want to embed graphics for example, latex needs  EPS based graphics but pdflatex needs PDF based graphics. Other problems can occur if you want to use some PDF specific functionality like bookmarks and other navigational stuff. With the use of the package <code>ifpdf</code>, you can write conditional LaTeX code in your document. </p>
 <p>The package defines a switch <code>\ifpdf</code>, which you can use as in the following simple example:</p>
-<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
 
 <span class="k">\usepackage</span><span class="nb">{</span>ifpdf<span class="nb">}</span>
 
@@ -67,7 +67,7 @@
 <span class="k">\fi</span> 
 
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>

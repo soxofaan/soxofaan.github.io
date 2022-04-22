@@ -56,26 +56,26 @@
         <p>I'm experimenting with using a Subversion repository through Git. That way I can keep better track of my own (experimental) work, without polluting/destabilizing the central Subversion repository with small incremental commits. Git comes with a <code>svn</code> sub-tool that takes care of all the interfacing between the local git repository and the central Subversion repository. Mainly for my own reference, I'll collect some pointers and tricks for using this <code>git-svn</code> tool here. Maybe it's useful for other too.</p>
 <h3>Check out/import/starting</h3>
 <p>Create a fresh git-svn working copy/repository, and tell it where the subversion repository is:</p>
-<div class="highlight"><pre><span></span>mkdir marsyas-git-svn
+<div class="highlight"><pre><span></span><code>mkdir marsyas-git-svn
 <span class="nb">cd</span> marsyas-git-svn
 git svn init https://marsyas.svn.sourceforge.net/svnroot/marsyas/trunk
-</pre></div>
+</code></pre></div>
 
 
 <p>This will download nothing. Use the fetch command to so. As importing the whole subversion history is not recommended (it could take a  <em>lot</em>  of time), you should specify from which subversion revision you want to start tracking:</p>
-<div class="highlight"><pre><span></span>git svn fetch -r3463
-</pre></div>
+<div class="highlight"><pre><span></span><code>git svn fetch -r3463
+</code></pre></div>
 
 
 <h3>Daily usage</h3>
 <p>Getting the latest revision from subversion (like <code>svn update</code>):</p>
-<div class="highlight"><pre><span></span>git svn rebase
-</pre></div>
+<div class="highlight"><pre><span></span><code>git svn rebase
+</code></pre></div>
 
 
 <p>Commit your local changes, you've been managing with git:</p>
-<div class="highlight"><pre><span></span>git svn dcommit
-</pre></div>
+<div class="highlight"><pre><span></span><code>git svn dcommit
+</code></pre></div>
 
 
 <h3>Further reading</h3>

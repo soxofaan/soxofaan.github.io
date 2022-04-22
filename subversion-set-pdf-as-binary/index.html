@@ -55,8 +55,8 @@
     <div class="article-content">
         <p>Sometimes, Subversion thinks that a PDF is a text file, instead of binary data. This can hurt during commits or diffs, because Subversion tries to do textual diffs with binary data.</p>
 <p>Solution: you can explicitly flag the file as PDF data and Subversion will handle it as binary from then:</p>
-<div class="highlight"><pre><span></span>svn propset svn:mime-type application/pdf yourPDFfile.pdf
-</pre></div>
+<div class="highlight"><pre><span></span><code>svn propset svn:mime-type application/pdf yourPDFfile.pdf
+</code></pre></div>
     </div>
 
     </main>

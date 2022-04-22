@@ -57,11 +57,11 @@ in <a href="http://getpelicam.com">Pelican</a>
 without plugins and minimal amount of code.</p>
 <p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag's article count
 to a CSS <code>font-size</code> value. For example like this:</p>
-<div class="highlight"><pre><span></span>import math
+<div class="highlight"><pre><span></span><code>import math
 JINJA_FILTERS = {
     &#39;count_to_font_size&#39;: lambda c: &#39;{p:.1f}%&#39;.format(p=100 + 25 * math.log(c, 2)),
 }
-</pre></div>
+</code></pre></div>
 
 
 <p>(Play with the parameters of that mathematical expression to tweak the
@@ -70,19 +70,19 @@ size mapping to your liking.)</p>
 the font sizes as inline CSS.
 For example, in a typical implementation that renders the tags listing
 as an item list:</p>
-<div class="highlight"><pre><span></span> &lt;ul class=&quot;tags&quot;&gt;
+<div class="highlight"><pre><span></span><code> &lt;ul class=&quot;tags&quot;&gt;
      {%- for tag, articles in tags|sort %}
         &lt;li style=&quot;font-size: {{ articles|count|count_to_font_size }};&quot;&gt;
             &lt;a href=&quot;{{ SITEURL }}/{{ tag.url }}&quot;&gt;{{ tag }}&lt;/a&gt;
-</pre></div>
+</code></pre></div>
 
 
 <p>For a pretty tag cloud, you may also need some CSS rules on the 
 corresponding list elements (if not already), in essence something like
 this:</p>
-<div class="highlight"><pre><span></span>ul.tags { list-style-type: none; }
+<div class="highlight"><pre><span></span><code>ul.tags { list-style-type: none; }
 ul.tags li { display: inline-block; }
-</pre></div>
+</code></pre></div>
 
 
 <p>and probably some more margin and padding tweaking.</p>

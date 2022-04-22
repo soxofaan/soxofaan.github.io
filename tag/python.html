@@ -158,7 +158,7 @@ handler, which makes it possible to link …</p>
 typical Python stacktrace (aka traceback, aka backtrace)
 in a way you can manipulate?</p>
 <p>Here are some ways to handle it:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="k">try</span><span class="p">:</span>
@@ -166,7 +166,7 @@ in a way you can manipulate?</p>
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
      <span class="c1"># Just print traceback</span>
-     <span class="k">print</span> <span class="s2">&quot;something went wrong, here is …</span></pre></div>
+     <span class="k">print</span> <span class="s2">&quot;something went wrong, here is …</span></code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/python-traceback-in-catch/"
                                title="link to Get stacktrace in Python catch body">Read more</a>
@@ -215,8 +215,8 @@ in a way you can manipulate?</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>Here is some Python powered unicode fun (command line oneliner version):</p>
-<div class="highlight"><pre><span></span>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
+</code></pre></div>
 
 
 <p>result:</p>
@@ -243,8 +243,8 @@ in a way you can manipulate?</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
-<div class="highlight"><pre><span></span>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
+</code></pre></div>
 
 
 <p>(Replace "python" with the actual python executable you want to investigate …</p>

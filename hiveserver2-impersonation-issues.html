@@ -57,9 +57,9 @@
 instead of some  kind of prepackaged Hadoop distribution), 
 I struggled with some permission/user related problems. 
 The error message I got stuck with was something like this:</p>
-<div class="highlight"><pre><span></span>org.apache.hadoop.security.authorize.AuthorizationException
+<div class="highlight"><pre><span></span><code>org.apache.hadoop.security.authorize.AuthorizationException
 User: hive is not allowed to impersonate johndoe
-</pre></div>
+</code></pre></div>
 
 
 <p>While googling around for this, I found some parts of the puzzle, 
@@ -82,7 +82,7 @@ without the "impersonation" error above, as follows:</p>
   so that HiveServer2 (which runs as user <code>hive</code>) 
   can impersonate other users (e.g. <code>johndoe</code>). 
   I added this to Hadoop config <code>core-site.xml</code>:</p>
-<div class="highlight"><pre><span></span>&lt;property&gt;
+<div class="highlight"><pre><span></span><code>&lt;property&gt;
     &lt;name&gt;hadoop.proxyuser.hive.hosts&lt;/name&gt;
     &lt;value&gt;*&lt;/value&gt;
 &lt;/property&gt;
@@ -90,7 +90,7 @@ without the "impersonation" error above, as follows:</p>
     &lt;name&gt;hadoop.proxyuser.hive.groups&lt;/name&gt;
     &lt;value&gt;*&lt;/value&gt;
 &lt;/property&gt;
-</pre></div>
+</code></pre></div>
 
 
 </li>

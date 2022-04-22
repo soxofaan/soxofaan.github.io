@@ -67,19 +67,19 @@
 <ul>
 <li>
 <p>The most irritating problem: from time to time some keystrokes don't get through. I did not accuratly measure it, but it's like every 20 or 30 keystrokes two or three are lost. It's an incredible irretating productivity killer (and an explanation of the possible typos in this post). <a href="http://ubuntuforums.org/showthread.php?t=187536">This thread on the Ubuntu forums</a> offers a solution by removing the smart battery kernel module:</p>
-<div class="highlight"><pre><span></span>sudo rmmod acpi_sbs
-</pre></div>
+<div class="highlight"><pre><span></span><code>sudo rmmod acpi_sbs
+</code></pre></div>
 
 
 <p>but now I don't see my battery status any more.
 - I don't understand why dapper's default kdm theme (that's the login screen) is so ugly (those colors, those wanabe rounded corners). I changed it back to the much better the from breezy. Not a big deal on itself, but nevertheless, it was a disappointing first graphical encounter with Dapper after all those command line cruft scrolling by.
 - Blender did not work properly: I could not select an object. Also, startup at the command line revealed some strange OpenGL warning messages like</p>
-<div class="highlight"><pre><span></span>*********************************WARN_ONCE*********************************
+<div class="highlight"><pre><span></span><code>*********************************WARN_ONCE*********************************
 File r300_state.c function r300Enable line 456
 TODO - double side stencil !
 ***************************************************************************
 No ctx-&gt;FragmentProgram._Current!!
-</pre></div>
+</code></pre></div>
 
 
 <p>This problem was solved by <a href="https://help.ubuntu.com/community/BinaryDriverHowto/ATI">installing the binary driver for my video card (ATI mobility radeon 9700)</a>. But I had to revert this because the binary driver caused random lockup/freezes after logout, so I had to power down my computer the hard way.</p>
@@ -87,9 +87,9 @@ No ctx-&gt;FragmentProgram._Current!!
 <li>
 <p>The game engine of blender did not work, I got a segmentation fault instead.
     Based on <a href="http://blenderartists.org/forum/showthread.php?t=68919">this thread on blenderartists.org</a> I used the following solution:</p>
-<div class="highlight"><pre><span></span>cd /usr/lib
+<div class="highlight"><pre><span></span><code>cd /usr/lib
 sudo ln -s libGL.so.1.2 libGL.so
-</pre></div>
+</code></pre></div>
 
 
 </li>
@@ -98,9 +98,9 @@ sudo ln -s libGL.so.1.2 libGL.so
 </li>
 <li>The appearance of GTK applications under KDE was messed up too. I had to fiddle with <code>gtk-theme-switch2</code> to get some things right. Yet, the fonts in the menus  and other interface elements of Firefox and Thunderbird are still to big to my taste. It was ok under Breezy.</li>
 <li>The interface theme of OpenOffice.org looks so Windows 95 (which is a bad thing to  me)</li>
-<li>Flash stopped working in Firefox. Solved (thanks to this <a href="http://ubuntuguide.org/wiki/Ubuntu_dapper#How_to_install_Flash_Player_.28Macromedia_Flash.29_Plug-in_for_Mozilla_Firefox"> source</a>) with <div class="highlight"><pre><span></span>sudo apt-get install flashplugin-nonfree
+<li>Flash stopped working in Firefox. Solved (thanks to this <a href="http://ubuntuguide.org/wiki/Ubuntu_dapper#How_to_install_Flash_Player_.28Macromedia_Flash.29_Plug-in_for_Mozilla_Firefox"> source</a>) with <div class="highlight"><pre><span></span><code>sudo apt-get install flashplugin-nonfree
 sudo update-flashplugin
-</pre></div>
+</code></pre></div>
 
 
 </li>

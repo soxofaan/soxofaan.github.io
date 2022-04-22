@@ -64,9 +64,9 @@ with a dump of my findings.</p>
 <a href="http://docs.python.org/library/profile.html#instant-user-s-manual">Instant User's Manual</a> 
 to get the impatient up an running in no time. E.g. to profile the 
 entry point <code>foo()</code>, execute the following in your script/module:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cProfile</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">cProfile</span>
 <span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;foo()&#39;</span><span class="p">,</span> <span class="s1">&#39;foo.profile&#39;</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>This will profile the <code>foo()</code> function, and save the profiling data to a 
@@ -74,8 +74,8 @@ file <code>foo.profile</code>.</p>
 <p>If you want to profile the whole application, you even don't have to 
 edit your code, as you can run cProfile as a script with your application, 
 say <code>barbazzr.py</code>, as argument:</p>
-<div class="highlight"><pre><span></span>python -m cProfile -o barbazzr.profile barbazzr.py
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -m cProfile -o barbazzr.profile barbazzr.py
+</code></pre></div>
 
 
 <p>This will save the profiling data to <code>barbazzr.profile</code>.</p>
@@ -85,18 +85,18 @@ in the examples above), you can use the pstats module as described in the
 But I've never liked typing these long chained function calls.</p>
 <p>Much easier is using the interactive mode of the pstats module by 
 running it as a script with the profile data file as argument:</p>
-<div class="highlight"><pre><span></span>python -m pstats barbazzr.profile
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -m pstats barbazzr.profile
+</code></pre></div>
 
 
 <p>And voila, you are in an interactive profile statistics browsing session:</p>
-<div class="highlight"><pre><span></span>Welcome to the profile statistics browser.
+<div class="highlight"><pre><span></span><code>Welcome to the profile statistics browser.
 %
-</pre></div>
+</code></pre></div>
 
 
 <p>Use the help command to get the supported commands:</p>
-<div class="highlight"><pre><span></span>% help
+<div class="highlight"><pre><span></span><code>% help
 
 Documented commands (type help &lt;topic&gt;):
 ========================================
@@ -105,11 +105,11 @@ EOF  add  callees  callers  quit  read  reverse  sort  stats  strip
 Undocumented commands:
 ======================
 help
-</pre></div>
+</code></pre></div>
 
 
 <p>Get more help on a command, e.g. the stats command:</p>
-<div class="highlight"><pre><span></span>% help stats
+<div class="highlight"><pre><span></span><code>% help stats
 Print statistics from the current stat object.
 Arguments may be:
 * An integer maximum number of entries to print.
@@ -117,16 +117,16 @@ Arguments may be:
   what fraction of selected entries to print.
 * A regular expression; only entries with function names
   that match it are printed.
-</pre></div>
+</code></pre></div>
 
 
 <p>Strip the long file paths to make the reports easier on the eyes:</p>
-<div class="highlight"><pre><span></span>% strip
-</pre></div>
+<div class="highlight"><pre><span></span><code>% strip
+</code></pre></div>
 
 
 <p>Let's sort. Get the sorting options with the sort command (without arguments):</p>
-<div class="highlight"><pre><span></span>% sort
+<div class="highlight"><pre><span></span><code>% sort
 Valid sort keys (unique prefixes are accepted):
 stdname -- standard name
 nfl -- name/file/line
@@ -138,16 +138,16 @@ line -- line number
 cumulative -- cumulative time
 module -- file name
 name -- function name
-</pre></div>
+</code></pre></div>
 
 
 <p>Sort on internal time:</p>
-<div class="highlight"><pre><span></span>% sort time
-</pre></div>
+<div class="highlight"><pre><span></span><code>% sort time
+</code></pre></div>
 
 
 <p>And show the top 10 functions:</p>
-<div class="highlight"><pre><span></span>% stats 10
+<div class="highlight"><pre><span></span><code>% stats 10
 Thu Jan 21 17:54:33 2010    barbazrr.profile
 
          18195692 function calls (18084048 primitive calls) in 37.803 CPU seconds
@@ -166,11 +166,11 @@ Thu Jan 21 17:54:33 2010    barbazrr.profile
        22    0.809    0.037    0.809    0.037 {built-in method write_png}
     39700    0.774    0.000    0.774    0.000 numeric.py:1500(identity)
     95736    0.719    0.000    0.719    0.000 {numpy.core.multiarray.array}
-</pre></div>
+</code></pre></div>
 
 
 <p>Sort on cumulative time and get the top 5:</p>
-<div class="highlight"><pre><span></span>% sort cumulative
+<div class="highlight"><pre><span></span><code>% sort cumulative
 % stats 5
 Thu Jan 21 17:54:33 2010    barbazrr.profile
 
@@ -185,7 +185,7 @@ Thu Jan 21 17:54:33 2010    barbazrr.profile
        11    0.092    0.008   34.746    3.159 annotation_shifts.py:44(analyse)
        22    0.001    0.000   18.514    0.842 htmlreport.py:159(addPylabFigure)
        44    0.001    0.000   18.500    0.420 figure.py:927(savefig)
-</pre></div>
+</code></pre></div>
 
 
 <p>Very handy indeed.</p>
@@ -199,8 +199,8 @@ the reader (I've always wanted to say this).</p>
     A simple install of the <code>python-profiler</code> package did the trick.</li>
 <li>
 <p>Running your application with</p>
-<div class="highlight"><pre><span></span>python -m cProfile -o barbazzr.profile barbazzr.py
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -m cProfile -o barbazzr.profile barbazzr.py
+</code></pre></div>
 
 
 <p>appears to mess with the <code>__file__</code> variable: it evaluates to the 
@@ -208,9 +208,9 @@ file name of the  cProfile module (<code>/usr/lib/python2.6/cProfile.py</code>
 in my case), instead of the file name of the script/module 
 where <code>__file__</code> variable is used. The workaround is to do the 
 profiling with the first approach:</p>
-<div class="highlight"><pre><span></span>import cProfile
+<div class="highlight"><pre><span></span><code>import cProfile
 cProfile.run(&#39;foo()&#39;, &#39;foo.profile&#39;)
-</pre></div>
+</code></pre></div>
 
 
 </li>

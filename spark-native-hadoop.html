@@ -55,23 +55,23 @@
     <div class="article-content">
         <p>While setting up a new cluster with Hadoop (3.1.1) and Spark (2.4.0), I encountered
 these warnings when running spark:</p>
-<div class="highlight"><pre><span></span>19/02/05 13:06:43 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-</pre></div>
+<div class="highlight"><pre><span></span><code>19/02/05 13:06:43 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+</code></pre></div>
 
 
 <p>To debug this issue, I used a useful trick explained on <a href="https://stackoverflow.com/a/30927689">stackoverflow</a>.
 Instead of tweaking the Hadoop logging config (usually <code>/etc/hadoop/conf/log4j.properties</code>)
 I (temporarily) added this line to the Spark logging config (usually <code>/etc/spark/conf/log4j.properties</code>):</p>
-<div class="highlight"><pre><span></span>log4j.logger.org.apache.hadoop.util.NativeCodeLoader=DEBUG
-</pre></div>
+<div class="highlight"><pre><span></span><code>log4j.logger.org.apache.hadoop.util.NativeCodeLoader=DEBUG
+</code></pre></div>
 
 
 <p>And then I got bit more info about the warning:</p>
-<div class="highlight"><pre><span></span>19/02/05 13:20:52 DEBUG NativeCodeLoader: Trying to load the custom-built native-hadoop library...
+<div class="highlight"><pre><span></span><code>19/02/05 13:20:52 DEBUG NativeCodeLoader: Trying to load the custom-built native-hadoop library...
 19/02/05 13:20:52 DEBUG NativeCodeLoader: Failed to load native-hadoop with error: java.lang.UnsatisfiedLinkError: no hadoop in java.library.path
 19/02/05 13:20:52 DEBUG NativeCodeLoader: java.library.path=:/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
 19/02/05 13:20:52 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-</pre></div>
+</code></pre></div>
 
 
 <p>The "native-hadoop" library files are at <code>/opt/hadoop/lib/native/</code> in my case,
@@ -81,8 +81,8 @@ Apparently (see <a href="https://issues.apache.org/jira/browse/SPARK-1720]">SPAR
 be enough to define an appropriate <code>LD_LIBRARY_PATH</code> environment variable
 (instead of <code>java.library.path</code> hacking).</p>
 <p>So I added</p>
-<div class="highlight"><pre><span></span>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HADOOP_HOME/lib/native
-</pre></div>
+<div class="highlight"><pre><span></span><code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HADOOP_HOME/lib/native
+</code></pre></div>
 
 
 <p>to <code>/etc/spark/conf/spark-env.sh</code> and the <code>NativeCodeLoader</code> warning went away.</p>

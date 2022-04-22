@@ -55,31 +55,31 @@
         <p>If you you want to use normal text in a math environment (mathdisplay, equation,...) you should use <code>\textnormal{}</code> instead of <code>\textrm{}</code>. Apparently the latter is more popular: a <a href="http://www.google.com/search?q=latex+textrm" title="google search for 'latex textrm'">google search for "latex textrm"</a> delivers almost 25.000 hits, whereas <a href="http://www.google.com/search?q=latex+textnormal" title="google search for 'latex textnormal'">google search for "latex textnormal"</a>  returns not more than 800 hits. The advantage of <code>\textnormal</code> is that the text will be typeset in the normal font of the body text. <code>\textrm</code> on the other hand activates a roman (serif) font. Most of the time the result of these two will be the same because the default font of the body text is a serif one in most cases. But sometimes it is not.</p>
 <p>An example I encountered was reusing LaTeX code from an article in a <a href="http://latex-beamer.sourceforge.net/">LaTeX Beamer Class presentation</a>. In a beamer presentation the default font is a sans serif one. When I reused my math expressions, I had to replace all <code>\textrm</code> with <code>\textsf</code> to adjust to this "other default". If I would have used <code>\textnormal</code>, there wouldn't be a problem.</p>
 <p>For example (I like examples), consider the following LaTeX body, saved to a file <code>textnormalexample_body.tex</code>:</p>
-<div class="highlight"><pre><span></span>This just some normal text, and here is some math:
+<div class="highlight"><pre><span></span><code>This just some normal text, and here is some math:
 <span class="k">\begin</span><span class="nb">{</span>eqnarray*<span class="nb">}</span>
  <span class="k">\int</span><span class="nb">_</span>1<span class="nb">^</span>9 x dx <span class="nb">&amp;</span> <span class="nb">&amp;</span> <span class="k">\textrm</span><span class="nb">{</span>this is textrm<span class="nb">}</span><span class="k">\\</span>
  <span class="k">\sum</span><span class="nb">_</span>1<span class="nb">^</span>9 y    <span class="nb">&amp;</span> <span class="nb">&amp;</span> <span class="k">\textsf</span><span class="nb">{</span>this is textsf<span class="nb">}</span><span class="k">\\</span>
  <span class="k">\prod</span><span class="nb">_</span>1<span class="nb">^</span>9 z   <span class="nb">&amp;</span> <span class="nb">&amp;</span> <span class="k">\textnormal</span><span class="nb">{</span>this is textnormal<span class="nb">}</span>
 <span class="k">\end</span><span class="nb">{</span>eqnarray*<span class="nb">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We use this in a simple article document:</p>
-<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
 <span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
   <span class="k">\input</span> <span class="nb">{</span>textnormalexample<span class="nb">_</span>body.tex<span class="nb">}</span>
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>and a comparable simple beamer presentation:</p>
-<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>beamer<span class="nb">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">\documentclass</span><span class="nb">{</span>beamer<span class="nb">}</span>
 <span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
   <span class="k">\begin</span><span class="nb">{</span>frame<span class="nb">}</span>
     <span class="k">\input</span><span class="nb">{</span>textnormalexample<span class="nb">_</span>body.tex<span class="nb">}</span>
   <span class="k">\end</span><span class="nb">{</span>frame<span class="nb">}</span>
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The result of the article is:</p>

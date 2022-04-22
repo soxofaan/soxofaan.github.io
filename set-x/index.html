@@ -54,8 +54,8 @@
     <div class="article-content">
         <p>Bash scripts are handy for putting a bunch of longer running jobs in one batch. In some occasions it can be useful to know which command is running at the moment, especially when the commands do not generate output themselves or this output is redirected to files. </p>
 <p>Bash has a simple setting to achieve this:</p>
-<div class="highlight"><pre><span></span><span class="nb">set</span> -x
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span> -x
+</code></pre></div>
 
 
 <p>which, according to <code>help set</code>, enables the following feature:</p>
@@ -63,13 +63,13 @@
 <p>-x  Print commands and their arguments as they are executed.</p>
 </blockquote>
 <p>Disabling it just takes a mere</p>
-<div class="highlight"><pre><span></span><span class="nb">set</span> +x
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span> +x
+</code></pre></div>
 
 
 <p>You can play with it from the bash command line itself, or put it in a bash script of course.</p>
 <p>A simple illustration with this bash script <code>put_out_the_trash.sh</code> that contains silent commands:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="nb">set</span> -x
 
@@ -77,17 +77,17 @@ touch cookiewrap
 mv cookiewrap dustbin
 mv dustbin trashcan_kitchen
 mv trashcan_kitchen outside
-</pre></div>
+</code></pre></div>
 
 
 <p>Running the script from the command line gives you:</p>
-<div class="highlight"><pre><span></span>$ ./put_out_the_trash.sh
+<div class="highlight"><pre><span></span><code>$ ./put_out_the_trash.sh
 + touch cookiewrap
 + mv cookiewrap dustbin
 + mv dustbin trashcan_kitchen
 + mv trashcan_kitchen outside
 $
-</pre></div>
+</code></pre></div>
 
 
 <p>So you see what's happening.</p>

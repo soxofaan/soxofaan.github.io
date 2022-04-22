@@ -81,7 +81,7 @@ In my case it's not too complex, because I <em>only</em> store "big files"
 to be <code>git annex</code>'ed in my repo. I just have check that I 
 commit symlinks and no real files.</p>
 <p>This is my <code>.git/hooks/pre-commit</code>:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># automatically configured by git-annex</span>
 git annex pre-commit .
 
@@ -106,7 +106,7 @@ git diff --cached --name-only --diff-filter<span class="o">=</span>A -z <span cl
         <span class="nb">exit</span> <span class="m">1</span>
     <span class="k">fi</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Note: the <code>git annex pre-commit .</code> part was the original hook implementation,

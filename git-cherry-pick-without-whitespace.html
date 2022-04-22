@@ -56,13 +56,13 @@
 <p>Here is a trick I use to cherry-pick this kind of commits, without the whitespace parts.</p>
 <p>For example, say his commit SHA1 is "abc123".</p>
 <p>First get the commit's "patch" without whitespace changes (option <code>-w</code>) and apply it (with option <code>-p1</code> to munge the git specific diff file path prefixes):</p>
-<div class="highlight"><pre><span></span>git show -w abc123 | patch -p1
-</pre></div>
+<div class="highlight"><pre><span></span><code>git show -w abc123 | patch -p1
+</code></pre></div>
 
 
 <p>Make sure everything is fine and commit with the original commit metadata (option <code>--reuse-message</code> or just <code>-C</code> in short):</p>
-<div class="highlight"><pre><span></span>git commit -a -C abc123
-</pre></div>
+<div class="highlight"><pre><span></span><code>git commit -a -C abc123
+</code></pre></div>
     </div>
 
     </main>

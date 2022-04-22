@@ -66,12 +66,12 @@ same font as the normal text in the document and, maybe more importantly,
 you can use all the fancy LaTeX commands, e.g. to put mathematical expressions, 
 symbols and formulas in your figure.</p>
 <p>To make this work, one of the required things is to enable the "special" flag on the text objects in XFig, and use a LaTeX font. These things are disabled by default and manually setting for every text object is a bit tedious. To changes these defaults, you can start xfig from the command like with the following options:</p>
-<div class="highlight"><pre><span></span>xfig -specialtext -latexfonts
-</pre></div>
+<div class="highlight"><pre><span></span><code>xfig -specialtext -latexfonts
+</code></pre></div>
 
 
 <p>You can also put these in a configuration file: XFig follows the general <a href="http://xwinman.org/resource.php">X Window Manager configuration stuff</a>. Here is what I've put in my <code>~/.Xresources</code> file for XFig customization:</p>
-<div class="highlight"><pre><span></span>! Set some defaults for Xfig
+<div class="highlight"><pre><span></span><code>! Set some defaults for Xfig
 Fig.latexfonts: true
 Fig.specialtext: true 
 Fig.inches: false
@@ -79,12 +79,12 @@ Fig.startfontsize: 9
 Fig.userunit: cm
 Fig.startgridmode: 2
 Fig.startposnmode: 2
-</pre></div>
+</code></pre></div>
 
 
 <p>Note: these settings are loaded at the start of your X session. If you don't want to restart your X session, you can load them explicitly with </p>
-<div class="highlight"><pre><span></span>xrdb -merge ~/.Xresources
-</pre></div>
+<div class="highlight"><pre><span></span><code>xrdb -merge ~/.Xresources
+</code></pre></div>
     </div>
 
     </main>

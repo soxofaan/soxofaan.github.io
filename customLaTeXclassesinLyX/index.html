@@ -72,16 +72,16 @@
     e.g. <code>funkyarticle.layout</code>. Put it where LyX can find it, 
     e.g. in <code>~/.lyx/layouts/</code>. </p>
 <p>The LyX layout file declares how LyX has to format your text (LyX does not use the LaTeX layout system and settings). A very minimal LyX layout file could be this:</p>
-<div class="highlight"><pre><span></span>#% Do not delete the line below; configure depends on this
+<div class="highlight"><pre><span></span><code>#% Do not delete the line below; configure depends on this
 #  \DeclareLaTeXClass[funkyarticle]{article (funky)}
 
 # Input general definitions
 Input stdclass.inc
-</pre></div>
+</code></pre></div>
 
 
 <p>For conference articles I use for example something like</p>
-<div class="highlight"><pre><span></span>#% Do not delete the line below; configure depends on this
+<div class="highlight"><pre><span></span><code>#% Do not delete the line below; configure depends on this
 #  \DeclareLaTeXClass[funkyarticle]{article (funky)}
 
 # Input general definitions
@@ -95,7 +95,7 @@ Style Section
         Shape SmallCaps
     EndFont
 End
-</pre></div>
+</code></pre></div>
 
 
 <p>You can find more elaborate examples to base your layout file on in your global LyX layout directory (<code>/usr/share/lyx/layouts/</code> in my case, search for <code>*.layout</code> files).</p>

@@ -56,7 +56,7 @@
     <div class="article-content">
         <p>For the saxophone music classes I'm taking, I have some exercises to play along with Charlie Parker records. Because that Bird plays pretty fast, it helps to slow things down a bit. I started with manually slowing down the tempo with <a href="http://audacity.sourceforge.net/" title="Audacity">Audacity</a>, but soon I couldn't suppress the itch to automate things as I needed several slow down factors and also wanted the slow down factor in the MP3 ID3 title tag.</p>
 <p>Here is the bash for loop I use now, mainly for my own reference (copy, edit and paste in terminal), but I guess it might be interesting in some form for other people as well. </p>
-<div class="highlight"><pre><span></span><span class="nv">input</span><span class="o">=</span>perhaps.mp3
+<div class="highlight"><pre><span></span><code><span class="nv">input</span><span class="o">=</span>perhaps.mp3
 <span class="nv">slowdowns</span><span class="o">=</span><span class="s2">&quot;0.95 0.90 0.85 0.80 0.75 0.70 0.60&quot;</span>
 
 <span class="c1"># Additional sox options, e.g. &quot;trim 80 30&quot; to extract fragment from 1:20 to 1:50</span>
@@ -71,7 +71,7 @@
   id3v2 --song <span class="s2">&quot;</span><span class="nv">$title</span><span class="s2"> (</span><span class="nv">$percent</span><span class="s2">%)&quot;</span> <span class="nv">$output</span>
   <span class="nb">echo</span> <span class="k">done</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>This will generate files <code>perhaps-tempo0.95.mp3</code>, <code>perhaps-tempo0.90.mp3</code>, etc.</p>

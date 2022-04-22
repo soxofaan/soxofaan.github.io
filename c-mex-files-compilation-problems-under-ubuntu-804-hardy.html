@@ -56,8 +56,8 @@
     <div class="article-content">
         <p>How unpleasant I may find it, sometimes I have to use some tools in Matlab at work. Today I stumbled on a problem with compiling MEX-files written in C++ on my Ubuntu 8.04 (Hardy Heron) box. To illustrate, I'll use the example C++ MEX file <code>mexcpp.cpp</code> provided with Matlab (Matlab r2007a) in the <code>extern/examples/mex/</code> folder.</p>
 <p>Out-of-the-box compilation with </p>
-<div class="highlight"><pre><span></span>mex mexcpp.cpp
-</pre></div>
+<div class="highlight"><pre><span></span><code>mex mexcpp.cpp
+</code></pre></div>
 
 
 <p>gave the following warning:</p>
@@ -71,20 +71,20 @@
 <p>As a sidenote: compiling MEX-files written in C also caused the warning message, but using the compiled MEX-files did not fail.</p>
 <p>A bit of googling ('a bit' is unfortunately an understatement, I almost lost a whole day) brought me to <a href="http://ubuntuforums.org/showthread.php?p=7737533">this thread in the Ubuntu forums</a>. The fix (workaround actually) is, in a nutshell, to listen to the warning message mentioned above: use an older compiler.</p>
 <p>The GCC version in Ubuntu 8.04 is 4.2.4 by default (at time of this writing on my setup). I decided to install version 4.1 (no worries, different versions of GCC compilers can coexist):</p>
-<div class="highlight"><pre><span></span>sudo apt-get install gcc-4.1 g++-4.1
-</pre></div>
+<div class="highlight"><pre><span></span><code>sudo apt-get install gcc-4.1 g++-4.1
+</code></pre></div>
 
 
 <p>Then, I had to tell the <code>mex</code> tool to use version 4.1 instead of the default. To do so, one has to create a settings file <code>mexopts.sh</code>, which can be generated with </p>
-<div class="highlight"><pre><span></span>mex -setup
-</pre></div>
+<div class="highlight"><pre><span></span><code>mex -setup
+</code></pre></div>
 
 
 <p>This created a file <code>~/.matlab/R2007a/mexopts.sh</code> in my case. In this file, I went to the section for the right architecture ('glnx86' in my case) and changed the appropriate variables:</p>
-<div class="highlight"><pre><span></span>CC=&#39;gcc-4.1&#39;
+<div class="highlight"><pre><span></span><code>CC=&#39;gcc-4.1&#39;
 ...
   CXX=&#39;g++-4.1&#39;
-</pre></div>
+</code></pre></div>
 
 
 <p>Just recompiled the MEX-file and no more warnings or error messages. kthxbye</p>

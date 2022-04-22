@@ -54,18 +54,18 @@
     <div class="article-content">
         <p>When you're working on a software development project where not all parties use the same code style conventions or editor setting (like tabs vs. spaces, removing trailing spaces, etc), the signal to noise ratio of a source code diff can be a bit frustrating. Luckily, most diff programs have an option to ignore whitespace changes, for example <code>-w</code> or <code>--ignore-all-space</code> in <a href="http://www.gnu.org/software/diffutils/">GNU diff</a> or <a href="http://colordiff.sourceforge.net/">colordiff</a>.</p>
 <p>The internal diff engine of <a href="http://subversion.tigris.org/">Subversion</a> also offers this option (since version 1.4 if I'm not mistaken), but it looks a bit weird to use it:</p>
-<div class="highlight"><pre><span></span>svn diff -x -w ventrolucator.cpp
-</pre></div>
+<div class="highlight"><pre><span></span><code>svn diff -x -w ventrolucator.cpp
+</code></pre></div>
 
 
 <p>The weird thing is that the option <code>-w</code> is actually an argument for the <code>-x</code> option. So if you want extra diff customization, like adding the option <code>-p</code> for showing the function name in the diff, you should do</p>
-<div class="highlight"><pre><span></span>svn diff -x <span class="s2">&quot;-w -p&quot;</span> ventrolucator.cpp
-</pre></div>
+<div class="highlight"><pre><span></span><code>svn diff -x <span class="s2">&quot;-w -p&quot;</span> ventrolucator.cpp
+</code></pre></div>
 
 
 <p>or you could merge the <code>-w</code> and <code>-p</code> options to make it a bit less weird:</p>
-<div class="highlight"><pre><span></span>svn diff -x -wp ventrolucator.cpp
-</pre></div>
+<div class="highlight"><pre><span></span><code>svn diff -x -wp ventrolucator.cpp
+</code></pre></div>
 
 
 <p>More info at a <code>svn help diff</code> near you.</p>

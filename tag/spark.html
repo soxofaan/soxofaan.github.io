@@ -52,8 +52,8 @@
                     </header>
                     <div class="article-content article-summary">
                         <p>You are writing a Spark DataFrame to a CSV file with header line on HDFS.</p>
-<div class="highlight"><pre><span></span>df.write.csv(&#39;output_folder&#39;, header=True)
-</pre></div>
+<div class="highlight"><pre><span></span><code>df.write.csv(&#39;output_folder&#39;, header=True)
+</code></pre></div>
 
 
 <p>Because your DataFrame is partitioned, you get multiple CSV files
@@ -82,8 +82,8 @@ in your output folder. Each file will get a header with column names.</p>
                     <div class="article-content article-summary">
                         <p>While setting up a new cluster with Hadoop (3.1.1) and Spark (2.4.0), I encountered
 these warnings when running spark:</p>
-<div class="highlight"><pre><span></span>19/02/05 13:06:43 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-</pre></div>
+<div class="highlight"><pre><span></span><code>19/02/05 13:06:43 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+</code></pre></div>
 
 
 <p>To debug this issue, I used …</p>

@@ -56,13 +56,13 @@
         <p>The default install of gnuplot in Ubuntu/Debian does offer a crippled form of word completion, when compared to other distribution (Mandrake, Suse). For example, filenames can not be completed with pressing <code>tab</code>, which can be really annoying if you're used to have this sort of completion. The reason for this is some licensing issue with the readline library. A workaround is to compile Gnuplot with the right tweaks, but this is to much hassle for what it's worth for me.</p>
 <p>Another solution, which can also be applied to other applications, is <a href="http://utopia.knoware.nl/~hlub/uck/rlwrap/" title="rlwrap">rlwrap</a>. It's just a simple <code>sudo apt-get install rlwrap</code> away (with uni/multiverse repositories enabled).</p>
 <p>Now I have filename completion in gnuplot with:</p>
-<div class="highlight"><pre><span></span>rlwrap -a -c gnuplot
-</pre></div>
+<div class="highlight"><pre><span></span><code>rlwrap -a -c gnuplot
+</code></pre></div>
 
 
 <p>And if you're not so keen on remembering this, just add the following alias to your <code>.bashrc</code>:</p>
-<div class="highlight"><pre><span></span><span class="nb">alias</span> <span class="nv">gnuplot</span><span class="o">=</span><span class="s1">&#39;rlwrap -a -c gnuplot&#39;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">alias</span> <span class="nv">gnuplot</span><span class="o">=</span><span class="s1">&#39;rlwrap -a -c gnuplot&#39;</span>
+</code></pre></div>
 
 
 <p>Nice.</p>

@@ -55,16 +55,16 @@
         <p>When using default LaTeX styles, you get a rather small text width. This is for a very good reason: readability. However, when you want to add an image, figure or table, this width can be a bit limiting. If you naively add an image (or table) that is wider than the text width, the image will typically align on the left margin and extend into the right margin, which is not that pretty. Moreover, because you're not using the left margin, it limits the maximum width you can use.</p>
 <p>I found <a href="http://www.scharrer-online.de/latex/overwide.shtml" title="LaTeX Recipe: Overwide Graphics">this nifty LaTeX recipe for overwide graphics</a>, which I'd like to rehash.</p>
 <p>The trick is to put the image (or something else) in a <code>\makebox</code> command:</p>
-<div class="highlight"><pre><span></span><span class="k">\makebox</span><span class="na">[\textwidth][c]</span><span class="nb">{</span>
+<div class="highlight"><pre><span></span><code><span class="k">\makebox</span><span class="na">[\textwidth][c]</span><span class="nb">{</span>
   <span class="c">% put your overwide image here</span>
 <span class="nb">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>To see it in action, I made a small but functional illustration with a fake image (using the <code>\rule</code> command):</p>
 <p><img alt="overwide figure" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/overwidefigure.png"></p>
 <p>The code to produce this:</p>
-<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="na">[12pt]</span><span class="nb">{</span>article<span class="nb">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">\documentclass</span><span class="na">[12pt]</span><span class="nb">{</span>article<span class="nb">}</span>
 
 <span class="c">% Some float settings to get all the figures at the top of the page</span>
 <span class="k">\setcounter</span><span class="nb">{</span>topnumber<span class="nb">}{</span>4<span class="nb">}</span>
@@ -122,7 +122,7 @@ et tempor eget, mattis vitae augue. Maecenas eu felis mi, non
 adipiscing libero.
 
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>

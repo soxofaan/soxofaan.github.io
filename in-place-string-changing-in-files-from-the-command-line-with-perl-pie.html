@@ -54,8 +54,8 @@
     <div class="article-content">
         <p>The standard unix/linux tools for filtering/changing strings (or patterns) in files from the commandline are <code>sed</code> and <code>awk</code>. But what if you want to change strings  <em>in-place</em>  in the files without the burden of creating new files and replacing the old ones afterwards?</p>
 <p>The "perl pie" is a handy one-liner for these occasions:</p>
-<div class="highlight"><pre><span></span>perl -p -i -e <span class="s1">&#39;s/Jesus/Elvis/g&#39;</span> bible.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code>perl -p -i -e <span class="s1">&#39;s/Jesus/Elvis/g&#39;</span> bible.txt
+</code></pre></div>
 
 
 <p>This will replace in file <code>bible.txt</code> all occurences of 'Jesus' with 'Elvis' in-place.</p>

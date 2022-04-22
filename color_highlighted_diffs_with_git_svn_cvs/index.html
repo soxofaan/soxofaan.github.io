@@ -54,40 +54,40 @@
     <main class="content">
     <div class="article-content">
         <p>At first it felt annoying, but now I really like that <a href="http://git-scm.com/">git</a> uses a pager when it has to present something (e.g. a log or a diff) that is longer than your screen. Git even provides a built in option <code>--color</code> to show you a diff with helpful colors. I use this option all the time and made a shortcut <code>dic</code> for it with the following command</p>
-<div class="highlight"><pre><span></span>git config --global alias.dic <span class="s2">&quot;diff --color&quot;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>git config --global alias.dic <span class="s2">&quot;diff --color&quot;</span>
+</code></pre></div>
 
 
 <p>Also possible is to edit your <code>~/.gitconfig</code> directly so you have something like the following in there:</p>
-<div class="highlight"><pre><span></span>[alias]
+<div class="highlight"><pre><span></span><code>[alias]
         di = diff
         dic = diff --color
-</pre></div>
+</code></pre></div>
 
 
 <p>Now I just do </p>
-<div class="highlight"><pre><span></span>git dic
-</pre></div>
+<div class="highlight"><pre><span></span><code>git dic
+</code></pre></div>
 
 
 <p>and I get a nice paged and color highlighted diff.</p>
 <p>This is a so I-wonder-how-I-could-live-without-it thingy that I wanted the same when working with Subversion or CVS. These guys don't have color highlighting built in, but luckily there is this standalone "diff colorizer" <a href="http://colordiff.sourceforge.net/" title="colordiff - color highlighted diff output">colordiff</a> to help us out. Colordiff should be available at a sufficiently recent Linux package manager near you (Ubuntu has it since 6.06 for example), otherwise installing it manually is not that hard (it's mainly one perl script and some config files).</p>
 <p>If we also add a pager like "less" to the mix, we can mimic the behavior of git. To do so, I added two little scripts to my <code>$PATH</code>.</p>
 <p>The first one is <code>cvscolordiff.sh</code>:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 cvs diff -bup <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> colordiff <span class="p">|</span> less -R
-</pre></div>
+</code></pre></div>
 
 
 <p>and the one for Subversion is <code>svncolordiff.sh</code>:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 svn diff --diff-cmd colordiff -x <span class="s2">&quot;-u -w -p&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> less -R
-</pre></div>
+</code></pre></div>
 
 
 <p>I first tried with constructing bash aliases, but then things go wrong when you try to use arguments to only see diffs of certain files for example. The scripts above take care of this with the <code>"$@"</code> magic, so I can do things like</p>
-<div class="highlight"><pre><span></span>svncolordiff.sh foo.cpp bar.py
-</pre></div>
+<div class="highlight"><pre><span></span><code>svncolordiff.sh foo.cpp bar.py
+</code></pre></div>
 
 
 <p>Also note (in case your wondering) the <code>-R</code> option for <code>less</code>. This options makes sure <code>less</code> presents  nice colors instead of spitting color control character garbage at you. </p>

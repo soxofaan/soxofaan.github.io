@@ -55,8 +55,8 @@
         <p>Sometimes I need to repeat a command several times on the bash commandline. I don't mean a scenario where you could use a for or while loop, but take for example editing a script in an editor and periodically running it in a terminal. In that case my bash history used to be appended over and over with the same command for running that script. </p>
 <p>If you set the shell variable <code>HISTCONTROL</code> to <code>ignoredups</code>, bash will not append a command to the history if it matches the last command of the history.</p>
 <p>Add the following to your <code>~/.bashrc</code> file to enable it (unless it is already enabled, of course):</p>
-<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">HISTCONTROL</span><span class="o">=</span>ignoredups
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">HISTCONTROL</span><span class="o">=</span>ignoredups
+</code></pre></div>
 
 
 <p>In fact, with <code>HISTCONTROL</code> you can do a bit more. The manpage of bash tells the following about <code>HISTCONTROL</code>:</p>

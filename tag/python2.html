@@ -102,7 +102,7 @@ substantial …</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>Look at this small snippet of Python code:</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
 
 <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
@@ -112,14 +112,14 @@ substantial …</p>
 
 <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Seems like nothing special, but look what it spits out:</p>
-<div class="highlight"><pre><span></span>20
+<div class="highlight"><pre><span></span><code>20
 foofoo
 [1, 2, 3, 1, 2, 3]
-</pre></div>
+</code></pre></div>
 
 
 <p>Oh my …</p>
@@ -171,9 +171,9 @@ foofoo
 <p>After some googling, I found that matplotlib offers 
 <a href="http://matplotlib.sourceforge.net/api/dates_api.html#date-tickers">nice flexible date tick control and formatting</a>. 
 I added a date tick locator and a date formatter to the mix as follows:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pylab</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib …</span></pre></div>
+<span class="kn">import</span> <span class="nn">matplotlib …</span></code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/pylab_date_tick_control/"
                                title="link to Date tick control in pylab/matplotlib">Read more</a>
@@ -196,7 +196,7 @@ I added a date tick locator and a date formatter to the mix as follows:</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>It's possible to make <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.ignore.html">Subversion ignore unversioned files</a>, so they don't show up in the status overview and you get a better signal to noise ratio. The command line interface to add ignore rules this is however a bit clunky. First, you need to remember following command:</p>
-<div class="highlight"><pre><span></span>svn propedit svn …</pre></div>
+<div class="highlight"><pre><span></span><code>svn propedit svn …</code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/script-for-easier-adding-subversion-ignore-rules.html"
                                title="link to Script for easier adding subversion ignore rules">Read more</a>
@@ -219,14 +219,14 @@ I added a date tick locator and a date formatter to the mix as follows:</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>Parsing a subversion Id keyword is just a matter of some regular expression magic:</p>
-<div class="highlight"><pre><span></span><span class="c1"># use the built in regular expression library</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># use the built in regular expression library</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="c1"># the subversion Id keyword</span>
 <span class="n">svnid</span> <span class="o">=</span> <span class="s1">&#39;$Id: svnidparse.py 1234 2008-02-19 09:59:27Z joske $&#39;</span>
 
 <span class="c1"># bow for the mighty regular expression</span>
-<span class="n">svnidrep</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision …</span></pre></div>
+<span class="n">svnidrep</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision …</span></code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/parsing-the-subversion-id-keyword-with-python.html"
                                title="link to Parsing the subversion Id keyword with python">Read more</a>
@@ -258,7 +258,7 @@ I added a date tick locator and a date formatter to the mix as follows:</p>
 </li>
 <li>
 <p>Enter directory <code>lp_solve_5.5/lpsolve55</code> and excecute </p>
-<div class="highlight"><pre><span></span>sh …</pre></div></li></ul>
+<div class="highlight"><pre><span></span><code>sh …</code></pre></div></li></ul>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/non-root-installation-of-lp_solve-and-its-python-bindings.html"
                                title="link to Non-root installation of lp_solve and its Python bindings">Read more</a>
@@ -284,10 +284,10 @@ I added a date tick locator and a date formatter to the mix as follows:</p>
 run-time python stack. Among other things, this makes it possible to 
 get the name of the current function or callers. 
 Handy for logging or debugging purposes. A simple script to illustrate:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="c1"># functions</span>
 <span class="k">def</span> <span class="nf">whoami</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack …</span></pre></div>
+    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack …</span></code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/python_inspect/"
                                title="link to Get name of current function and caller with Python">Read more</a>
@@ -310,9 +310,9 @@ Handy for logging or debugging purposes. A simple script to illustrate:</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>Quick note to self on how to get the current working directory of in a Python script, like you have <code>pwd</code> (print working directory) on a Linux/Unix command line:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
 <span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/getcwd/"
                                title="link to get working directory in python">Read more</a>

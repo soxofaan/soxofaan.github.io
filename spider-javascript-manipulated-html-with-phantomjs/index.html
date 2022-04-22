@@ -59,7 +59,7 @@
 <p><a href="http://phantomjs.org/">PhantomJS</a> is a headless WebKit browser that is scriptable with a JavaScript API, useful for automated testing, screen capturing, page load time monitoring and the like. It's also handy for our problem to "download" JavaScript-manipulated page markup.</p>
 <p>While there quite some pointers and examples on the internet, it was not immediately obvious how to get things working as desired. The biggest confusion came from the fact that the scriptable PhantomJS browser and the webpage run in separate "sandboxes". Apart from separate variable pools, <code>console.log()</code> messages from the webpage context won't be visible by default, while the ones from the PhantomJS context work normally, which was puzzling at first while debugging.</p>
 <p>Anyway, here is some boilerplate to solve the problem, using <code>page.evaluate()</code> to evaluate a function in the webpage's context and returning the document's <code>outerHTML</code> back in the PhantomJS context to be rendered on standard output.</p>
-<div class="highlight"><pre><span></span><span class="c1">// The URL to load.</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// The URL to load.</span>
 <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.google.com&#39;</span><span class="p">;</span>
 
 <span class="c1">// Start a PhantomJS &quot;page&quot; and point it to the desired URL.</span>
@@ -85,19 +85,19 @@
     <span class="c1">// Make sure we quit PhantomJS, no point to keep waiting for nothing.</span>
     <span class="nx">phantom</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span>
 <span class="p">});</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>Update</h3>
 <p>Apparently there is a shorter way to do this, as pointed out by <a href="https://twitter.com/ariyahidayat">Ariya Hidayat</a>, one of the guys behind PhantomJS:</p>
-<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.google.com&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.google.com&#39;</span><span class="p">;</span>
 
 <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpage&#39;</span><span class="p">).</span><span class="nx">create</span><span class="p">();</span>
 <span class="nx">page</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">content</span><span class="p">);</span>
     <span class="nx">phantom</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span>
 <span class="p">});</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Great!</p>

@@ -71,7 +71,7 @@ The obvious question is now: which one is best?</p>
 - Desired output: fragment of certain length (at an offset of 60 seconds) in WAV format, mono, 22050 Hz sample frequency.
 - Which one is the fastest?</p>
 <p>The three commands I used were:</p>
-<div class="highlight"><pre><span></span><span class="c1"># FFmpeg</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># FFmpeg</span>
 ffmpeg -i <span class="nv">$input_file</span> -y <span class="se">\</span>
     -ac <span class="m">1</span> -ar <span class="m">22050</span> -ss <span class="m">60</span> -t <span class="nv">$fragment_length</span> output-ffmpeg.wav
 
@@ -84,7 +84,7 @@ mplayer -ao pcm:fast:waveheader:file<span class="o">=</span>output-mplayer.wav <
 
 <span class="c1"># SoX</span>
 sox <span class="nv">$input_file</span> -c <span class="m">1</span> -r <span class="m">22050</span> output-sox.wav trim <span class="m">60</span> <span class="nv">$fragment_length</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>I tried this with fragment lengths of 5, 10, 20, 30 and 60 seconds. I ran each command several times for each fragment length, timed the execution (the "user time" reported by the command line tool "<code>time</code>") and calculated the average execution time (the standard deviation was small enough to only consider the average execution time). </p>

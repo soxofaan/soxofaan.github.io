@@ -78,8 +78,8 @@ annoying. You can't make much from this, right …</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>Here is some Python powered unicode fun (command line oneliner version):</p>
-<div class="highlight"><pre><span></span>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
+</code></pre></div>
 
 
 <p>result:</p>
@@ -128,7 +128,7 @@ annoying. You can't make much from this, right …</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>When programming, lint checking your source code can be useful to detect low level issues like syntax errors, undefined or unused variables. The PHP command line interpreter has an option <code>-l</code>/<code>--syntax-check</code> to do a syntax check of the provided PHP file, instead of executing it:</p>
-<div class="highlight"><pre><span></span>$ php -l file_with_syntax_error.php …</pre></div>
+<div class="highlight"><pre><span></span><code>$ php -l file_with_syntax_error.php …</code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/php-lint-multiple-files-parallel/"
                                title="link to PHP lint checking multiple files in parallel">Read more</a>
@@ -248,13 +248,13 @@ When the expansion occurs within double quotes, it expands to …</p></blockquot
                     </header>
                     <div class="article-content article-summary">
                         <p>Consider a program <code>hello_and_error</code> that writes to both stdout and to stderr. To redirect both to stdout:</p>
-<div class="highlight"><pre><span></span>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></div>
 
 
 <p>If you want to redirect both to the same file <code>hello.txt</code> you can do in bash the following:</p>
-<div class="highlight"><pre><span></span>hello_and_error <span class="p">&amp;</span>&gt; hello.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code>hello_and_error <span class="p">&amp;</span>&gt; hello.txt
+</code></pre></div>
 
 
 <p>If you want to do this in a …</p>

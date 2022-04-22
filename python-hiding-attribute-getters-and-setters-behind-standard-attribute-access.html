@@ -53,7 +53,7 @@
     <main class="content">
     <div class="article-content">
         <p>Look at this small snippet of Python code:</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
 
 <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
@@ -63,27 +63,27 @@
 
 <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Seems like nothing special, but look what it spits out:</p>
-<div class="highlight"><pre><span></span>20
+<div class="highlight"><pre><span></span><code>20
 foofoo
 [1, 2, 3, 1, 2, 3]
-</pre></div>
+</code></pre></div>
 
 
 <p>Oh my god, I see everything double!</p>
 <p>While it looks like we just write and read the attribute <code>value</code> of the object <code>x</code>, there is actually some additional processing taking place behind the scenes. </p>
 <p>The trick is the Python built-in <a href="http://docs.python.org/library/functions.html#property"><code>property</code></a>. With this function (or is it a class?) you can hide getter and setter functions behind what looks like standard attribute access. </p>
 <p>As an illustration, the implementation of the <code>TooMuchAlcohol</code> class used above is as follows:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TooMuchAlcohol</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TooMuchAlcohol</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mi">2</span>
     <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
     <span class="n">value</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_value</span><span class="p">,</span> <span class="n">_set_value</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The setter function <code>_set_value()</code> just stores the value in a "private" attribute <code>_value</code>. The getter function <code>_get_value()</code> returns this value multiplied by two. And finally, the magic is in the last line, where the getter and setter are tied to the public (class) attribute <code>value</code>.</p>

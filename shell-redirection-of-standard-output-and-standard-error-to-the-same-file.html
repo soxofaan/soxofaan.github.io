@@ -54,29 +54,29 @@
     <main class="content">
     <div class="article-content">
         <p>Consider a program <code>hello_and_error</code> that writes to both stdout and to stderr. To redirect both to stdout:</p>
-<div class="highlight"><pre><span></span>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></div>
 
 
 <p>If you want to redirect both to the same file <code>hello.txt</code> you can do in bash the following:</p>
-<div class="highlight"><pre><span></span>hello_and_error <span class="p">&amp;</span>&gt; hello.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code>hello_and_error <span class="p">&amp;</span>&gt; hello.txt
+</code></pre></div>
 
 
 <p>If you want to do this in a more obvious (but longer) way you should do</p>
-<div class="highlight"><pre><span></span>hello_and_error <span class="m">1</span>&gt;hello.txt <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>hello_and_error <span class="m">1</span>&gt;hello.txt <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></div>
 
 
 <p>and  <em>not</em> </p>
-<div class="highlight"><pre><span></span>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="m">1</span>&gt;hello.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code>hello_and_error <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="m">1</span>&gt;hello.txt
+</code></pre></div>
 
 
 <p>The former is semantically equivalent with <code>hello_and_error &amp;amp;&amp;gt; hello.txt</code> but looks a bit counter-intuitive to me. The latter seems more natural from the point of view of the user: "first merge stderr in stdout and then redirect this combination to a file", but it only redirects the stdout of <code>hello_and_error</code> to the file and redirects the stderr of <code>hello_and_error</code> to the stdout of the shell.</p>
 <p>The former is probably more natural from the programmer's point of view. I guess you could compare it to the following pieces of (pseudo-)code.</p>
 <p>for redirection <code>1&gt;hello.txt 2&gt;&amp;1</code>:</p>
-<div class="highlight"><pre><span></span><span class="c1">// initialisation to defaults</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// initialisation to defaults</span>
 <span class="n">stdout</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">stderr</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1">// parse redirection</span>
@@ -85,11 +85,11 @@
 <span class="c1">// result:</span>
 <span class="c1">// stdout == file(&quot;hello.txt&quot;)</span>
 <span class="c1">// stderr == file(&quot;hello.txt&quot;)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>for redirection <code>2&gt;&amp;1 1&gt;hello.txt</code>:</p>
-<div class="highlight"><pre><span></span><span class="c1">// initialisation to defaults</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// initialisation to defaults</span>
 <span class="n">stdout</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">stderr</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1">// parse redirection</span>
@@ -98,7 +98,7 @@
 <span class="c1">// result:</span>
 <span class="c1">// stdout == file(&quot;hello.txt&quot;)</span>
 <span class="c1">// stderr == 1</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>A more in depth view on the redirection: <a href="http://www.ss64.com/bashsyntax/redirection.html">http://www.ss64.com/bashsyntax/redirection.html</a>.</p>

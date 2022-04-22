@@ -60,8 +60,8 @@
 <li>
 <p>Add the following line to the file <code>Makefile.am</code> of each  directory 
     where you want to use the svn version string:</p>
-<div class="highlight"><pre><span></span>SVNREV = $(shell svnversion -n $(srcdir))
-</pre></div>
+<div class="highlight"><pre><span></span><code>SVNREV = $(shell svnversion -n $(srcdir))
+</code></pre></div>
 
 
 <p>This will create a variable <code>$SVNREV</code> with as value the current 
@@ -77,8 +77,8 @@ revision of the src directory at build (make) time.</p>
 <p>and add under the "C" and "C++" tab the following compiler flag
 (Those extra escape  thingies are needed to counter string
  parsing/expanding during the <code>configure</code> stage.)</p>
-<div class="highlight"><pre><span></span>-DSVNREV=\\\&quot;\$(SVNREV)\\\&quot;
-</pre></div>
+<div class="highlight"><pre><span></span><code>-DSVNREV=\\\&quot;\$(SVNREV)\\\&quot;
+</code></pre></div>
 
 
 <p>Like so:</p>
@@ -86,10 +86,10 @@ revision of the src directory at build (make) time.</p>
 </li>
 <li>
 <p>Use the svn version string in your code. e.g.:</p>
-<div class="highlight"><pre><span></span>#ifdef SVNREV
+<div class="highlight"><pre><span></span><code>#ifdef SVNREV
 cout &lt;&lt; &quot;Version: &quot; &lt;&lt; SVNREV &lt;&lt; endl;
 #endif
-</pre></div>
+</code></pre></div>
 
 
 </li>

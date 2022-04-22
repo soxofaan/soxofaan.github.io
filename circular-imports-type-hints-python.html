@@ -79,36 +79,36 @@ there is lesser known solution I want to show here. </p>
 <p>Let's take this simple artificial example with two modules that
 need each other: <code>connection.py</code> defines an interface to something
 like a REST API, and it can create some kind of entity in this API, called <code>Thing</code>:</p>
-<div class="highlight"><pre><span></span><span class="c1"># connection.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># connection.py</span>
 <span class="kn">from</span> <span class="nn">thing</span> <span class="kn">import</span> <span class="n">Thing</span>
 
 <span class="k">class</span> <span class="nc">ApiConnection</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">get_thing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Thing</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Thing</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>This <code>Thing</code> (defined in <code>thing.py</code>) keeps a reference to the connection
 so that operations on a <code>Thing</code> can be send to the API.</p>
-<div class="highlight"><pre><span></span><span class="c1"># thing.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># thing.py</span>
 <span class="kn">from</span> <span class="nn">connection</span> <span class="kn">import</span> <span class="n">ApiConnection</span>
 
 <span class="k">class</span> <span class="nc">Thing</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="n">ApiConnection</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_conn</span> <span class="o">=</span> <span class="n">connection</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>No surprise that the circular dependency here will cause failure,
 resulting in a classic circular import stack trace like:</p>
-<div class="highlight"><pre><span></span>  File &quot;main.py&quot;
+<div class="highlight"><pre><span></span><code>  File &quot;main.py&quot;
     from connection import ApiConnection
   File &quot;connection.py&quot;
     from thing import Thing
   File &quot;thing.py&quot;
     from connection import ApiConnection
 ImportError: cannot import name &#39;ApiConnection&#39; from &#39;connection&#39;
-</pre></div>
+</code></pre></div>
 
 
 <p>In <code>thing.py</code>, the import of the <code>connection</code> module is only there for the <code>ApiConnection</code> type hint.
@@ -120,7 +120,7 @@ that is only active in "type hinting mode", but doesn't interfere at run time.
 The <a href="https://docs.python.org/3/library/typing.html#typing.TYPE_CHECKING"><code>typing.TYPE_CHECKING</code></a>
 constant makes this easily possible.
 In our example we change <code>thing.py</code> to:</p>
-<div class="highlight"><pre><span></span><span class="c1"># thing.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># thing.py</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">connection</span> <span class="kn">import</span> <span class="n">ApiConnection</span>
@@ -128,7 +128,7 @@ In our example we change <code>thing.py</code> to:</p>
 <span class="k">class</span> <span class="nc">Thing</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="s1">&#39;ApiConnection&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_conn</span> <span class="o">=</span> <span class="n">connection</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The code will now execute properly as there is no circular import issue anymore.
@@ -140,8 +140,8 @@ which is bit uglier than a normal type hint.
 Since Python 3.7 however, thanks to<br>
 <a href="https://www.python.org/dev/peps/pep-0563">PEP563 Postponed Evaluation of Annotations</a>
 it is possible to specify the type hint without the quotes, but that requires an additional import first:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+</code></pre></div>
     </div>
 
     </main>

@@ -55,8 +55,8 @@
         <p>When you want to extract a bitmap image from a PDF document, it is tempting to do the "print screen" trick. The drawback of this approach is that you'll inevitably lose quality: the image pixels will typically not map to your screen's pixels in a one to one fashion because of the decimation/resampling/scaling (or even rotation) when viewing the PDF document.</p>
 <p>There are probably a lot of tools extract the bitmap image correctly out there. I guess this functionality is built in in Adobe Acrobat reader. But if you're in my situation (no desire to use Adobe's bloat) or you just need a small handy command line tool for linux (or other "unixes"): try <a href="http://linuxcommand.org/man_pages/pdfimages1.html">pdfimages</a>. It's part of the <a href="http://en.wikipedia.org/wiki/Xpdf">xpdf</a> package, which is probably available for all major linux distributions.</p>
 <p>Usage is very straightforward:</p>
-<div class="highlight"><pre><span></span>pdfimages -j foo.pdf  bar
-</pre></div>
+<div class="highlight"><pre><span></span><code>pdfimages -j foo.pdf  bar
+</code></pre></div>
 
 
 <p>This will extract all images from <code>foo.pdf</code> and save them in JPEG 

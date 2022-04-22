@@ -53,17 +53,17 @@
     <main class="content">
     <div class="article-content">
         <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
-<div class="highlight"><pre><span></span>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
-</pre></div>
+<div class="highlight"><pre><span></span><code>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
+</code></pre></div>
 
 
 <p>(Replace "python" with the actual python executable you want to investigate of course)</p>
 <p>Example result:</p>
-<div class="highlight"><pre><span></span>executable      : &#39;/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python&#39;
+<div class="highlight"><pre><span></span><code>executable      : &#39;/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python&#39;
 version         : &#39;2.7 (r27:82508, Jul  3 2010, 21:12:11) \n[GCC 4.0.1 (Apple Inc. build 5493)]&#39;
 prefix          : &#39;/Library/Frameworks/Python.framework/Versions/2.7&#39;
 exec_prefix     : &#39;/Library/Frameworks/Python.framework/Versions/2.7&#39;
-</pre></div>
+</code></pre></div>
 
 
 <p>I have multiple (too much actually) python interpreters on my mac, and this oneliner helps to keep a bit of overview.</p>

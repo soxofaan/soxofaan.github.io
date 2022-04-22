@@ -54,7 +54,7 @@
     <div class="article-content">
         <p>The order of <code>\caption</code> and <code>\label</code> declarations matter in LaTeX floats (tables and figures). It is important to get references to the float right. The <code>\label</code> should come after the <code>\caption</code> or even inside the <code>\caption</code> environment. If you put the <code>\label</code> before the <code>\caption</code> you will get a reference to the (sub)section where float is declared instead of a reference to the float itself.</p>
 <p>Consider the following LaTeX code:</p>
-<div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
 
 <span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
 
@@ -83,7 +83,7 @@ For lions see Figure~<span class="k">\ref</span><span class="nb">{</span>fig:lio
 For goats see Figure~<span class="k">\ref</span><span class="nb">{</span>fig:goat<span class="nb">}</span>.
 
 <span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>As you can see the lion figure has a <code>\label</code> before its <code>\caption</code>. The goat has it the other way around.

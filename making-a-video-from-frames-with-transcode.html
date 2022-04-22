@@ -56,21 +56,21 @@
         <p>Making a video from a set of frames can be done with <a href="http://www.transcoding.org">transcode</a> as follows.
 Disclaimer: this is mainly a reminder to myself, based on <a href="http://www.transcoding.org/cgi-bin/transcode?Making_Animations" title="making animations with transcode">these instructions for making animations from frames</a>, with some extra's.</p>
 <p>First make a file with the filenames of the individual frames (in the right order of course). E.g. if the frames are named <code>/tmp/0001.png</code>, <code>/tmp/0002.png</code>, ..., <code>/tmp/0100.png</code>:</p>
-<div class="highlight"><pre><span></span>$&gt; ls /tmp/0*.png  &gt; framelist.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code>$&gt; ls /tmp/0*.png  &gt; framelist.txt
+</code></pre></div>
 
 
 <p>Also, indentify the size of the input frames. E.g. with <a href="http://www.imagemagick.org/script/identify.php" title="ImageMagick's indentify">ImageMagick's identify</a>:</p>
-<div class="highlight"><pre><span></span>$&gt; identify /tmp/0001.png
+<div class="highlight"><pre><span></span><code>$&gt; identify /tmp/0001.png
 /tmp/0001.png PNG 400x300 400x300+0+0 DirectClass 65kb
-</pre></div>
+</code></pre></div>
 
 
 <p>Then invoke transcode with the frame list as input:</p>
-<div class="highlight"><pre><span></span>$&gt; transcode -i framelist.txt <span class="se">\</span>
+<div class="highlight"><pre><span></span><code>$&gt; transcode -i framelist.txt <span class="se">\</span>
    -x imlist,null -g400x300 --use_rgb -z <span class="se">\</span>
    -y xvid,null -f25 -o frames.avi -H <span class="m">0</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>the meaning of the different arguments:</p>

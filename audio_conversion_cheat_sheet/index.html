@@ -62,7 +62,7 @@
 <p><em>Update:</em> also see a <a href="https://www.stefaanlippens.net/audio_conversion_execution_speed_comparison_of_SoX_FFmpeg_MPlayer/">follow up blog post</a> about an execution time comparison between SoX, FFmpeg and MPlayer.</p>
 <h3>Audio manipulation with SoX</h3>
 <p><a href="http://sox.sourceforge.net/" title="SoX - Sound eXchange homepage">SoX (Sound eXchange)</a> calls itself "the Swiss Army knife of sound processing programs" and offers, apart from standard audio format and sample rate conversion, a basic set of effects (e.g. pitch shifting, reverb, low pass filtering, flanger, etc). It's available for Linux (search for 'sox' in your package manager), Mac OS X and Windows. </p>
-<div class="highlight"><pre><span></span><span class="c1"># Minimal conversion example</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Minimal conversion example</span>
 sox input.mp3 output.wav
 
 <span class="c1"># Convert to mono (two possibilities: by specifying output format</span>
@@ -82,14 +82,14 @@ sox input.mp3 output.wav trim <span class="m">60</span> <span class="m">30</span
 
 <span class="c1"># All together now (trimmed fragment in mono, 22.05 Hz sample rate)</span>
 sox input.mp3 output.wav trim <span class="m">60</span> <span class="m">30</span> channels <span class="m">1</span> rate <span class="m">22050</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>One issue with SoX is that default installs typically do not support writing MP3 files because of the patent and licensing issues with MP3. Reading MP3 files worked for me (Ubuntu 8.04 and higher) after installing the "libsox-fmt-all" package. If you're up to it, you can recompile SoX with MP3 encoding support, but there are other options if you really want MP3 encoding (see below).</p>
 <h3>Decode to WAV (from wide variety of formats) with MPlayer</h3>
 <p><a href="http://www.mplayerhq.hu" title="MPlayer homepage">MPlayer</a> is a media player that supports a wide range of multimedia formats. It is typically used for playing video with a GUI, but can also be used (in batch mode without a GUI) to convert the audio to WAV format. MPlayer is available for Linux (package "mplayer"), Windows and Mac OS X.</p>
 <p>The invocation bit more complex than with the other decoders shown here. For clarity, the command is spread out over several lines here (do not forget to remove the backslashes when you want it on one line):</p>
-<div class="highlight"><pre><span></span><span class="c1"># Decode the audio channel to PCM (WAV) and ignore the video channels</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Decode the audio channel to PCM (WAV) and ignore the video channels</span>
 mplayer <span class="se">\</span>
     -ao pcm:fast:waveheader:file<span class="o">=</span>output.wav <span class="se">\</span>
     -vo null -vc null <span class="se">\</span>
@@ -113,14 +113,14 @@ mplayer <span class="se">\</span>
     -vo null -vc null <span class="se">\</span>
     -ss <span class="m">60</span> -endpos <span class="m">30</span> <span class="se">\</span>
     input.mp3
-</pre></div>
+</code></pre></div>
 
 
 <p>Note: on some platforms I had to add the option <code>-format s16le</code> to make sure MPlayer encoded 16 bit PCM samples instead of 24 bit or even 32 bit, which can cause problems with some audio players/tools.</p>
 <h3>Transcode with FFmpeg (from and to a wide variety of formats)</h3>
 <p><a href="http://ffmpeg.org/" title="FFmpeg homepage">FFmpeg</a> is another powerful open source tool for multimedia handling like conversion/transcoding. Installing is easy with a sufficient recent Linux distribution, install the "ffmpeg" package (note: on Ubuntu 9.10 aka Karmic Koala, I also had to install "libavcodec-unstripped-52", to make MP3 encoding possible, your mileage may vary). Getting it working on Windows apparently requires you to compile it yourself (or trusting a website that provides binaries). For Mac OS X, I installed the "ffmpeg" package through <a href="http://www.macports.org/">MacPorts</a>, and there is also one for <a href="http://www.finkproject.org/">Fink</a>.</p>
 <p>FFmpeg is typically used for video, but audio transcoding works too and is pretty simple:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Minimal example: transcode from MP3 to WMA</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Minimal example: transcode from MP3 to WMA</span>
 ffmpeg -i input.mp3 output.wma
 
 <span class="c1"># You can get the list of supported formats with:</span>
@@ -137,13 +137,13 @@ ffmpeg -i input.wav -ac <span class="m">1</span> -ab <span class="m">64000</span
 ffmpeg -i input.mp3 -ss <span class="m">60</span> -t <span class="m">30</span> output.wav
 <span class="c1"># In HH:MM:SS format</span>
 ffmpeg -i input.mp3 -ss <span class="m">0</span>:01:00 -t <span class="m">0</span>:00:30 output.wav
-</pre></div>
+</code></pre></div>
 
 
 <h3>Encode as MP3 or re-encode an MP3 file to a different bit rate with Lame</h3>
 <p><a href="http://lame.sourceforge.net/" title="Lame MP3 encoder homepage">Lame</a> is a well known open source MP3 encoder. Installing on Linux should be easy: just look for the "lame" package. For Mac OS X, you can use the "lame" package of <a href="http://www.macports.org">MacPorts</a> or <a href="http://www.finkproject.org/">Fink</a>. For Windows you have to compile it yourself, or trust <a href="http://lame.sourceforge.net/links.php#Binaries">some websites that provide binaries</a>.</p>
 <p>You can use it for example to encode from WAV format to MP3 or to re-encode an MP3 to a different bit rate. Some examples:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Minimal example of converting a wave file to MP3</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Minimal example of converting a wave file to MP3</span>
 lame input.wav output.mp3
 
 <span class="c1"># Re-encode existing MP3 to 64 kbps MP3</span>
@@ -163,26 +163,26 @@ lame -b <span class="m">64</span> original.mp3 new.mp3
 lame --abr <span class="m">123</span> input.wav output.mp3
 <span class="c1"># or variable (VBR) encoding, e.g. between 32 kbps and 192 kbps:</span>
 lame -v -b <span class="m">32</span> -B <span class="m">192</span> input.wav output.mp3
-</pre></div>
+</code></pre></div>
 
 
 <h3>Encode in Ogg Vorbis format</h3>
 <p>With the "oggenc" tool you can encode audio in WAV format (or raw or AIFF) to Ogg Vorbis format. On Ubuntu I had to install the "vorbis-tools" package to get "oggenc".</p>
-<div class="highlight"><pre><span></span><span class="c1"># Minimal example</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Minimal example</span>
 oggenc audio.wav -o audio.ogg
 <span class="c1"># Setting the bit rate, downmix to mono and set the sample rate:</span>
 oggenc -b <span class="m">32</span> --downmix --resample <span class="m">22050</span> input.wav -o output.ogg
-</pre></div>
+</code></pre></div>
 
 
 <h3>Getting information about audio files</h3>
 <p>To get basic information about an audio file (like the number of channels, sample rate, duration, etc), there is the 'soxi' tool, which is part of the sox package:</p>
-<div class="highlight"><pre><span></span>soxi file.mp3
-</pre></div>
+<div class="highlight"><pre><span></span><code>soxi file.mp3
+</code></pre></div>
 
 
 <p>which returns something like:</p>
-<div class="highlight"><pre><span></span>Input File     : &#39;file.mp3&#39;
+<div class="highlight"><pre><span></span><code>Input File     : &#39;file.mp3&#39;
 Channels       : 2
 Sample Rate    : 44100
 Precision      : 16-bit
@@ -190,33 +190,33 @@ Duration       : 00:03:55.35 = 10378847 samples = 17651.1 CDDA sectors
 File Size      : 1.88M
 Bit Rate       : 64.0k
 Sample Encoding: MPEG audio (layer I, II or III)
-</pre></div>
+</code></pre></div>
 
 
 <p>You can easily specify multiple files too.</p>
 <p>When soxi is not available (e.g. it isn't on Ubuntu 8.04) or when soxi does not recognize the file format, there are some alternatives based on FFmpeg and MPlayer.</p>
 <p>With FFmpeg, just don't specify an output file, for example:</p>
-<div class="highlight"><pre><span></span>ffmpeg -i file.mp3
-</pre></div>
+<div class="highlight"><pre><span></span><code>ffmpeg -i file.mp3
+</code></pre></div>
 
 
 <p>which returns something like:</p>
-<div class="highlight"><pre><span></span>... [version information] ...
+<div class="highlight"><pre><span></span><code>... [version information] ...
 Input #0, mp3, from &#39;file.mp3&#39;:
   Duration: 00:03:55.2, start: 0.000000, bitrate: 63 kb/s
   Stream #0.0: Audio: mp2, 44100 Hz, stereo, 64 kb/s
 Must supply at least one output file
-</pre></div>
+</code></pre></div>
 
 
 <p>You can supply several files, but you need to put the flag <code>-i</code> in front of each one.</p>
 <p>With MPlayer, it's a bit more involved:</p>
-<div class="highlight"><pre><span></span>mplayer -vo null -ao null -frames <span class="m">0</span> -identify file.mp3
-</pre></div>
+<div class="highlight"><pre><span></span><code>mplayer -vo null -ao null -frames <span class="m">0</span> -identify file.mp3
+</code></pre></div>
 
 
 <p>which returns something like:</p>
-<div class="highlight"><pre><span></span>... [version information] ...
+<div class="highlight"><pre><span></span><code>... [version information] ...
 Playing file.mp3.
 ID_AUDIO_ID=0
 Audio file file format detected.
@@ -243,7 +243,7 @@ Starting playback...
 
 
 Exiting... (End of file)
-</pre></div>
+</code></pre></div>
 
 
 <h3>Further reading</h3>

@@ -58,8 +58,8 @@
     <main class="content">
     <div class="article-content">
         <p>You are writing a Spark DataFrame to a CSV file with header line on HDFS.</p>
-<div class="highlight"><pre><span></span>df.write.csv(&#39;output_folder&#39;, header=True)
-</pre></div>
+<div class="highlight"><pre><span></span><code>df.write.csv(&#39;output_folder&#39;, header=True)
+</code></pre></div>
 
 
 <p>Because your DataFrame is partitioned, you get multiple CSV files
@@ -67,8 +67,8 @@ in your output folder. Each file will get a header with column names.</p>
 <p>So far so good, but now you want to dump that to a single local CSV file.
 The straightforward way is using HDFS's <code>getmerge</code>, which will concatenate
 all the files to a local file:</p>
-<div class="highlight"><pre><span></span>hadoop fs -getmerge output_folder result.csv
-</pre></div>
+<div class="highlight"><pre><span></span><code>hadoop fs -getmerge output_folder result.csv
+</code></pre></div>
 
 
 <p>Unfortunately, because <code>getmerge</code> just concatenates the HDFS files,
@@ -77,16 +77,16 @@ This will cause quite some headaches when loading the data
 in tools like for example pandas.</p>
 <p>A typical solution is making sure that the DataFrame has only a single
 partition before writing to HDFS, so that there is only a single output file:</p>
-<div class="highlight"><pre><span></span>df.coalesce(1).write.csv(&#39;output_folder&#39;, header=True)
-</pre></div>
+<div class="highlight"><pre><span></span><code>df.coalesce(1).write.csv(&#39;output_folder&#39;, header=True)
+</code></pre></div>
 
 
 <p>But sometimes you can not or don't want to repartition the DataFrame before
 writing to HDFS (e.g. to avoid memory issues).
 For these cases you can use the following little awk snippet
 to get rid of duplicated header lines in your CSV file:</p>
-<div class="highlight"><pre><span></span>awk &#39;BEGIN{f=&quot;&quot;}{if($0!=f){print $0}if(NR==1){f=$0}}&#39; result.csv &gt; postprocessed.csv
-</pre></div>
+<div class="highlight"><pre><span></span><code>awk &#39;BEGIN{f=&quot;&quot;}{if($0!=f){print $0}if(NR==1){f=$0}}&#39; result.csv &gt; postprocessed.csv
+</code></pre></div>
     </div>
 
     </main>

@@ -54,13 +54,13 @@
     <main class="content">
     <div class="article-content">
         <p>Working on the command line shell typically involves using the same argument of the previous command. In  <em>bash</em>  there is a trick to save you those boring keystrokes. When you use "<code>!$</code>" (called  <em>bang dollar-sign</em> ) in a command, bash will expand it to the last argument of the previous command. A simple example to clarify:</p>
-<div class="highlight"><pre><span></span>$&gt; file /etc/fstab
+<div class="highlight"><pre><span></span><code>$&gt; file /etc/fstab
 /etc/fstab: ASCII text
 
 $&gt; ls -l !$
 ls -l /etc/fstab
 -rw-r--r--  1 root root 894 2005-08-03 15:12 /etc/fstab
-</pre></div>
+</code></pre></div>
 
 
 <p>As you see bash replaced the "<code>!$</code>" of the second command with "<code>/etc/fstab</code>", the last argument of the first command. First bash shows the expanded code (first line of the output) and then executes the command.</p>

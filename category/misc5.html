@@ -169,13 +169,13 @@ The obvious question is now: which one is best?</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>I just stumbled on another reason to dislike Matlab: the stupid inconsistency of the short-circuit behavior of the elementwise logical operators: the statement</p>
-<div class="highlight"><pre><span></span><span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">)</span>
+</code></pre></div>
 
 
 <p><strong>does not short-circuit</strong>, so both <code>fun(2)</code> and <code>fun(9999)</code> are executed,
 but when used in an <code>if</code> or <code>while</code> expression like</p>
-<div class="highlight"><pre><span></span><span class="k">if …</span></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">if …</span></code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/matlab-wtf-inconsistent-short-circuit-behavior-of-logical-operators.html"
                                title="link to Matlab WTF: Inconsistent short-circuit behavior of logical operators">Read more</a>
@@ -220,7 +220,7 @@ but when used in an <code>if</code> or <code>while</code> expression like</p>
                     </header>
                     <div class="article-content article-summary">
                         <p>Look at this small snippet of Python code:</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
 
 <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
@@ -230,14 +230,14 @@ but when used in an <code>if</code> or <code>while</code> expression like</p>
 
 <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Seems like nothing special, but look what it spits out:</p>
-<div class="highlight"><pre><span></span>20
+<div class="highlight"><pre><span></span><code>20
 foofoo
 [1, 2, 3, 1, 2, 3]
-</pre></div>
+</code></pre></div>
 
 
 <p>Oh my …</p>
@@ -264,10 +264,10 @@ foofoo
                     <div class="article-content article-summary">
                         <p>How to find out which version of Ubuntu you are running?</p>
 <p>Use one of the commands below:</p>
-<div class="highlight"><pre><span></span>lsb_release -a
+<div class="highlight"><pre><span></span><code>lsb_release -a
 cat /etc/lsb-release
 cat /etc/issue
-</pre></div>
+</code></pre></div>
 
 
 <p>kthxbye </p>

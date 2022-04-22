@@ -52,9 +52,9 @@
                     </header>
                     <div class="article-content article-summary">
                         <p>Drupal didn't work out of the box and gave the following white screen of death:</p>
-<div class="highlight"><pre><span></span>500 Internal Server Error
+<div class="highlight"><pre><span></span><code>500 Internal Server Error
 The server encountered an internal error or misconfiguration and was unable to complete your request.
-</pre></div>
+</code></pre></div>
 
 
 <p>After some research I found out that One.com hosting didn't like Drupal's default <code>.htaccess</code> file …</p>
@@ -80,14 +80,14 @@ The server encountered an internal error or misconfiguration and was unable to c
                     </header>
                     <div class="article-content article-summary">
                         <p>Parsing a subversion Id keyword is just a matter of some regular expression magic:</p>
-<div class="highlight"><pre><span></span><span class="c1"># use the built in regular expression library</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># use the built in regular expression library</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="c1"># the subversion Id keyword</span>
 <span class="n">svnid</span> <span class="o">=</span> <span class="s1">&#39;$Id: svnidparse.py 1234 2008-02-19 09:59:27Z joske $&#39;</span>
 
 <span class="c1"># bow for the mighty regular expression</span>
-<span class="n">svnidrep</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision …</span></pre></div>
+<span class="n">svnidrep</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision …</span></code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/parsing-the-subversion-id-keyword-with-python.html"
                                title="link to Parsing the subversion Id keyword with python">Read more</a>
@@ -277,7 +277,7 @@ The server encountered an internal error or misconfiguration and was unable to c
 </li>
 <li>
 <p>Enter directory <code>lp_solve_5.5/lpsolve55</code> and excecute </p>
-<div class="highlight"><pre><span></span>sh …</pre></div></li></ul>
+<div class="highlight"><pre><span></span><code>sh …</code></pre></div></li></ul>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/non-root-installation-of-lp_solve-and-its-python-bindings.html"
                                title="link to Non-root installation of lp_solve and its Python bindings">Read more</a>

@@ -168,13 +168,13 @@
 <ol>
 <li>
 <p>DNS setup: add an entry for the local domain name in <code>/etc/hosts</code>, e.g. </p>
-<div class="highlight"><pre><span></span>127.0.0.1     foo.localhost
-</pre></div>
+<div class="highlight"><pre><span></span><code>127.0.0.1     foo.localhost
+</code></pre></div>
 
 
 <p>and flush DNS cache with </p>
-<div class="highlight"><pre><span></span>dscacheutil -flushcache
-</pre></div>
+<div class="highlight"><pre><span></span><code>dscacheutil -flushcache
+</code></pre></div>
 
 
 <ol>
@@ -224,7 +224,7 @@
                     </header>
                     <div class="article-content article-summary">
                         <p>It's possible to make <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.ignore.html">Subversion ignore unversioned files</a>, so they don't show up in the status overview and you get a better signal to noise ratio. The command line interface to add ignore rules this is however a bit clunky. First, you need to remember following command:</p>
-<div class="highlight"><pre><span></span>svn propedit svn …</pre></div>
+<div class="highlight"><pre><span></span><code>svn propedit svn …</code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/script-for-easier-adding-subversion-ignore-rules.html"
                                title="link to Script for easier adding subversion ignore rules">Read more</a>

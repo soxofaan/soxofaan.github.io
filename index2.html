@@ -163,9 +163,9 @@ in <a href="http://getpelicam.com">Pelican</a>
 without plugins and minimal amount of code.</p>
 <p>Define a jinja filter in <code>pelicanconf.py</code> to convert a tag's article count
 to a CSS <code>font-size</code> value. For example like this:</p>
-<div class="highlight"><pre><span></span>import math
+<div class="highlight"><pre><span></span><code>import math
 JINJA_FILTERS = {
-    &#39;count_to_font_size&#39;: lambda c: &#39;{p:.1f …</pre></div>
+    &#39;count_to_font_size&#39;: lambda c: &#39;{p:.1f …</code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/quick-and-easy-tag-cloud-in-pelican.html"
                                title="link to Quick and easy tag cloud in Pelican">Read more</a>
@@ -284,7 +284,7 @@ and involvement slowly decreased …</p>
 typical Python stacktrace (aka traceback, aka backtrace)
 in a way you can manipulate?</p>
 <p>Here are some ways to handle it:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="k">try</span><span class="p">:</span>
@@ -292,7 +292,7 @@ in a way you can manipulate?</p>
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
 
      <span class="c1"># Just print traceback</span>
-     <span class="k">print</span> <span class="s2">&quot;something went wrong, here is …</span></pre></div>
+     <span class="k">print</span> <span class="s2">&quot;something went wrong, here is …</span></code></pre></div>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/python-traceback-in-catch/"
                                title="link to Get stacktrace in Python catch body">Read more</a>

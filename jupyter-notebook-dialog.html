@@ -75,7 +75,7 @@ as show below.
 Through <a href="http://requirejs.org/">RequireJs</a> I load the internal 
 <code>base/js/dialog</code> module and use the <code>modal</code> function 
 to trigger a model with title and body.</p>
-<div class="highlight"><pre><span></span><span class="nx">require</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nx">require</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;base/js/dialog&quot;</span><span class="p">],</span> 
     <span class="kd">function</span><span class="p">(</span><span class="nx">dialog</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">dialog</span><span class="p">.</span><span class="nx">modal</span><span class="p">({</span>
@@ -87,7 +87,7 @@ to trigger a model with title and body.</p>
         <span class="p">});</span>
     <span class="p">}</span>
 <span class="p">);</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>See it in action here:
@@ -100,12 +100,12 @@ there is apparently also an alias <code>requirejs</code> that doesn't seem to
 be shadowed by Bokeh. I'm not sure to what extent I am depending on
 deprecated or fragile assumptions here, but this variation worked for
 me:</p>
-<div class="highlight"><pre><span></span><span class="nx">requirejs</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nx">requirejs</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;base/js/dialog&quot;</span><span class="p">],</span> 
     <span class="kd">function</span><span class="p">(</span><span class="nx">dialog</span><span class="p">)</span> <span class="p">{</span> 
         <span class="c1">// ...</span>
     <span class="p">});</span>
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>

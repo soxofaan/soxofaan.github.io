@@ -92,7 +92,7 @@ the standard output and error pipes asynchronously and put each line
 on a <a href="http://docs.python.org/library/queue.html">queue</a>. The main thread 
 can then monitor the subprocess by watching the lines as they come in 
 on the queues.</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -181,11 +181,11 @@ on the queues.</p>
         <span class="n">produce</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">consume</span><span class="p">([</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;produce&#39;</span><span class="p">])</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Running this will generate a line by line monitoring report like</p>
-<div class="highlight"><pre><span></span>Received line on standard output: &quot;Line 0 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
+<div class="highlight"><pre><span></span><code>Received line on standard output: &quot;Line 0 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
 Received line on standard error: &quot;Line 1 on &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x100292270&gt;\n&quot;
 Received line on standard output: &quot;Line 2 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
 Received line on standard error: &quot;Line 3 on &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x100292270&gt;\n&quot;
@@ -195,7 +195,7 @@ Received line on standard error: &quot;Line 6 on &lt;open file &#39;&lt;stderr&g
 Received line on standard error: &quot;Line 7 on &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x100292270&gt;\n&quot;
 Received line on standard output: &quot;Line 8 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
 Received line on standard output: &quot;Line 9 on &lt;open file &#39;&lt;stdout&gt;&#39;, mode &#39;w&#39; at 0x1002921e0&gt;\n&quot;
-</pre></div>
+</code></pre></div>
     </div>
 
     </main>
