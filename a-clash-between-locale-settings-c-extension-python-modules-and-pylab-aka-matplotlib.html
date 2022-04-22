@@ -59,10 +59,10 @@
 <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span>
-<span class="nf">hello</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="n">hello</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello there, check out this float: %.3f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mf">123.456</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nf">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">Methods</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>

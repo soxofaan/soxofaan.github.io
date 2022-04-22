@@ -62,7 +62,7 @@
 <span class="c1"># Additional sox options, e.g. &quot;trim 80 30&quot; to extract fragment from 1:20 to 1:50</span>
 <span class="nv">soxoptions</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 
-<span class="k">for</span> tempo in <span class="nv">$slowdowns</span><span class="p">;</span> <span class="k">do</span>
+<span class="k">for</span> tempo <span class="k">in</span> <span class="nv">$slowdowns</span><span class="p">;</span> <span class="k">do</span>
   <span class="nv">output</span><span class="o">=</span><span class="si">${</span><span class="nv">input</span><span class="p">%.mp3</span><span class="si">}</span>-tempo<span class="nv">$tempo</span>.mp3
   <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$tempo</span><span class="s2"> slowing down </span><span class="nv">$input</span><span class="s2"> to </span><span class="nv">$output</span><span class="s2">&quot;</span>
   sox <span class="nv">$input</span> <span class="nv">$output</span> <span class="nv">$soxoptions</span> tempo <span class="nv">$tempo</span>

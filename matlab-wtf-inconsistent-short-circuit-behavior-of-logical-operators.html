@@ -65,7 +65,7 @@ but when used in an <code>if</code> or <code>while</code> expression like</p>
 <p>the expression <strong>does short-circuit</strong>, meaning that only <code>fun(2)</code> is executed. </p>
 <p>I know, you also have the <code>||</code> and <code>&amp;&amp;</code> operators, which are defined as short circuiting operators, but the inconsistency with the <code>|</code> and <code>&amp;</code> operators is just stupid, if not evil.</p>
 <p>For example, say that function <code>fun(x)</code> is defined as </p>
-<div class="highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>y <span class="p">=</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>y<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="nb">disp</span><span class="p">(</span><span class="n">sprintf</span><span class="p">(</span><span class="s">&#39;  --&gt; called fun(%d)&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">));</span>
     <span class="n">y</span> <span class="p">=</span> <span class="n">x</span><span class="p">;</span>
 <span class="n">end</span>
