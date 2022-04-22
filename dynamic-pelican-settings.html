@@ -63,7 +63,6 @@ as follows:</p>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}/&#39;</span>
 </code></pre></div>
 
-
 <p>In addition (or instead) you can also play with rewrite rules, 
 if you have control over this on your setup. Because I'm planning 
 to host my blog on <a href="https://pages.github.com/">GitHub Pages</a>, I don't.</p>
@@ -76,7 +75,6 @@ bit too much as overkill to avoid where not necessary.</p>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
 </code></pre></div>
 
-
 <p>How to combine these?</p>
 <h3>Dynamic Pelican settings</h3>
 <p>Turns out it is possible to combine both with "dynamic" settings
@@ -87,7 +85,6 @@ actual values for each article with something like</p>
 <div class="highlight"><pre><span></span><code><span class="n">setting</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>So we just have to assign objects with a custom <code>.format(**kwargs)</code> 
 method to the config variables.</p>
 <p>First, let's define this helper class:</p>
@@ -97,7 +94,6 @@ method to the config variables.</p>
     <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">metadata</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>On construction of a <code>DynamicSetting</code> object, we pass it a function <code>f</code> 
 to generates a variation of the setting (e.g. <code>{slug}</code> or <code>{slug}.html</code>)
@@ -110,7 +106,6 @@ CleanUrl: hello
 Hello world
 </code></pre></div>
 
-
 <p>and for articles where we don't need a particular clean URL we don't.</p>
 <p>With the helper class of above, we can now define  <code>ARTICLE_SAVE_AS</code> and
 <code>ARTICLE_URL</code> dynamically as follows:</p>
@@ -121,7 +116,6 @@ Hello world
     <span class="s1">&#39;{cleanurl}/&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>So for articles where there is <code>CleanUrl</code> metadata we'll use that for
 output directory path and URL.
@@ -134,7 +128,6 @@ For other articles we fall back on the normal <code>{slug}.html</code> way.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;{slug}.html&#39;</span>
 </code></pre></div>
-
 
 <p>which gives bit more breathing room for the custom logic.</p>
     </div>

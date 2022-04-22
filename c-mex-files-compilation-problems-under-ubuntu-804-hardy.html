@@ -59,7 +59,6 @@
 <div class="highlight"><pre><span></span><code>mex mexcpp.cpp
 </code></pre></div>
 
-
 <p>gave the following warning:</p>
 <blockquote>
 <p>Warning: You are using gcc version "4.2.4".  The earliest gcc version supported with mex is "4.0.0".  The latest version tested for use with mex is "4.2.0". To download a different version of gcc, visit http://gcc.gnu.org</p>
@@ -74,18 +73,15 @@
 <div class="highlight"><pre><span></span><code>sudo apt-get install gcc-4.1 g++-4.1
 </code></pre></div>
 
-
 <p>Then, I had to tell the <code>mex</code> tool to use version 4.1 instead of the default. To do so, one has to create a settings file <code>mexopts.sh</code>, which can be generated with </p>
 <div class="highlight"><pre><span></span><code>mex -setup
 </code></pre></div>
-
 
 <p>This created a file <code>~/.matlab/R2007a/mexopts.sh</code> in my case. In this file, I went to the section for the right architecture ('glnx86' in my case) and changed the appropriate variables:</p>
 <div class="highlight"><pre><span></span><code>CC=&#39;gcc-4.1&#39;
 ...
   CXX=&#39;g++-4.1&#39;
 </code></pre></div>
-
 
 <p>Just recompiled the MEX-file and no more warnings or error messages. kthxbye</p>
     </div>

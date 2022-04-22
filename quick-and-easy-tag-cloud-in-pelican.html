@@ -63,7 +63,6 @@ JINJA_FILTERS = {
 }
 </code></pre></div>
 
-
 <p>(Play with the parameters of that mathematical expression to tweak the
 size mapping to your liking.)</p>
 <p>In the <code>tags.html</code> template you can now use this filter to inject 
@@ -76,14 +75,12 @@ as an item list:</p>
             &lt;a href=&quot;{{ SITEURL }}/{{ tag.url }}&quot;&gt;{{ tag }}&lt;/a&gt;
 </code></pre></div>
 
-
 <p>For a pretty tag cloud, you may also need some CSS rules on the 
 corresponding list elements (if not already), in essence something like
 this:</p>
 <div class="highlight"><pre><span></span><code>ul.tags { list-style-type: none; }
 ul.tags li { display: inline-block; }
 </code></pre></div>
-
 
 <p>and probably some more margin and padding tweaking.</p>
     </div>

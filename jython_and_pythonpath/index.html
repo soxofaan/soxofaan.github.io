@@ -61,11 +61,9 @@
 <div class="highlight"><pre><span></span><code>jython -Dpython.path<span class="o">=</span><span class="nv">$PYTHONPATH</span>
 </code></pre></div>
 
-
 <p>To make it a bit less clunky, I added the following alias to my bash aliases:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">alias</span> <span class="nv">jython</span><span class="o">=</span><span class="s1">&#39;jython -Dpython.path=$PYTHONPATH&#39;</span>
 </code></pre></div>
-
 
 <p>Note that I used single quotes in the alias. This way, <code>$PYTHONPATH</code> is not expanded before defining the alias, but on invocation of the jython command. This means that changes to the <code>PYTHONPATH</code> environmental variable happening after defining the alias (which typically happens when starting a new shell) will still be picked up in the alias command.
 If I had used double quotes, <code>$PYTHONPATH</code> would be expanded before defining the alias, which means that <code>-Dpython.path</code> would be hardcoded. Consequently, changes to <code>PYTHONPATH</code> would be invisible for the jython alias.</p>

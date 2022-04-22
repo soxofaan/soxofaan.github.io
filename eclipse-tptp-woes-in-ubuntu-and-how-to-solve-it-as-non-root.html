@@ -69,7 +69,6 @@
 <div class="highlight"><pre><span></span><code>dpkg -x libstdc++2.10-glibc2.2_2.95.4-27_i386.deb tmp/
 </code></pre></div>
 
-
 <p>This resulted in the following file tree:</p>
 <div class="highlight"><pre><span></span><code>tmp/
 `-- usr
@@ -85,11 +84,9 @@
                 `-- copyright
 </code></pre></div>
 
-
 <p>So I just had to move the shared libraries <code>libstdc++*.so</code>  to <code>~/usr/lib</code>, or alternatively, extract the deb file directly int my home directory:</p>
 <div class="highlight"><pre><span></span><code>dpkg -x libstdc++2.10-glibc2.2_2.95.4-27_i386.deb ~/
 </code></pre></div>
-
 
 <p>One important missing piece of the puzzle is to make sure these shared libraries can be found at run time (or compile time in case you want to compile against them). The trick is to set the LD_LIBRARY_PATH and LD_RUN_PATH environment variables, typically in your <code>~/.bashrc</code> or <code>~/.profile</code> startup scripts:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:~/usr/lib
@@ -97,7 +94,6 @@
 <span class="nv">LD_RUN_PATH</span><span class="o">=</span><span class="nv">$LD_RUN_PATH</span>:~/usr/lib
 <span class="nb">export</span> LD_RUN_PATH
 </code></pre></div>
-
 
 <p>And Eclipse TPTP profiling lived happily ever after. I hope.</p>
     </div>

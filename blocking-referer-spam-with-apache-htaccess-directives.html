@@ -62,7 +62,6 @@
 <span class="nb">RewriteRule</span> .* - [F]
 </code></pre></div>
 
-
 <p>What this means: if the HTTP referer contains 'viagra', 'poker' or 'casino' (typical words in spam referers), the webserver answers with "forbidden" (HTTP response 403).  The <code>NC</code> makes the patterns case insensitive ( <em>n</em> o  <em>c</em> ase), the <code>OR</code> is the glue between the different conditions (it makes an or-combination, that's why the last condition does not need an <code>OR</code>) and the <code>F</code> stands for "forbidden". The result is that the corresponding spambots don't get in.</p>
 <p>More examples and information on how this works:</p>
 <ul>
@@ -79,7 +78,6 @@ Connecting to example.com|357.593.740.825|:80... connected.
 HTTP request sent, awaiting response... 403 Forbidden
 19:56:07 ERROR 403: Forbidden.
 </code></pre></div>
-
 
 <p>Huray, it works.</p>
 <p>At the time of this writing, 9 out of the latest 10 (non google) referers are spam entries. I hope it declines from now on, maybe after adding some more spam domain matching conditions.</p>

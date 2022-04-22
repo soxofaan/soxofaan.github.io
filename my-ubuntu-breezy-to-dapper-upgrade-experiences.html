@@ -70,7 +70,6 @@
 <div class="highlight"><pre><span></span><code>sudo rmmod acpi_sbs
 </code></pre></div>
 
-
 <p>but now I don't see my battery status any more.
 - I don't understand why dapper's default kdm theme (that's the login screen) is so ugly (those colors, those wanabe rounded corners). I changed it back to the much better the from breezy. Not a big deal on itself, but nevertheless, it was a disappointing first graphical encounter with Dapper after all those command line cruft scrolling by.
 - Blender did not work properly: I could not select an object. Also, startup at the command line revealed some strange OpenGL warning messages like</p>
@@ -81,7 +80,6 @@ TODO - double side stencil !
 No ctx-&gt;FragmentProgram._Current!!
 </code></pre></div>
 
-
 <p>This problem was solved by <a href="https://help.ubuntu.com/community/BinaryDriverHowto/ATI">installing the binary driver for my video card (ATI mobility radeon 9700)</a>. But I had to revert this because the binary driver caused random lockup/freezes after logout, so I had to power down my computer the hard way.</p>
 </li>
 <li>
@@ -90,7 +88,6 @@ No ctx-&gt;FragmentProgram._Current!!
 <div class="highlight"><pre><span></span><code>cd /usr/lib
 sudo ln -s libGL.so.1.2 libGL.so
 </code></pre></div>
-
 
 </li>
 <li>
@@ -101,7 +98,6 @@ sudo ln -s libGL.so.1.2 libGL.so
 <li>Flash stopped working in Firefox. Solved (thanks to this <a href="http://ubuntuguide.org/wiki/Ubuntu_dapper#How_to_install_Flash_Player_.28Macromedia_Flash.29_Plug-in_for_Mozilla_Firefox"> source</a>) with <div class="highlight"><pre><span></span><code>sudo apt-get install flashplugin-nonfree
 sudo update-flashplugin
 </code></pre></div>
-
 
 </li>
 </ul>

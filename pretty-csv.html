@@ -69,7 +69,6 @@ Combine this with a pager like <code>less</code> and we have a nice prototype al
 <div class="highlight"><pre><span></span><code>cat data.csv | column -t -s, | less -S
 </code></pre></div>
 
-
 <p>One problem with this is that <code>column</code> ignores/merges empty cells in your data,
 which ruins the whole point of aligning all together.
 On Debian/Ubuntu, <code>column</code> provides an option <code>-n</code> to disable this behavior, but
@@ -79,12 +78,10 @@ A simple solution is just adding a space before each comma:</p>
 <div class="highlight"><pre><span></span><code>cat data.csv | sed &#39;s/,/ ,/g&#39; | column -t -s, | less -S
 </code></pre></div>
 
-
 <p>Or, if you want to avoid wasting too much horizontal space, you can add
 a space only to the empty cells as follows:</p>
 <div class="highlight"><pre><span></span><code>cat data.csv | perl -pe &#39;s/((?&lt;=,)|(?&lt;=^)),/ ,/g;&#39; | column -t -s, | less -S
 </code></pre></div>
-
 
 <h2>Shortcuts</h2>
 <p>Time to create some shortcuts and put this in, for example, your <code>.bashrc</code>,
@@ -105,14 +102,12 @@ I'll just cover bash here, because that's the shell I currently use most.</p>
 <span class="o">}</span>
 </code></pre></div>
 
-
 <h3>For other platforms</h3>
 <p>For non-Debian systems we have to add preprocessing of empty cells:</p>
 <div class="highlight"><pre><span></span><code><span class="k">function</span> pretty_csv <span class="o">{</span>
     perl -pe <span class="s1">&#39;s/((?&lt;=,)|(?&lt;=^)),/ ,/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s, <span class="p">|</span> less  -F -S -X -K
 <span class="o">}</span>
 </code></pre></div>
-
 
 <h3>Conflict with iTerm2 on <del>Mac OS X</del> macOS</h3>
 <p>On my Mac I use <a href="https://iterm2.com/">iTerm2</a> and I noticed that its
@@ -125,12 +120,10 @@ For example, create a file <code>~/.bash.d/pretty_csv.sh</code>, containing:</p>
 perl -pe <span class="s1">&#39;s/((?&lt;=,)|(?&lt;=^)),/ ,/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s, <span class="p">|</span> <span class="nb">exec</span> less  -F -S -X -K
 </code></pre></div>
 
-
 <p>make it executable (<code>chmod u+x ~/.bash.d/pretty_csv.sh</code>)
 and create a bash alias for it (e.g in <code>.bashrc</code> or <code>.bash_aliases</code>)</p>
 <div class="highlight"><pre><span></span><code><span class="nb">alias</span> <span class="nv">pretty_csv</span><span class="o">=</span><span class="s1">&#39;~/.bash.d/pretty_csv.sh&#39;</span>
 </code></pre></div>
-
 
 <h2>TSV: tab separated values</h2>
 <p>I regularly also have to work with TSV files, where the columns are separated
@@ -142,19 +135,16 @@ correctly to the parts of the pipeline.</p>
 <span class="o">}</span>
 </code></pre></div>
 
-
 <p>For non-Debian systems:</p>
 <div class="highlight"><pre><span></span><code><span class="k">function</span> pretty_tsv <span class="o">{</span>
     perl -pe <span class="s1">&#39;s/((?&lt;=\t)|(?&lt;=^))\t/ \t/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s <span class="s1">$&#39;\t&#39;</span> <span class="p">|</span> less  -F -S -X -K
 <span class="o">}</span>
 </code></pre></div>
 
-
 <p>As a bash script (<code>pretty_tsv.sh</code>):</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 perl -pe <span class="s1">&#39;s/((?&lt;=\t)|(?&lt;=^))\t/ \t/g;&#39;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> <span class="p">|</span> column -t -s <span class="s1">$&#39;\t&#39;</span> <span class="p">|</span> <span class="nb">exec</span> less  -F -S -X -K
 </code></pre></div>
-
 
 <h2>Bye</h2>
 <p>Now you can enjoy the warm cosy feeling of browsing pretty, shiny CSV and TSV

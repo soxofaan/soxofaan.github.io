@@ -86,7 +86,6 @@ mplayer -ao pcm:fast:waveheader:file<span class="o">=</span>output-mplayer.wav <
 sox <span class="nv">$input_file</span> -c <span class="m">1</span> -r <span class="m">22050</span> output-sox.wav trim <span class="m">60</span> <span class="nv">$fragment_length</span>
 </code></pre></div>
 
-
 <p>I tried this with fragment lengths of 5, 10, 20, 30 and 60 seconds. I ran each command several times for each fragment length, timed the execution (the "user time" reported by the command line tool "<code>time</code>") and calculated the average execution time (the standard deviation was small enough to only consider the average execution time). </p>
 <h3>The result (lower is better)</h3>
 <p><img alt="None" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/cahors.png"></p>

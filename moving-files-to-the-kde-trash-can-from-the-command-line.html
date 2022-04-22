@@ -58,7 +58,6 @@
 <div class="highlight"><pre><span></span><code>$&gt; kfmclient move foobar.txt trash:/
 </code></pre></div>
 
-
 <p>will move <code>foobar.txt</code> to the trash can.</p>
 <p>To make it a bit more user friendly, you can put the following script in a directory in your <code>$PATH</code>, call it something like <code>totrash</code> and make it executable:</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
@@ -66,11 +65,9 @@
 kfmclient move <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span> trash:/
 </code></pre></div>
 
-
 <p>On the commandline you only need then</p>
 <div class="highlight"><pre><span></span><code>$&gt; totrash foobar.txt pleezeew.hu
 </code></pre></div>
-
 
 <p>and you're done. </p>
 <p>Based on <a href="http://www.kde-forum.org/post/41787/lastpost.html#post41787">http://www.kde-forum.org/post/41787/lastpost.html#post41787</a></p>

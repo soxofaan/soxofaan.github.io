@@ -57,16 +57,13 @@
 <div class="highlight"><pre><span></span><code>svn diff -x -w ventrolucator.cpp
 </code></pre></div>
 
-
 <p>The weird thing is that the option <code>-w</code> is actually an argument for the <code>-x</code> option. So if you want extra diff customization, like adding the option <code>-p</code> for showing the function name in the diff, you should do</p>
 <div class="highlight"><pre><span></span><code>svn diff -x <span class="s2">&quot;-w -p&quot;</span> ventrolucator.cpp
 </code></pre></div>
 
-
 <p>or you could merge the <code>-w</code> and <code>-p</code> options to make it a bit less weird:</p>
 <div class="highlight"><pre><span></span><code>svn diff -x -wp ventrolucator.cpp
 </code></pre></div>
-
 
 <p>More info at a <code>svn help diff</code> near you.</p>
     </div>

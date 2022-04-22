@@ -57,7 +57,6 @@
 <div class="highlight"><pre><span></span><code><span class="nb">set</span> -x
 </code></pre></div>
 
-
 <p>which, according to <code>help set</code>, enables the following feature:</p>
 <blockquote>
 <p>-x  Print commands and their arguments as they are executed.</p>
@@ -65,7 +64,6 @@
 <p>Disabling it just takes a mere</p>
 <div class="highlight"><pre><span></span><code><span class="nb">set</span> +x
 </code></pre></div>
-
 
 <p>You can play with it from the bash command line itself, or put it in a bash script of course.</p>
 <p>A simple illustration with this bash script <code>put_out_the_trash.sh</code> that contains silent commands:</p>
@@ -79,7 +77,6 @@ mv dustbin trashcan_kitchen
 mv trashcan_kitchen outside
 </code></pre></div>
 
-
 <p>Running the script from the command line gives you:</p>
 <div class="highlight"><pre><span></span><code>$ ./put_out_the_trash.sh
 + touch cookiewrap
@@ -88,7 +85,6 @@ mv trashcan_kitchen outside
 + mv trashcan_kitchen outside
 $
 </code></pre></div>
-
 
 <p>So you see what's happening.</p>
     </div>

@@ -83,7 +83,6 @@
     <span class="n">foo</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;foo.pickle&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>After executing <code>thing.py</code> as standalone script, we get a file <code>foo.pickle</code> in the current directory. 
 We now write a script <code>thingtest.py</code> to load the thing from this file after creating, saving and loading another thing object:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">thing</span>
@@ -102,14 +101,12 @@ We now write a script <code>thingtest.py</code> to load the thing from this file
 <span class="k">print</span> <span class="n">baz</span>
 </code></pre></div>
 
-
 <p>This script will fail with an error message like</p>
 <div class="highlight"><pre><span></span><code>File &quot;./thingtest.py&quot;, line 11, in ?
     foo = thing.Thing.load(&quot;foo.pickle&quot;)
 ...
 AttributeError: &#39;module&#39; object has no attribute &#39;Thing&#39;
 </code></pre></div>
-
 
 <p>Apparently the loading of <code>bar.pickle</code> succeeded, but the loading of <code>foo.pickle</code> failed.  </p>
 <p>The reason for this is the following. Loading (unpickling) involves importing the module defining the object. The file <code>foo.pickle</code> states that this module is <code>__main__</code> which corresponds to <code>thing</code>, because <code>foo</code> was saved from the script defining the class <code>Thing</code>. On the other hand, <code>bar.pickle</code> states that the module is the imported module <code>thing</code> which corresponds with <code>thing.py</code>.</p>
@@ -123,7 +120,6 @@ AttributeError: &#39;module&#39; object has no attribute &#39;Thing&#39;
     Thing.__module__ = &quot;thing&quot;
     t.save(&quot;foo.pickle&quot;)
 </code></pre></div>
-
 
 </li>
 </ul>

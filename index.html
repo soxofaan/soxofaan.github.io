@@ -131,7 +131,6 @@ you might not even notice there is cycle in the dependency chain.</p>
 <div class="highlight"><pre><span></span><code>df.write.csv(&#39;output_folder&#39;, header=True)
 </code></pre></div>
 
-
 <p>Because your DataFrame is partitioned, you get multiple CSV files
 in your output folder. Each file will get a header with column names.</p>
 <p>So far so good, but now …</p>
@@ -187,7 +186,6 @@ User: hive is not allowed to …</code></pre></div>
 these warnings when running spark:</p>
 <div class="highlight"><pre><span></span><code>19/02/05 13:06:43 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 </code></pre></div>
-
 
 <p>To debug this issue, I used …</p>
                         <div class="read-more">

@@ -218,7 +218,6 @@ in a way you can manipulate?</p>
 <div class="highlight"><pre><span></span><code>python -c &#39;for c in range(0x1F410, 0x1F4f0): print (r&quot;\U%08x&quot;%c).decode(&quot;unicode-escape&quot;),&#39;
 </code></pre></div>
 
-
 <p>result:</p>
 <p><img alt="Unicode fun" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/python-unicode-fun.png"></p>
                         <div class="read-more">
@@ -245,7 +244,6 @@ in a way you can manipulate?</p>
                         <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
 <div class="highlight"><pre><span></span><code>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
 </code></pre></div>
-
 
 <p>(Replace "python" with the actual python executable you want to investigate …</p>
                         <div class="read-more">

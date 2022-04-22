@@ -63,7 +63,6 @@ working from home. SSH Tunneling to the rescue!</p>
 <div class="highlight"><pre><span></span><code>ssh -l username -L <span class="m">8910</span>:svnserver:80 gateway cat -
 </code></pre></div>
 
-
 <p>This creates an SSH connection from computer <code>home</code> to computer 
 <code>gateway</code> and opens a listening TCP-port 8910 on the the computer <code>home</code>. 
 Connections to this port will be forwarded through the SSH tunnel to 
@@ -71,7 +70,6 @@ TCP port 80 from computer <code>svnserver</code> (as seen from computer <code>ga
 <p>Now we can access the svnserver as follows (on computer <code>home</code>):</p>
 <div class="highlight"><pre><span></span><code>svn co http://localhost:8910/svn/repository/path
 </code></pre></div>
-
 
 <p>In a nice diagram:</p>
 <p><img alt="ssh tunneling" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/schema_1.png"></p>

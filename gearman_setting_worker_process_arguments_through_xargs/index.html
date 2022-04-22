@@ -63,13 +63,11 @@
 <div class="highlight"><pre><span></span><code>$ gearman -w -f wordcount wc
 </code></pre></div>
 
-
 <p>The worker runs in foreground here (and keeps running until we kill it with CTRL-C for example), so for the remainder of the experiment we have to open a new shell.</p>
 <p>You can then consume the 'wordcount' service as a client with</p>
 <div class="highlight"><pre><span></span><code>$ gearman -f wordcount &lt; /etc/passwd
      62     114    3306
 </code></pre></div>
-
 
 <p>Note that the gearman command line workflow employs the standard input and output to communicate: the worker process receives its input through the standard input, generates "results" on its standard output, which is redirected to the client. In the example given above we also used the standard input of the client to provide the data to the client. We can also provide data to the client as command line arguments, but note how it will launch a job for each argument separately (also note that the jobs will not be run in parallel this way):</p>
 <div class="highlight"><pre><span></span><code>$ gearman -f wordcount foo barr &quot;a string with spaces&quot;
@@ -78,13 +76,11 @@
       0       4      20
 </code></pre></div>
 
-
 <h3>Can I haz procezz argumentz?</h3>
 <p>In my case however, I typically want to run jobs with commands like</p>
 <div class="highlight"><pre><span></span><code>some_script.py --option=A /path/to/file
 some_script.py --option=B /path/to/other/file
 </code></pre></div>
-
 
 <p>But with the gearman command line tool I can't set the arguments (like <code>--option=A</code> and <code>/path/to/other/file</code>) of the worker process, as I only have access to its standard input. I could of course rewrite <code>some_script.py</code> to get its settings from the standard input, but that breaks my workflow when I don't want/have to use the Gearman framework.</p>
 <h3>Xargs to the rescue!</h3>
@@ -95,13 +91,11 @@ some_script.py --option=B /path/to/other/file
 <span class="k">print</span> <span class="s2">&quot;sys.stdin:&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 </code></pre></div>
 
-
 <p>For example:</p>
 <div class="highlight"><pre><span></span><code>$ echo foo bar | ./show_input.py baz
 sys.argv: [&#39;./show_input.py&#39;, &#39;baz&#39;]
 sys.stdin: [&#39;foo bar\n&#39;]
 </code></pre></div>
-
 
 <p>and with <code>xargs</code>:</p>
 <div class="highlight"><pre><span></span><code>$ echo foo bar | xargs ./show_input.py baz
@@ -109,11 +103,9 @@ sys.argv: [&#39;./show_input.py&#39;, &#39;baz&#39;, &#39;foo&#39;, &#39;bar&#39
 sys.stdin: []
 </code></pre></div>
 
-
 <p>Now, let's start a Gearman worker with <code>xargs</code> and this script:</p>
 <div class="highlight"><pre><span></span><code>$ gearman -w -f show_input xargs ./show_input.py additional_argument
 </code></pre></div>
-
 
 <p>And consume the service:</p>
 <div class="highlight"><pre><span></span><code>$ gearman -f show_input foo bar
@@ -123,13 +115,11 @@ sys.argv: [&#39;./show_input.py&#39;, &#39;additional_argument&#39;, &#39;bar&#3
 sys.stdin: []
 </code></pre></div>
 
-
 <p>Note again how a separate job is created for each argument. To group arguments, we can use quotes. </p>
 <div class="highlight"><pre><span></span><code>$ gearman -f show_input &quot;foo bar baz&quot;
 sys.argv: [&#39;./show_input.py&#39;, &#39;additional_argument&#39;, &#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;]
 sys.stdin: []
 </code></pre></div>
-
 
 <p>When arguments should have spaces, we have to escape them too or use other quotes (this works for me in Bash at least). Also, when the first argument starts with a dash, add a <code>--</code> to the mix, so gearman does not try to consume it himself.</p>
 <div class="highlight"><pre><span></span><code>$ gearman -f show_input -- &quot;-a foo bar\ baz &#39;one two three&#39;&quot;
@@ -137,19 +127,16 @@ sys.argv: [&#39;./show_input.py&#39;, &#39;additional_argument&#39;, &#39;-a&#39
 sys.stdin: []
 </code></pre></div>
 
-
 <h3>Conclusion</h3>
 <p>Gearman provides a basic command line tool that helps to distribute work from clients to worker processes/machines. By default the worker process can only receive data from its standard input. If we want to set the process arguments of the worker process instead, e.g. as if we would invoke the worker process with</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Without Gearman: directly running the job.</span>
 $ worker_command -a foo <span class="s2">&quot;bar baz&quot;</span>
 </code></pre></div>
 
-
 <p>we can use a <code>xargs</code> workaround when launching the worker:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># With Gearman: launch worker.</span>
 $ gearman -w -f name xargs worker_command
 </code></pre></div>
-
 
 <p>and consume it as a client with</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># With Gearman: client consumes service.</span>

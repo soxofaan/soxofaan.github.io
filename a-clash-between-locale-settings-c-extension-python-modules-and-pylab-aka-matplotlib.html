@@ -77,12 +77,10 @@
 <span class="p">}</span>
 </code></pre></div>
 
-
 <p>which I compiled (under <a href="http://www.kubuntu.org/" title="Kubuntu Linux">Kubuntu Linux</a>) to a shared library <code>pylabproblem.os</code> as follows:</p>
 <div class="highlight"><pre><span></span><code>gcc -fPIC -I/usr/include/python2.4 -c -o pylabproblem.os pylabproblem.c
 gcc -shared -o pylabproblem.so pylabproblem.os
 </code></pre></div>
-
 
 <p>Then I used this freshly made C extension module in the following simple Python script <code>pylabproblen-test.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
@@ -92,13 +90,11 @@ gcc -shared -o pylabproblem.so pylabproblem.os
 <span class="n">pylabproblem</span><span class="o">.</span><span class="n">hello</span><span class="p">()</span>
 </code></pre></div>
 
-
 <p>This script first imports the C extension module <code>pylabproblem</code> and calls its <code>hello()</code> function. Then it imports the pylab/matplotlib module and calls <code>pylabproblem</code>'s <code>hello()</code> function again. This is the output from the script when I ran it:</p>
 <div class="highlight"><pre><span></span><code>$&gt; ./pylabproblem-test.py
 Hello there, check out this float: 123.456
 Hello there, check out this float: 123,456
 </code></pre></div>
-
 
 <p>Not very practical if you want to postprocess that output in a further stage (with grep, gnuplot, ...). Apparently importing <code>pylab</code> causes some changes of locale settings in this situation. </p>
 <p>I checked my locale settings and found that not very much was setted: only <code>LANG="nl_BE.UTF-8"</code> and <code>LANGUAGE="nl_BE:nl:en_GB:en"</code>. After I explicitly set <code>LC_NUMERIC</code> to for example <code>"C"</code>, I got what I wanted:</p>
@@ -107,7 +103,6 @@ $&gt; ./pylabproblem-test.py
 Hello there, check out this float: 123.456
 Hello there, check out this float: 123.456
 </code></pre></div>
-
 
 <p>I think I better add a line <code>export LC_NUMERIC="C"</code> to my <code>~/.bashrc</code>.</p>
 <h3>references and links</h3>

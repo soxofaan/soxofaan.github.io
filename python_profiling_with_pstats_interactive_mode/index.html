@@ -68,7 +68,6 @@ entry point <code>foo()</code>, execute the following in your script/module:</p>
 <span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;foo()&#39;</span><span class="p">,</span> <span class="s1">&#39;foo.profile&#39;</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>This will profile the <code>foo()</code> function, and save the profiling data to a 
 file <code>foo.profile</code>.</p>
 <p>If you want to profile the whole application, you even don't have to 
@@ -76,7 +75,6 @@ edit your code, as you can run cProfile as a script with your application,
 say <code>barbazzr.py</code>, as argument:</p>
 <div class="highlight"><pre><span></span><code>python -m cProfile -o barbazzr.profile barbazzr.py
 </code></pre></div>
-
 
 <p>This will save the profiling data to <code>barbazzr.profile</code>.</p>
 <p>Now, to examine the profile data (<code>foo.profile</code> or <code>barbazzr.profile</code> 
@@ -88,12 +86,10 @@ running it as a script with the profile data file as argument:</p>
 <div class="highlight"><pre><span></span><code>python -m pstats barbazzr.profile
 </code></pre></div>
 
-
 <p>And voila, you are in an interactive profile statistics browsing session:</p>
 <div class="highlight"><pre><span></span><code>Welcome to the profile statistics browser.
 %
 </code></pre></div>
-
 
 <p>Use the help command to get the supported commands:</p>
 <div class="highlight"><pre><span></span><code>% help
@@ -107,7 +103,6 @@ Undocumented commands:
 help
 </code></pre></div>
 
-
 <p>Get more help on a command, e.g. the stats command:</p>
 <div class="highlight"><pre><span></span><code>% help stats
 Print statistics from the current stat object.
@@ -119,11 +114,9 @@ Arguments may be:
   that match it are printed.
 </code></pre></div>
 
-
 <p>Strip the long file paths to make the reports easier on the eyes:</p>
 <div class="highlight"><pre><span></span><code>% strip
 </code></pre></div>
-
 
 <p>Let's sort. Get the sorting options with the sort command (without arguments):</p>
 <div class="highlight"><pre><span></span><code>% sort
@@ -140,11 +133,9 @@ module -- file name
 name -- function name
 </code></pre></div>
 
-
 <p>Sort on internal time:</p>
 <div class="highlight"><pre><span></span><code>% sort time
 </code></pre></div>
-
 
 <p>And show the top 10 functions:</p>
 <div class="highlight"><pre><span></span><code>% stats 10
@@ -168,7 +159,6 @@ Thu Jan 21 17:54:33 2010    barbazrr.profile
     95736    0.719    0.000    0.719    0.000 {numpy.core.multiarray.array}
 </code></pre></div>
 
-
 <p>Sort on cumulative time and get the top 5:</p>
 <div class="highlight"><pre><span></span><code>% sort cumulative
 % stats 5
@@ -187,7 +177,6 @@ Thu Jan 21 17:54:33 2010    barbazrr.profile
        44    0.001    0.000   18.500    0.420 figure.py:927(savefig)
 </code></pre></div>
 
-
 <p>Very handy indeed.</p>
 <p>Playing with the other commands or options are left as an exercise for 
 the reader (I've always wanted to say this).</p>
@@ -202,7 +191,6 @@ the reader (I've always wanted to say this).</p>
 <div class="highlight"><pre><span></span><code>python -m cProfile -o barbazzr.profile barbazzr.py
 </code></pre></div>
 
-
 <p>appears to mess with the <code>__file__</code> variable: it evaluates to the 
 file name of the  cProfile module (<code>/usr/lib/python2.6/cProfile.py</code> 
 in my case), instead of the file name of the script/module 
@@ -211,7 +199,6 @@ profiling with the first approach:</p>
 <div class="highlight"><pre><span></span><code>import cProfile
 cProfile.run(&#39;foo()&#39;, &#39;foo.profile&#39;)
 </code></pre></div>
-
 
 </li>
 </ul>

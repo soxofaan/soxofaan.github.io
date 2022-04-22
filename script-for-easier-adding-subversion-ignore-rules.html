@@ -57,7 +57,6 @@
 <div class="highlight"><pre><span></span><code>svn propedit svn:ignore .
 </code></pre></div>
 
-
 <p>(which can be quite confusing, especially with the slightly similar looking but different <code>propset</code> command).
 Then you get a file editor where you have to add the rule (make sure you remembered the file name or pattern you want to ignore), save the file and exit the editor.
 A bit too much hoops to jump through for something that could be just one command like <code>svn-ignore filename</code>.</p>
@@ -105,11 +104,9 @@ A bit too much hoops to jump through for something that could be just one comman
     <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
 
-
 <p>I saved it as <code>svn-ignore.py</code>, made it executable, put it somewhere in my <code>PATH</code> and now I can just do</p>
 <div class="highlight"><pre><span></span><code>svn-ignore.py foo.txt bar.zzs &quot;*.backup&quot;
 </code></pre></div>
-
 
 <p>Note that it also supports wildcard rules, but these have to be put in quotes, so the shell does not expands them.</p>
     </div>

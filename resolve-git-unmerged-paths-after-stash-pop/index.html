@@ -62,12 +62,10 @@
 #   both modified:      src/some/other/file.txt
 </code></pre></div>
 
-
 <p>After you fix the conflicts manually in the files, you normally want to tell git that the conflict has been resolved. If you google for how to do this, you typically find solutions that suggest to <code>git add</code> the files and commit. But what if your (stashed) work is not ready for commit/staging yet?</p>
 <p>The solution is pretty simple (and it is suggested by <code>git status</code>) but it is not very intuitive/obvious ("reset" is does not sound the same as "resolve" to me):</p>
 <div class="highlight"><pre><span></span><code>git reset HEAD [files]
 </code></pre></div>
-
 
 <p>or just  <code>git reset</code> (if unstaging everything is fine). This (mixed) reset will unstage the files, giving you a clean index/stage area, but the changes are kept in you working copy.</p>
     </div>

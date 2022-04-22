@@ -69,17 +69,14 @@ This is the part when there is no concrete yet.</p>
 wget -O <span class="nv">$filename</span> --timeout<span class="o">=</span><span class="m">60</span>  http://webcamurl <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 </code></pre></div>
 
-
 <p>With cron, I executed this script once a day, generating  files like <code>frame-2008/frame-2008-02-20-12-27-00.jpg</code></p>
 <p>To generate a video from this, I used the command line tool <a href="http://www.transcoding.org/transcode">transcode</a>. First I had to generate a list with the filenames of the frames:</p>
 <div class="highlight"><pre><span></span><code>ls */frame-200?-??-??-12-??-??.jpg <span class="p">|</span> sort &gt; framelist.txt
 </code></pre></div>
 
-
 <p>And then "convert" this list file <code>framelist.txt</code> to a real video:</p>
 <div class="highlight"><pre><span></span><code>transcode -i framelist.txt -x imlist,null -g640x480 --use_rgb -z -y xvid,null -f5 -o frames.avi -H <span class="m">0</span>
 </code></pre></div>
-
 
 <p>I don't remember what all the options are for, but they were needed to make it work on my setup.</p>
     </div>

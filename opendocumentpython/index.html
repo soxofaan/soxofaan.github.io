@@ -95,7 +95,6 @@
 <span class="n">parser</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="n">xmldata</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>After importing the modules <code>zipfile</code> and <code>xml.parsers.expat</code>, we open the OpenDocument file through the zipfile filter and extract the XML data from <code>content.xml</code> (in just three simple readable statements, that's what I like about python)</p>
 <p>Next, we have to parse the XML data and store its elements. First I define a class <code>Element</code> for storing the name, attributes and contents (note that its a subclass of <code>list</code>) of XML elements. The XML parse handler functions are the methods of the class <code>TreeBuilder</code>, which also collects the whole XML tree in its attribute <code>root</code> during parsing. The parsing itself is initiated by <code>parser.Parse(xmldata, True)</code>. </p>
 <p>At this point, the whole XML stream is parsed and the structure is stored in and accessible from <code>treebuilder.root</code>. For example, in the following code we define a function <code>showtree</code> and call it, for rendering an indented tree representation of the element names and character data:</p>
@@ -109,7 +108,6 @@
 
 <span class="n">showtree</span><span class="p">(</span><span class="n">treebuilder</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>This simple example could be extended ofcourse to serve a more real life application, but you get the point. </p>
 <p>Moreover, at the <a href="http://opendocumentfellowship.org">OpenDocument Fellowship</a> they are working on <a href="http://trac.opendocumentfellowship.org/libopendocument/">LibOpenDocument, a library for manipulating OpenDocument files</a>. At the time of this writing, there is only a PHP and a Python implementation in early development stage. </p>

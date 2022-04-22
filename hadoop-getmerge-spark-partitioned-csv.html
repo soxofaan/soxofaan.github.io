@@ -61,7 +61,6 @@
 <div class="highlight"><pre><span></span><code>df.write.csv(&#39;output_folder&#39;, header=True)
 </code></pre></div>
 
-
 <p>Because your DataFrame is partitioned, you get multiple CSV files
 in your output folder. Each file will get a header with column names.</p>
 <p>So far so good, but now you want to dump that to a single local CSV file.
@@ -69,7 +68,6 @@ The straightforward way is using HDFS's <code>getmerge</code>, which will concat
 all the files to a local file:</p>
 <div class="highlight"><pre><span></span><code>hadoop fs -getmerge output_folder result.csv
 </code></pre></div>
-
 
 <p>Unfortunately, because <code>getmerge</code> just concatenates the HDFS files,
 the CSV header will be repeated in various places in the output file.
@@ -79,7 +77,6 @@ in tools like for example pandas.</p>
 partition before writing to HDFS, so that there is only a single output file:</p>
 <div class="highlight"><pre><span></span><code>df.coalesce(1).write.csv(&#39;output_folder&#39;, header=True)
 </code></pre></div>
-
 
 <p>But sometimes you can not or don't want to repartition the DataFrame before
 writing to HDFS (e.g. to avoid memory issues).

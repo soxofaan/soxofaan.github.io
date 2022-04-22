@@ -61,22 +61,18 @@
 git svn init https://marsyas.svn.sourceforge.net/svnroot/marsyas/trunk
 </code></pre></div>
 
-
 <p>This will download nothing. Use the fetch command to so. As importing the whole subversion history is not recommended (it could take a  <em>lot</em>  of time), you should specify from which subversion revision you want to start tracking:</p>
 <div class="highlight"><pre><span></span><code>git svn fetch -r3463
 </code></pre></div>
-
 
 <h3>Daily usage</h3>
 <p>Getting the latest revision from subversion (like <code>svn update</code>):</p>
 <div class="highlight"><pre><span></span><code>git svn rebase
 </code></pre></div>
 
-
 <p>Commit your local changes, you've been managing with git:</p>
 <div class="highlight"><pre><span></span><code>git svn dcommit
 </code></pre></div>
-
 
 <h3>Further reading</h3>
 <ul>

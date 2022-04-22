@@ -70,7 +70,6 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">scipy</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="s2">&quot;tmp.png&quot;</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>An enlarged version of the image <code>tmp.png</code> we just generated would look like</p>
 <p><img alt="the image values are rescaled to the 0-255 range" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/scipyimsave_default.png"></p>
 <p>As you can see the dynamic range of the pixel values is rescaled to 0-255 before saving: the values 80 become totally black (value 0) and the values 200 become totally white (value 255). Sometimes this is what you want, sometimes it is not.</p>
@@ -81,7 +80,6 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># in short:</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">scipy</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmax</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;tmp.png&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>In the first step we transform the array <code>a</code> to a <a href="http://www.pythonware.com/products/pil/">PIL image</a>, while imposing our own value range with the arguments <code>cmin</code> and <code>cmax</code>. The second step is just saving the PIL image to a file. The result is:</p>
 <p><img alt="the original pixel values" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/scipyimsave_workaround.png"></p>

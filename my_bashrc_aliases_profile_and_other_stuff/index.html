@@ -88,7 +88,6 @@
 <span class="k">fi</span>
 </code></pre></div>
 
-
 <h3><code>.bash_aliases</code></h3>
 <p>I use a separate file <code>.bash_aliases</code> for my favorite Bash aliases, to keep things more tidy. This file is "sourced" by <code>.bashrc</code> (see higher).</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Make some possibly destructive commands more interactive.</span>
@@ -108,7 +107,6 @@
 <span class="c1"># Shortcut for using the Kdiff3 tool for svn diffs.</span>
 <span class="nb">alias</span> <span class="nv">svnkdiff3</span><span class="o">=</span><span class="s1">&#39;svn diff --diff-cmd kdiff3&#39;</span>
 </code></pre></div>
-
 
 <h3><code>.profile</code></h3>
 <p>I put the "run time modifying" stuff (<code>PATH</code> and friends) in <code>.profile</code>, so that these things are also easily available outside interactive Bash sessions, like non-interactive Bash sessions, other command line shells sessions and even the graphical shell/desktop environment. The <code>.profile</code> file should be loaded on login on Linux setups.</p>
@@ -139,7 +137,6 @@
 <span class="nb">export</span> CLASSPATH
 </code></pre></div>
 
-
 <h3><code>.bash_profile</code></h3>
 <p>As I've described in <a href="/bashrc_and_others">a separate blog post about <code>.bashrc</code>, <code>.profile</code> and others</a>, deciding where to put things may seem a bit hairy. I limit myself to <code>.bashrc</code> and <code>.profile</code>, and use  <code>.bash_profile</code> to reuse these for (textual) login shells (see <a href="/bashrc_and_others">that blog post for more info</a>).</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Load .profile, containing login, non-bash related initializations.</span>
@@ -148,7 +145,6 @@
 <span class="c1"># Load .bashrc, containing non-login related bash initializations.</span>
 <span class="nb">source</span> ~/.bashrc
 </code></pre></div>
-
 
 <h3>.screenrc</h3>
 <p><a href="http://en.wikipedia.org/wiki/GNU_Screen" title="Wikipedia on GNU Screen">GNU Screen</a> is a very handy tool I should have learned earlier about. It lets you have persistent shell sessions, so you can log out on one computer and reconnect to the still running session from an other computer. Recommended if you're "commandlining" a lot in an networked environment. Anyway, here is my <code>.screenrc</code> to have a handy caption bar, listing the available windows.</p>

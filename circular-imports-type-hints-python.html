@@ -87,7 +87,6 @@ like a REST API, and it can create some kind of entity in this API, called <code
         <span class="k">return</span> <span class="n">Thing</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>This <code>Thing</code> (defined in <code>thing.py</code>) keeps a reference to the connection
 so that operations on a <code>Thing</code> can be send to the API.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># thing.py</span>
@@ -97,7 +96,6 @@ so that operations on a <code>Thing</code> can be send to the API.</p>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="n">ApiConnection</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_conn</span> <span class="o">=</span> <span class="n">connection</span>
 </code></pre></div>
-
 
 <p>No surprise that the circular dependency here will cause failure,
 resulting in a classic circular import stack trace like:</p>
@@ -109,7 +107,6 @@ resulting in a classic circular import stack trace like:</p>
     from connection import ApiConnection
 ImportError: cannot import name &#39;ApiConnection&#39; from &#39;connection&#39;
 </code></pre></div>
-
 
 <p>In <code>thing.py</code>, the import of the <code>connection</code> module is only there for the <code>ApiConnection</code> type hint.
 That means that if you don't care too much about that type hint,
@@ -129,7 +126,6 @@ In our example we change <code>thing.py</code> to:</p>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="s1">&#39;ApiConnection&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_conn</span> <span class="o">=</span> <span class="n">connection</span>
 </code></pre></div>
-
 
 <p>The code will now execute properly as there is no circular import issue anymore.
 Type hinting tools on the other hand should still be 

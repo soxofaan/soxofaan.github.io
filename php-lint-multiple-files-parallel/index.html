@@ -59,12 +59,10 @@ PHP Parse error:  syntax error, unexpected T_VARIABLE in file_with_syntax_error.
 Errors parsing file_with_syntax_error.php
 </code></pre></div>
 
-
 <p>Unfortunately, it only allows to check one file at a time. For example, the following does not work as expected:</p>
 <div class="highlight"><pre><span></span><code>$ php -l file1.php file2.php file_with_syntax_error.php 
 No syntax errors detected in file1.php
 </code></pre></div>
-
 
 <p>If you want to lint-check (a complete tree of) multiple PHP files, you have to use some kind of loop (e.g. in Bash) to check them one by one.</p>
 <p>I recently was faced with this issue, but also wanted to have some parallelism, to speed up the process by putting multiple cores a work, instead of checking one file at a time. After googling a bit I found the following (command line) solutions.</p>
@@ -72,7 +70,6 @@ No syntax errors detected in file1.php
 <p>With the appropriate options, we can set up a find+xargs combo to achieve what we want: xargs option <code>-n</code> to only provide one argument to <code>php</code> at a time and xargs option <code>-P</code> to dispatch multiple jobs (here eight) in parallel:</p>
 <div class="highlight"><pre><span></span><code>$ find . -name &quot;*.php&quot; -print0 | xargs -0 -n1 -P8 php -l
 </code></pre></div>
-
 
 <h3>Makefile trick</h3>
 <p>In case you want to integrate the lint check in a Makefile work flow, you could consider the following Makefile trick:</p>
@@ -86,7 +83,6 @@ ${files}:
 lint: ${files}
     echo Lint finished
 </code></pre></div>
-
 
 <p>Invoke this with the option <code>-j</code>/<code>--jobs</code> for parallel jobs, for example:</p>
 <div class="highlight"><pre><span></span><code>$ make -j 8 lint

@@ -57,12 +57,10 @@
 <div class="highlight"><pre><span></span><code><span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p><strong>does not short-circuit</strong>, so both <code>fun(2)</code> and <code>fun(9999)</code> are executed,
 but when used in an <code>if</code> or <code>while</code> expression like</p>
 <div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span> <span class="k">end</span><span class="p">;</span>
 </code></pre></div>
-
 
 <p>the expression <strong>does short-circuit</strong>, meaning that only <code>fun(2)</code> is executed. </p>
 <p>I know, you also have the <code>||</code> and <code>&amp;&amp;</code> operators, which are defined as short circuiting operators, but the inconsistency with the <code>|</code> and <code>&amp;</code> operators is just stupid, if not evil.</p>
@@ -72,7 +70,6 @@ but when used in an <code>if</code> or <code>while</code> expression like</p>
     <span class="n">y</span> <span class="p">=</span> <span class="n">x</span><span class="p">;</span>
 <span class="k">end</span>
 </code></pre></div>
-
 
 <p>and we execute the script</p>
 <div class="highlight"><pre><span></span><code><span class="nb">disp</span><span class="p">(</span><span class="s">&#39;fun(2) | fun(9999);&#39;</span><span class="p">)</span>
@@ -88,7 +85,6 @@ but when used in an <code>if</code> or <code>while</code> expression like</p>
 <span class="k">if</span> <span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">||</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span> <span class="k">end</span><span class="p">;</span>
 </code></pre></div>
 
-
 <p>In Matlab (R2007a), I get:</p>
 <div class="highlight"><pre><span></span><code>fun(2) | fun(9999);
   --&gt; called fun(2)
@@ -100,7 +96,6 @@ fun(2) || fun(9999);
 if fun(2) || fun(9999); end;
   --&gt; called fun(2)
 </code></pre></div>
-
 
 <p>See? With the first <code>|</code>-statement, there are two <code>fun()</code> calls and with the second <code>|</code>-statement, there is only one. And they even dare to call this a feature in the <a href="http://www.mathworks.com/access/helpdesk/help/techdoc/matlab_prog/f0-40063.html#f0-38959">Matlab documentation</a>. Another proof that Matlab is a horrible programming environment.</p>
 <p>Funnily, the open source Matlab-replacement <a href="http://www.octave.org">Octave</a> gets it right and shows consistency:</p>
@@ -115,7 +110,6 @@ fun(2) || fun(9999);
 if fun(2) || fun(9999); end;
   --&gt; called fun(2)
 </code></pre></div>
-
 
 <p>Anyway, I'm happy I decided to leave Matlab (unless forced to use it) and switched to <a href="http://www.python.org/">Python</a>+<a href="http://scipy.org/">Scipy</a>.</p>
     </div>

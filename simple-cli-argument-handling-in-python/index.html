@@ -68,14 +68,12 @@ In Python, the <a href="http://docs.python.org/library/optparse.html" title="Opt
     <span class="n">do_something</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 </code></pre></div>
 
-
 <p>Let's run this with three arguments:</p>
 <div class="highlight"><pre><span></span><code>$ python dosomething.py one twoo three
 x: one
 y: twoo
 z: three
 </code></pre></div>
-
 
 <p>Run it with two arguments and Python will assign a default value for the third:</p>
 <div class="highlight"><pre><span></span><code>$ python dosomething.py one twoo
@@ -84,7 +82,6 @@ y: twoo
 z: ZAZAZAZA
 </code></pre></div>
 
-
 <p>Run it with one, zero, four or more arguments and Python will complain about argument mismatch:</p>
 <div class="highlight"><pre><span></span><code>$ python dosomething.py one
 Traceback (most recent call last):
@@ -92,7 +89,6 @@ Traceback (most recent call last):
     do_something(*sys.argv[1:])
 TypeError: do_something() takes at least 2 arguments (1 given)
 </code></pre></div>
-
 
 <p>Handy!</p>
     </div>

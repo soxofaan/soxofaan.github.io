@@ -58,19 +58,16 @@
 <div class="highlight"><pre><span></span><code>svn merge -r <span class="m">123</span>:122 apple.py
 </code></pre></div>
 
-
 <p>If your Subversion setup is recent enough (I successfully tried 
 with version 1.5.1 for example) it is also possible to use the
 <code>--change</code> (<code>-c</code> in short) argument to <a href="http://svnbook.red-bean.com/en/1.5/svn.branchmerge.basicmerging.html#svn.branchmerge.basicmerging.undo">specify the changeset</a>:</p>
 <div class="highlight"><pre><span></span><code>svn merge -c -123 apple.py
 </code></pre></div>
 
-
 <p>The <code>-c -ARG</code> in this construct translates to <code>-r ARG:ARG-1</code>. Note the minus in front of the <code>ARG</code>: <code>-c ARG</code> translates to <code>-r ARG-1:ARG</code>, which is not what we need here.</p>
 <p>Another possibility is using <a href="http://svnbook.red-bean.com/en/1.5/svn.tour.revs.specifiers.html#svn.tour.revs.keywords">revision keywords</a>:</p>
 <div class="highlight"><pre><span></span><code>svn merge -r COMMITTED:PREV apple.py
 </code></pre></div>
-
 
 <p>Note that this undoes the last commit, while the previous commands let you specify the changeset you want to undo.</p>
 <p>One final note: this merging stuff only affects your working copy, you still have to commit the changes (after reviewing them of course) to the repository, e.g. as revision 124. The repository will still contain the crap version (revision 123), but this is generally preferred over trying to rewrite history in the repository.</p>

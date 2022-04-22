@@ -63,7 +63,6 @@
 <div class="highlight"><pre><span></span><code>SVNREV = $(shell svnversion -n $(srcdir))
 </code></pre></div>
 
-
 <p>This will create a variable <code>$SVNREV</code> with as value the current 
 revision of the src directory at build (make) time.</p>
 </li>
@@ -80,7 +79,6 @@ revision of the src directory at build (make) time.</p>
 <div class="highlight"><pre><span></span><code>-DSVNREV=\\\&quot;\$(SVNREV)\\\&quot;
 </code></pre></div>
 
-
 <p>Like so:</p>
 <p><img alt="kdevelop screenshot" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/kdev-svnversion.png"></p>
 </li>
@@ -90,7 +88,6 @@ revision of the src directory at build (make) time.</p>
 cout &lt;&lt; &quot;Version: &quot; &lt;&lt; SVNREV &lt;&lt; endl;
 #endif
 </code></pre></div>
-
 
 </li>
 </ol>

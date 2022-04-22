@@ -194,7 +194,6 @@ The obvious question is now: which one is best?</p>
 <div class="highlight"><pre><span></span><code><span class="n">fun</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="n">fun</span><span class="p">(</span><span class="mi">9999</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p><strong>does not short-circuit</strong>, so both <code>fun(2)</code> and <code>fun(9999)</code> are executed,
 but when used in an <code>if</code> or <code>while</code> expression like</p>
 <div class="highlight"><pre><span></span><code><span class="k">if …</span></code></pre></div>
@@ -254,13 +253,11 @@ but when used in an <code>if</code> or <code>while</code> expression like</p>
 <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
 </code></pre></div>
 
-
 <p>Seems like nothing special, but look what it spits out:</p>
 <div class="highlight"><pre><span></span><code>20
 foofoo
 [1, 2, 3, 1, 2, 3]
 </code></pre></div>
-
 
 <p>Oh my …</p>
                         <div class="read-more">
@@ -290,7 +287,6 @@ foofoo
 cat /etc/lsb-release
 cat /etc/issue
 </code></pre></div>
-
 
 <p>kthxbye </p>
                         <div class="read-more">
