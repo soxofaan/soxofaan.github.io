@@ -59,8 +59,8 @@ In Pelican you typically achieve this by making sure each article has
 a <code>slug</code> metadata entry with the desired clean URL and setting up
 <code>_SAVE_AS</code> and <code>_URL</code> configs in <code>pelicanconf.py</code> for example
 as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}/index.html&#39;</span>
-<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}/&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{slug}</span><span class="s1">/index.html&#39;</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{slug}</span><span class="s1">/&#39;</span>
 </code></pre></div>
 
 <p>In addition (or instead) you can also play with rewrite rules, 
@@ -71,8 +71,8 @@ produce a directory with a single <code>index.html</code> file, which felt a
 bit too much as overkill to avoid where not necessary.</p>
 <p>So config-wise, for new articles I wanted something more like this
 (the default):</p>
-<div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
-<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;{slug}.html&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{slug}</span><span class="s1">.html&#39;</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{slug}</span><span class="s1">.html&#39;</span>
 </code></pre></div>
 
 <p>How to combine these?</p>
@@ -110,10 +110,10 @@ Hello world
 <p>With the helper class of above, we can now define  <code>ARTICLE_SAVE_AS</code> and
 <code>ARTICLE_URL</code> dynamically as follows:</p>
 <div class="highlight"><pre><span></span><code><span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
-    <span class="s1">&#39;{cleanurl}/index.html&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span>
+    <span class="s1">&#39;</span><span class="si">{cleanurl}</span><span class="s1">/index.html&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">{slug}</span><span class="s1">.html&#39;</span>
 <span class="p">)</span>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="n">DynamicSetting</span><span class="p">(</span><span class="k">lambda</span> <span class="n">metadata</span><span class="p">:</span> 
-    <span class="s1">&#39;{cleanurl}/&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;{slug}.html&#39;</span>
+    <span class="s1">&#39;</span><span class="si">{cleanurl}</span><span class="s1">/&#39;</span> <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">{slug}</span><span class="s1">.html&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -124,9 +124,9 @@ For other articles we fall back on the normal <code>{slug}.html</code> way.</p>
 <div class="highlight"><pre><span></span><code><span class="nd">@DynamicSetting</span>
 <span class="k">def</span> <span class="nf">ARTICLE_URL</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
     <span class="k">if</span> <span class="s1">&#39;cleanurl&#39;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;{cleanurl}&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{cleanurl}</span><span class="s1">&#39;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;{slug}.html&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{slug}</span><span class="s1">.html&#39;</span>
 </code></pre></div>
 
 <p>which gives bit more breathing room for the custom logic.</p>

@@ -69,17 +69,17 @@ running in some kind of dev or debug mode.</p>
 
 <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;pycharm://open?file={f}&amp;line={n}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="s1">&#39;pycharm://open?file=</span><span class="si">{f}</span><span class="s1">&amp;line=</span><span class="si">{n}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">f</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcefile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">),</span>
             <span class="n">n</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
 
-<span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
     <span class="k">return</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        Hello World!</span>
-<span class="s1">        Where is class &lt;a href=&quot;{url}&quot;&gt;Foo&lt;/a&gt;?</span>
+<span class="s1">        Where is class &lt;a href=&quot;</span><span class="si">{url}</span><span class="s1">&quot;&gt;Foo&lt;/a&gt;?</span>
 <span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">link</span><span class="p">())</span>
 </code></pre></div>
 
