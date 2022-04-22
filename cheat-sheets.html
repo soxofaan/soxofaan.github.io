@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Bunch o' cheat sheets - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="jupyter"/>
+        <meta name="tags" contents="note-to-self"/>
+        <meta name="tags" contents="cheat-sheet"/>
+        <meta name="tags" contents="conda"/>
+        <meta name="tags" contents="vim"/>
+        <meta name="tags" contents="cli"/>
+        <meta name="tags" contents="bash"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Bunch o' cheat sheets</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2022-04-22T00:00:00+02:00"> on 2022/04/22</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/jupyter.html">jupyter</a>,                    <a href="https://www.stefaanlippens.net/tag/note-to-self.html">note-to-self</a>,                    <a href="https://www.stefaanlippens.net/tag/cheat-sheet.html">cheat-sheet</a>,                    <a href="https://www.stefaanlippens.net/tag/conda.html">conda</a>,                    <a href="https://www.stefaanlippens.net/tag/vim.html">vim</a>,                    <a href="https://www.stefaanlippens.net/tag/cli.html">cli</a>,                    <a href="https://www.stefaanlippens.net/tag/bash.html">bash</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>You're probably very familiar with the tools you use daily
+and operate them from muscle memory.
+But there are also these setup or maintenance tasks you only do
+every X months and their practical details are a bit hazy.</p>
+<p>This is a random, work-in-progress collection of cheat sheets 
+for these commands or workflows I use too infrequently to remember.</p>
+<h2>Jupyter/JupyterLab</h2>
+<ul>
+<li>
+<p>List installed Jupyter/JupyterLab kernels (run from env that has jupyter installed):</p>
+<div class="highlight"><pre><span></span><code> jupyter kernelspec list
+</code></pre></div>
+
+</li>
+<li>
+<p>Add a new kernel for a custom virtual/conda env:</p>
+<ul>
+<li>Enter the virtual/env (e.g. <code>. bin/venv/activate</code> or <code>conda activate $envname</code>)</li>
+<li>Install ipykernel package: e.g. <code>pip install ipykernel</code></li>
+<li>Create kernel spec for jupyter/jupyterlab:<div class="highlight"><pre><span></span><code>python -m ipykernel install --user --name $kernelname
+</code></pre></div>
+
+</li>
+</ul>
+<p>Optionally add <code>--display-name "Pretty Name"</code> 
+  to give it a prettier name in the Jupyter(Lab) UI
+- Check that kernel is now listed at <code>jupyter kernelspec list</code> 
+  (run this from env where you run Jupyter(Lab))</p>
+</li>
+</ul>
+<h2>Conda/Anaconda</h2>
+<ul>
+<li>Updating<ul>
+<li>update conda (base environment): <code>conda update conda</code></li>
+<li>Update all packages in an environment: <code>conda update --all</code></li>
+</ul>
+</li>
+<li>
+<p>Remove unused packages and caches (can save up multiple GB).</p>
+<div class="highlight"><pre><span></span><code> conda clean --all
+</code></pre></div>
+
+<p>(optionally add <code>--dry-run</code>)
+- Remove environment  <code>conda env remove -n $ENVNAME</code></p>
+</li>
+</ul>
+<h2>Homebrew</h2>
+<ul>
+<li>List installed formulas</li>
+<li>Including dependencies: <code>brew list</code></li>
+<li>Only the "leave" formulas: <code>brew leaves</code></li>
+<li>
+<p>How do I update my local packages?</p>
+<div class="highlight"><pre><span></span><code> # First update the formulae and Homebrew itself:
+ brew update
+ # You can now find out what is outdated with:
+ brew outdated
+ # Upgrade everything with:
+ brew upgrade
+ # Or upgrade a specific formula with:
+ brew upgrade &lt;formula&gt;
+</code></pre></div>
+
+</li>
+<li>
+<p>By default, Homebrew does not uninstall old versions of a formula.
+  To clean up the accumulation of old, unused versions:</p>
+<div class="highlight"><pre><span></span><code> brew cleanup &lt;formula&gt;
+ # or clean up everything at once (add `-n` for dry run):
+ brew cleanup
+</code></pre></div>
+
+</li>
+<li>
+<p>General checkup</p>
+<div class="highlight"><pre><span></span><code> brew doctor
+</code></pre></div>
+
+</li>
+</ul>
+<h2>Vim</h2>
+<p>(yes, I use vim too infrequently to remember these, sue me)</p>
+<ul>
+<li>Change a word (e.g. interactiv git rebase): <code>:cw</code></li>
+<li>show line numbers <code>:set number</code></li>
+</ul>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2022
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4807787-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-4807787-2');
+</script>
+
+</html>
