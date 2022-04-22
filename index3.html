@@ -131,7 +131,7 @@
                     </header>
                     <div class="article-content article-summary">
                         <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
-<div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;import sys;print(&quot;</span><span class="se">\n</span><span class="s1">&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;</span>
+<div class="highlight"><pre><span></span>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
 </pre></div>
 
 

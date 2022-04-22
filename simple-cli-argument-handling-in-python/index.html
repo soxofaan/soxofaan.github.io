@@ -87,10 +87,10 @@ z: ZAZAZAZA
 
 <p>Run it with one, zero, four or more arguments and Python will complain about argument mismatch:</p>
 <div class="highlight"><pre><span></span>$ python dosomething.py one
-Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
-  File <span class="s2">&quot;./dosomething.py&quot;</span>, line <span class="m">11</span>, in &lt;module&gt;
-    do_something<span class="o">(</span>*sys.argv<span class="o">[</span><span class="m">1</span>:<span class="o">])</span>
-TypeError: do_something<span class="o">()</span> takes at least <span class="m">2</span> arguments <span class="o">(</span><span class="m">1</span> given<span class="o">)</span>
+Traceback (most recent call last):
+  File &quot;./dosomething.py&quot;, line 11, in &lt;module&gt;
+    do_something(*sys.argv[1:])
+TypeError: do_something() takes at least 2 arguments (1 given)
 </pre></div>
 
 

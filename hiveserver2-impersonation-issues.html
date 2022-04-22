@@ -82,14 +82,14 @@ without the "impersonation" error above, as follows:</p>
   so that HiveServer2 (which runs as user <code>hive</code>) 
   can impersonate other users (e.g. <code>johndoe</code>). 
   I added this to Hadoop config <code>core-site.xml</code>:</p>
-<div class="highlight"><pre><span></span><span class="nt">&lt;property&gt;</span>
-    <span class="nt">&lt;name&gt;</span>hadoop.proxyuser.hive.hosts<span class="nt">&lt;/name&gt;</span>
-    <span class="nt">&lt;value&gt;</span>*<span class="nt">&lt;/value&gt;</span>
-<span class="nt">&lt;/property&gt;</span>
-<span class="nt">&lt;property&gt;</span>
-    <span class="nt">&lt;name&gt;</span>hadoop.proxyuser.hive.groups<span class="nt">&lt;/name&gt;</span>
-    <span class="nt">&lt;value&gt;</span>*<span class="nt">&lt;/value&gt;</span>
-<span class="nt">&lt;/property&gt;</span>
+<div class="highlight"><pre><span></span>&lt;property&gt;
+    &lt;name&gt;hadoop.proxyuser.hive.hosts&lt;/name&gt;
+    &lt;value&gt;*&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;hadoop.proxyuser.hive.groups&lt;/name&gt;
+    &lt;value&gt;*&lt;/value&gt;
+&lt;/property&gt;
 </pre></div>
 
 

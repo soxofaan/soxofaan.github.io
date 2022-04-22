@@ -79,12 +79,12 @@ Blender quit
 
 
 <p>The help info you get from <code>blender -h</code> gives another example:</p>
-<div class="highlight"><pre><span></span><span class="n">Note</span><span class="o">:</span> <span class="n">Arguments</span> <span class="n">are</span> <span class="n">executed</span> <span class="k">in</span> <span class="n">the</span> <span class="n">order</span> <span class="n">they</span> <span class="n">are</span> <span class="n">given</span><span class="o">.</span> <span class="n">eg</span><span class="o">:</span>
-    <span class="s2">&quot;blender -b test.blend -f 1 -o /tmp&quot;</span>
-  <span class="o">...</span><span class="n">may</span> <span class="n">not</span> <span class="n">render</span> <span class="n">to</span> <span class="o">/</span><span class="n">tmp</span> <span class="n">because</span> <span class="s1">&#39;-f 1&#39;</span> <span class="n">renders</span> <span class="n">before</span> <span class="n">the</span> <span class="n">output</span> <span class="n">path</span> <span class="k">is</span> <span class="kd">set</span>
-    <span class="s2">&quot;blender -b -o /tmp test.blend -f 1&quot;</span>
-  <span class="o">...</span><span class="n">may</span> <span class="n">not</span> <span class="n">render</span> <span class="n">to</span> <span class="o">/</span><span class="n">tmp</span> <span class="n">because</span> <span class="n">loading</span> <span class="n">the</span> <span class="n">blend</span> <span class="n">file</span> <span class="n">overwrites</span> <span class="n">the</span> <span class="n">output</span> <span class="n">path</span> <span class="n">that</span> <span class="n">was</span> <span class="kd">set</span>
-    <span class="s2">&quot;blender -b test.blend -o /tmp -f 1&quot;</span> <span class="n">works</span> <span class="k">as</span> <span class="n">expected</span><span class="o">.</span>
+<div class="highlight"><pre><span></span>Note: Arguments are executed in the order they are given. eg:
+    &quot;blender -b test.blend -f 1 -o /tmp&quot;
+  ...may not render to /tmp because &#39;-f 1&#39; renders before the output path is set
+    &quot;blender -b -o /tmp test.blend -f 1&quot;
+  ...may not render to /tmp because loading the blend file overwrites the output path that was set
+    &quot;blender -b test.blend -o /tmp -f 1&quot; works as expected.
 </pre></div>
     </div>
 

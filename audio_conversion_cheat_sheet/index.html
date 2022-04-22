@@ -201,11 +201,11 @@ Sample Encoding: MPEG audio (layer I, II or III)
 
 
 <p>which returns something like:</p>
-<div class="highlight"><pre><span></span><span class="p">...</span> <span class="p">[</span><span class="n">version</span> <span class="n">information</span><span class="p">]</span> <span class="p">...</span>
-<span class="n">Input</span> <span class="err">#</span><span class="mi">0</span><span class="p">,</span> <span class="n">mp3</span><span class="p">,</span> <span class="n">from</span> <span class="err">&#39;</span><span class="n">file</span><span class="p">.</span><span class="n">mp3</span><span class="err">&#39;</span><span class="o">:</span>
-  <span class="nl">Duration</span><span class="p">:</span> <span class="mo">00</span><span class="o">:</span><span class="mo">03</span><span class="o">:</span><span class="mf">55.2</span><span class="p">,</span> <span class="nl">start</span><span class="p">:</span> <span class="mf">0.000000</span><span class="p">,</span> <span class="nl">bitrate</span><span class="p">:</span> <span class="mi">63</span> <span class="n">kb</span><span class="o">/</span><span class="n">s</span>
-  <span class="n">Stream</span> <span class="err">#</span><span class="mf">0.0</span><span class="o">:</span> <span class="nl">Audio</span><span class="p">:</span> <span class="n">mp2</span><span class="p">,</span> <span class="mi">44100</span> <span class="n">Hz</span><span class="p">,</span> <span class="n">stereo</span><span class="p">,</span> <span class="mi">64</span> <span class="n">kb</span><span class="o">/</span><span class="n">s</span>
-<span class="n">Must</span> <span class="n">supply</span> <span class="n">at</span> <span class="n">least</span> <span class="n">one</span> <span class="n">output</span> <span class="n">file</span>
+<div class="highlight"><pre><span></span>... [version information] ...
+Input #0, mp3, from &#39;file.mp3&#39;:
+  Duration: 00:03:55.2, start: 0.000000, bitrate: 63 kb/s
+  Stream #0.0: Audio: mp2, 44100 Hz, stereo, 64 kb/s
+Must supply at least one output file
 </pre></div>
 
 
@@ -216,33 +216,33 @@ Sample Encoding: MPEG audio (layer I, II or III)
 
 
 <p>which returns something like:</p>
-<div class="highlight"><pre><span></span><span class="p">...</span> <span class="p">[</span><span class="n">version</span> <span class="n">information</span><span class="p">]</span> <span class="p">...</span>
-<span class="n">Playing</span> <span class="n">file</span><span class="p">.</span><span class="n">mp3</span><span class="p">.</span>
-<span class="n">ID_AUDIO_ID</span><span class="o">=</span><span class="mi">0</span>
-<span class="n">Audio</span> <span class="n">file</span> <span class="n">file</span> <span class="n">format</span> <span class="n">detected</span><span class="p">.</span>
-<span class="n">ID_FILENAME</span><span class="o">=</span><span class="n">file</span><span class="p">.</span><span class="n">mp3</span>
-<span class="n">ID_DEMUXER</span><span class="o">=</span><span class="n">audio</span>
-<span class="n">ID_AUDIO_FORMAT</span><span class="o">=</span><span class="mi">80</span>
-<span class="n">ID_AUDIO_BITRATE</span><span class="o">=</span><span class="mi">64000</span>
-<span class="n">ID_AUDIO_RATE</span><span class="o">=</span><span class="mi">44100</span>
-<span class="n">ID_AUDIO_NCH</span><span class="o">=</span><span class="mi">0</span>
-<span class="n">ID_LENGTH</span><span class="o">=</span><span class="mf">235.00</span>
-<span class="o">==========================================================================</span>
-<span class="n">Forced</span> <span class="n">audio</span> <span class="nl">codec</span><span class="p">:</span> <span class="n">mad</span>
-<span class="n">Opening</span> <span class="n">audio</span> <span class="nl">decoder</span><span class="p">:</span> <span class="p">[</span><span class="n">libmad</span><span class="p">]</span> <span class="n">libmad</span> <span class="n">mpeg</span> <span class="n">audio</span> <span class="n">decoder</span>
-<span class="nl">AUDIO</span><span class="p">:</span> <span class="mi">44100</span> <span class="n">Hz</span><span class="p">,</span> <span class="mi">2</span> <span class="n">ch</span><span class="p">,</span> <span class="n">s16le</span><span class="p">,</span> <span class="mf">64.0</span> <span class="n">kbit</span><span class="o">/</span><span class="mf">4.54</span><span class="o">%</span> <span class="p">(</span><span class="nl">ratio</span><span class="p">:</span> <span class="mi">8000</span><span class="o">-&gt;</span><span class="mi">176400</span><span class="p">)</span>
-<span class="n">ID_AUDIO_BITRATE</span><span class="o">=</span><span class="mi">64000</span>
-<span class="n">ID_AUDIO_RATE</span><span class="o">=</span><span class="mi">44100</span>
-<span class="n">ID_AUDIO_NCH</span><span class="o">=</span><span class="mi">2</span>
-<span class="n">Selected</span> <span class="n">audio</span> <span class="nl">codec</span><span class="p">:</span> <span class="p">[</span><span class="n">mad</span><span class="p">]</span> <span class="nl">afm</span><span class="p">:</span> <span class="n">libmad</span> <span class="p">(</span><span class="n">libMAD</span> <span class="n">MPEG</span> <span class="n">layer</span> <span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
-<span class="o">==========================================================================</span>
-<span class="nl">AO</span><span class="p">:</span> <span class="p">[</span><span class="n">null</span><span class="p">]</span> <span class="mi">44100</span><span class="n">Hz</span> <span class="mi">2</span><span class="n">ch</span> <span class="n">s16le</span> <span class="p">(</span><span class="mi">2</span> <span class="n">bytes</span> <span class="n">per</span> <span class="n">sample</span><span class="p">)</span>
-<span class="n">ID_AUDIO_CODEC</span><span class="o">=</span><span class="n">mad</span>
-<span class="nl">Video</span><span class="p">:</span> <span class="n">no</span> <span class="n">video</span>
-<span class="n">Starting</span> <span class="n">playback</span><span class="p">...</span>
+<div class="highlight"><pre><span></span>... [version information] ...
+Playing file.mp3.
+ID_AUDIO_ID=0
+Audio file file format detected.
+ID_FILENAME=file.mp3
+ID_DEMUXER=audio
+ID_AUDIO_FORMAT=80
+ID_AUDIO_BITRATE=64000
+ID_AUDIO_RATE=44100
+ID_AUDIO_NCH=0
+ID_LENGTH=235.00
+==========================================================================
+Forced audio codec: mad
+Opening audio decoder: [libmad] libmad mpeg audio decoder
+AUDIO: 44100 Hz, 2 ch, s16le, 64.0 kbit/4.54% (ratio: 8000-&gt;176400)
+ID_AUDIO_BITRATE=64000
+ID_AUDIO_RATE=44100
+ID_AUDIO_NCH=2
+Selected audio codec: [mad] afm: libmad (libMAD MPEG layer 1-2-3)
+==========================================================================
+AO: [null] 44100Hz 2ch s16le (2 bytes per sample)
+ID_AUDIO_CODEC=mad
+Video: no video
+Starting playback...
 
 
-<span class="n">Exiting</span><span class="p">...</span> <span class="p">(</span><span class="n">End</span> <span class="n">of</span> <span class="n">file</span><span class="p">)</span>
+Exiting... (End of file)
 </pre></div>
 
 

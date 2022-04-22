@@ -77,7 +77,7 @@ revision of the src directory at build (make) time.</p>
 <p>and add under the "C" and "C++" tab the following compiler flag
 (Those extra escape  thingies are needed to counter string
  parsing/expanding during the <code>configure</code> stage.)</p>
-<div class="highlight"><pre><span></span><span class="nv">-DSVNREV</span><span class="o">=</span><span class="se">\\\&quot;\$</span><span class="o">(</span>SVNREV<span class="o">)</span><span class="se">\\\&quot;</span>
+<div class="highlight"><pre><span></span>-DSVNREV=\\\&quot;\$(SVNREV)\\\&quot;
 </pre></div>
 
 
@@ -86,9 +86,9 @@ revision of the src directory at build (make) time.</p>
 </li>
 <li>
 <p>Use the svn version string in your code. e.g.:</p>
-<div class="highlight"><pre><span></span><span class="cp">#ifdef SVNREV</span>
-<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Version: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">SVNREV</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-<span class="cp">#endif</span>
+<div class="highlight"><pre><span></span>#ifdef SVNREV
+cout &lt;&lt; &quot;Version: &quot; &lt;&lt; SVNREV &lt;&lt; endl;
+#endif
 </pre></div>
 
 

@@ -55,7 +55,7 @@
     <div class="article-content">
         <p>When programming, lint checking your source code can be useful to detect low level issues like syntax errors, undefined or unused variables. The PHP command line interpreter has an option <code>-l</code>/<code>--syntax-check</code> to do a syntax check of the provided PHP file, instead of executing it:</p>
 <div class="highlight"><pre><span></span>$ php -l file_with_syntax_error.php 
-PHP Parse error:  syntax error, unexpected T_VARIABLE in file_with_syntax_error.php on line <span class="m">5</span>
+PHP Parse error:  syntax error, unexpected T_VARIABLE in file_with_syntax_error.php on line 5
 Errors parsing file_with_syntax_error.php
 </pre></div>
 
@@ -70,7 +70,7 @@ No syntax errors detected in file1.php
 <p>I recently was faced with this issue, but also wanted to have some parallelism, to speed up the process by putting multiple cores a work, instead of checking one file at a time. After googling a bit I found the following (command line) solutions.</p>
 <h3>Use find + xargs's parallel mode</h3>
 <p>With the appropriate options, we can set up a find+xargs combo to achieve what we want: xargs option <code>-n</code> to only provide one argument to <code>php</code> at a time and xargs option <code>-P</code> to dispatch multiple jobs (here eight) in parallel:</p>
-<div class="highlight"><pre><span></span>$ find . -name <span class="s2">&quot;*.php&quot;</span> -print0 <span class="p">|</span> xargs -0 -n1 -P8 php -l
+<div class="highlight"><pre><span></span>$ find . -name &quot;*.php&quot; -print0 | xargs -0 -n1 -P8 php -l
 </pre></div>
 
 
@@ -78,18 +78,18 @@ No syntax errors detected in file1.php
 <p>In case you want to integrate the lint check in a Makefile work flow, you could consider the following Makefile trick:</p>
 <div class="highlight"><pre><span></span>files := $(shell find . -name \*.php)
 
-.PHONY: <span class="cp">${</span><span class="n">files</span><span class="cp">}</span>
-<span class="cp">${</span><span class="n">files</span><span class="cp">}</span>:
+.PHONY: ${files}
+${files}:
     php -l $@
 
 .PHONY: lint
-lint: <span class="cp">${</span><span class="n">files</span><span class="cp">}</span>
+lint: ${files}
     echo Lint finished
 </pre></div>
 
 
 <p>Invoke this with the option <code>-j</code>/<code>--jobs</code> for parallel jobs, for example:</p>
-<div class="highlight"><pre><span></span>$ make -j <span class="m">8</span> lint
+<div class="highlight"><pre><span></span>$ make -j 8 lint
 </pre></div>
     </div>
 
