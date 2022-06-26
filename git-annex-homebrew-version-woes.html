@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>git-annex and Homebrew version woes (or how to spend your evenings with open source software) - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="git-annex"/>
+        <meta name="tags" contents="homebrew"/>
+        <meta name="tags" contents="macosx"/>
+        <meta name="tags" contents="haskell"/>
+        <meta name="tags" contents="theothernight"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>git-annex and Homebrew version woes (or how to spend your evenings with open source software)</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2022-06-26T00:00:00+02:00"> on 2022/06/26</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/git-annex.html">git-annex</a>,                    <a href="https://www.stefaanlippens.net/tag/homebrew.html">homebrew</a>,                    <a href="https://www.stefaanlippens.net/tag/macosx.html">macosx</a>,                    <a href="https://www.stefaanlippens.net/tag/haskell.html">haskell</a>,                    <a href="https://www.stefaanlippens.net/tag/theothernight.html">theothernight</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>The other night I wanted to upload some photo's to my 
+<a href="https://git-annex.branchable.com/">git-annex</a> remote
+on our home NAS (a Synology DS416, let's call it <code>mallorca</code>), 
+but reality decided otherwise:</p>
+<div class="highlight"><pre><span></span><code>$ git annex copy --to mallorca path/to/nice-picture-01.jpg
+fatal: Run with no arguments or with -c cmd
+git-annex-shell: git-shell failed
+(unable to check palma) failed
+</code></pre></div>
+
+<p>Cue a lengthy debugging session digging through git-over-SSH,
+several layers of login-shells and other redirection stumbling blocks.</p>
+<p>I finally ended up on <a href="https://git-annex.branchable.com/bugs/Failed_move__47__get_over_ssh_in_new_version/">this bug report</a>
+(by the way: not thanks to googling, which delivered very poorly,
+but from grepping through the git-annex source code)
+which points to this changelog note:</p>
+<div class="highlight"><pre><span></span><code>git-annex (8.20211028) upstream; urgency=medium
+
+  This version of git-annex removes support for communicating with git-annex
+  remotes that have version 6.20180312 or older installed.
+</code></pre></div>
+
+<p>Yep, that sound like my problem 
+(local and remote version drifted too far apart):</p>
+<ul>
+<li>locally, on my laptop, I run version 10.20220624 
+  (recently updated with Homebrew)</li>
+<li>the Synology NAS is stuck at version 6.20161212 
+  (later releases don't run anymore)</li>
+</ul>
+<p>Because I have no idea yet how to upgrade git-annex on the NAS-side
+I'm currently forced to downgrade laptop-side.
+Shouldn't be that big of an issue if you're using a package manager
+like Homebrew, right? Right?
+Turns out that Homebrew does not support easy installing
+of an older version of a package, 
+e.g. by adding some kind of version constraint,
+as found in other package managers.
+There are ways to achieve installing old Homebrew formulas, 
+but it's not trivial, <a href="https://cmichel.io/how-to-install-an-old-package-version-with-brew/">barely/poorly documented</a>
+while the wrong (and now defunct) way still ranks 
+a lot higher in search results.</p>
+<p>Anyway, as <a href="https://github.com/Homebrew/discussions/discussions/155">explained in this Homebrew discussion</a>, 
+you have to create a new "tap" of your own, 
+"extract" the desired version of the Homebrew formula to it
+and install it from there.
+I tried that to install git-annex version 8.20211011, 
+and in honor of Saint Murphy, the compilation failed: </p>
+<div class="highlight"><pre><span></span><code>==&gt; cabal v2-install --jobs=4 --max-backjumps=100000 --install-method=copy --installdir=/usr/local/Cellar/git-annex@8.20210903/8.20210903/bin --flags=+S3
+Last 15 lines from /Users/stefaan/Library/Logs/Homebrew/git-annex@8.20210903/02.cabal:
+
+Remote/GitLFS.hs:461:46: error:
+    • Couldn&#39;t match expected type ‘LFS.ServerSupportsChunks
+                                    -&gt; RequestBody’
+                  with actual type ‘RequestBody’
+    • In the first argument of ‘send’, namely ‘body’
+      In the second argument of ‘($)’, namely ‘send body sha256 size’
+      In a stmt of a &#39;do&#39; block:
+        forM_ (LFS.objects resp) $ send body sha256 size
+    |
+461 |                                         send body sha256 size
+    |                                              ^^^^
+cabal: Failed to build git-annex-8.20210903. See the build log above for
+details.
+</code></pre></div>
+
+<p>Cue another session trying to figure out compilation problems 
+with a language (Haskell) and build system (Cabal) I don't know.
+By luck, I found out there is a compile flag <code>GitLfs</code> I could turn off
+to work around that compilation problem and have a complete build.</p>
+<p>Finally, after way too many hours deep down in the alien,
+hostile caverns of other people's code and systems,
+I have a working build of an old enough git-annex version.
+Hashtag party hat.</p>
+<p>For posterity, I preserved my Homebrew tap for this git-annex version
+at <a href="https://github.com/soxofaan/homebrew-git-annex/blob/main/Formula/git-annex%408.20211011.rb">github.com/soxofaan/homebrew-git-annex: git-annex@8.20211011</a>
+which can be installed with:</p>
+<div class="highlight"><pre><span></span><code>brew tap soxofaan/git-annex
+brew install git-annex@8.20211011
+</code></pre></div>
+
+<p>Because I still had the original, latest git-annex version installed (10.20220624),
+I got a warning that the original symlinks were not automatically updated.
+Instead, I had to do the unlinking/relinking manually with</p>
+<div class="highlight"><pre><span></span><code>brew unlink git-annex 
+brew link --overwrite git-annex@8.20211011
+</code></pre></div>
+
+<p>Ok, that's enough for now.
+Time to be productive again. I hope.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2022
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4807787-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-4807787-2');
+</script>
+
+</html>
