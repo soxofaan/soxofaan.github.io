@@ -148,6 +148,36 @@ for these commands or workflows I use too infrequently to remember.</p>
 
 </li>
 </ul>
+<h2>Docker</h2>
+<ul>
+<li>
+<p>First, it's best to clean up all stopped containers
+  (assuming these are all just disposable leftovers).</p>
+<div class="highlight"><pre><span></span><code># Check first for stopped containers
+docker ps -a
+# Prune stopped containers
+docker container prune
+</code></pre></div>
+
+</li>
+<li>
+<p>Clean up dangling images</p>
+<div class="highlight"><pre><span></span><code># List images we currently have
+docker image ls
+
+# Prune dangling images (untagged and not being used by a container)
+docker image prune
+</code></pre></div>
+
+</li>
+<li>
+<p>A bit more aggressive: prune all images (also tagged ones)
+  that were created long enough ago</p>
+<div class="highlight"><pre><span></span><code>docker imate prune -a --filter &quot;until=2022-01-01&quot;
+</code></pre></div>
+
+</li>
+</ul>
 <h2>Vim</h2>
 <p>(yes, I use vim too infrequently to remember these, sue me)</p>
 <ul>
