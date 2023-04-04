@@ -3,7 +3,7 @@
 <head>
             <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>Step by Step OAuth 2.0 Authorization Code Flow with PKCE - Stefaan Lippens inserts content here</title>
+        <title>Programmatically creating clients and users in Keycloak - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -19,6 +19,7 @@
         <meta name="tags" contents="OpenID Connect"/>
         <meta name="tags" contents="python"/>
         <meta name="tags" contents="HTTP"/>
+        <meta name="tags" contents="Keycloak"/>
 </head>
 
 <body>
@@ -39,16 +40,16 @@
     </nav>
 
     <header class="page-header">
-    <h1>Step by Step OAuth 2.0 Authorization Code Flow with PKCE</h1>
+    <h1>Programmatically creating clients and users in Keycloak</h1>
 
     <div class="article-meta">
                 <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2019-09-24T00:00:00+02:00"> on 2019/09/24</span>
+        <span class="publication-date" title="2023-04-04T00:00:00+02:00"> on 2023/04/04</span>
 
 
             <div class="tags">
                 Tagged:
-                    <a href="https://www.stefaanlippens.net/tag/oauth.html">OAuth</a>,                    <a href="https://www.stefaanlippens.net/tag/openid-connect.html">OpenID Connect</a>,                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/http.html">HTTP</a>            </div>
+                    <a href="https://www.stefaanlippens.net/tag/oauth.html">OAuth</a>,                    <a href="https://www.stefaanlippens.net/tag/openid-connect.html">OpenID Connect</a>,                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/http.html">HTTP</a>,                    <a href="https://www.stefaanlippens.net/tag/keycloak.html">Keycloak</a>            </div>
     </div>
 
     </header>
@@ -1038,13 +1039,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>The last days I spent quite a bit of time reading up on <em>OAuth2</em> and <em>OpenID Connect</em>. There are a lot of pointers online on this topic, but unfortunately it's not easy to find easy digestible explanations.
-In case you are still in an unenlighted state and you don't want to read all those dry RFC documents, I can highly recommend the talk <a href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a> by Nate Barbettini, which gives a very good introduction of OAuth2, OpenID Connect and how they should be used for authentication and authorization.</p>
-<p>When I was looking into the <em>OAuth Implicit flow</em> to use OpenID Connect in a sort of Single Page Application setup, I quickly stumbled on articles recommending against the implicit flow because of security issues. Instead, one should use the <strong>authorization code flow with PKCE</strong> ("Proof Key for Code Exchange" and apparently to be pronounced as "pixy"). PKCE replaces the static secret used in the authorization flow with a temporary one-time challenge, making it feasible to use in public clients.</p>
-<h2 id="Step-by-step-walkthrough-in-Python">Step by step walkthrough in Python<a class="anchor-link" href="#Step-by-step-walkthrough-in-Python">&#182;</a></h2><p>In this notebook, I will dive into the <em>OAuth 2.0 Authorization Code flow with PKCE</em> step by step in Python, using a local Keycloak setup as authorization provider.
-Basic knowledge about OAuth flows and PKCE is assumed, as the discussion will not go into much theoretical details.
-There is already enough material online on this, written by more knowledgeable people. 
-The focus lies on practical, step by step low-level HTTP operations. We wont even use an actual browser nor need an actual HTTP server for the redirect URL.</p>
+<p><a href="https://www.keycloak.org">Keycloak</a>
+has an administration REST API to create realms, clients, users, etc.,
+but its documentation can be a bit terse in some places,
+making it a bit challenging to connect the dots.
+In this notebook I'll try to flesh out the basics using Python and the <code>requests</code> package.</p>
+<p>We'll work against a development Keycloak instance, e.g. running locally in Docker as follows</p>
+<div class="highlight"><pre><span></span>docker run --rm <span class="se">\</span>
+    -p <span class="m">8642</span>:8080 <span class="se">\</span>
+    -e <span class="nv">KEYCLOAK_ADMIN</span><span class="o">=</span>admin <span class="se">\</span>
+    -e <span class="nv">KEYCLOAK_ADMIN_PASSWORD</span><span class="o">=</span>admin <span class="se">\</span>
+    quay.io/keycloak/keycloak:21.0.2 <span class="se">\</span>
+    start-dev
+</pre></div>
+<p>Note that we're remapping port 8080 (to 8642 in this case)
+to have a lower chance of collision with some other web service that is already running locally.</p>
+<p>The Keycloak administration web UI is available at
+<a href="http://localhost:8642/admin">http://localhost:8642/admin</a>,
+which is handy to follow along
+while we're trying to do things programmatically.</p>
 
 </div>
 </div>
@@ -1053,9 +1066,7 @@ The focus lies on practical, step by step low-level HTTP operations. We wont eve
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h2><p>We don't require special libraries, just the standard library will do, 
-except for the well known <code>requests</code> library to make the HTTP operations a bit simpler.</p>
-
+<h2 id="Ok,-let's-go">Ok, let's go<a class="anchor-link" href="#Ok,-let's-go">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -1064,53 +1075,22 @@ except for the well known <code>requests</code> library to make the HTTP operati
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">hashlib</span>
-<span class="kn">import</span> <span class="nn">html</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">urllib.parse</span>
-<span class="kn">import</span> <span class="nn">requests</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We need an OAuth/OpenID Connect provider obviously. Let's run a local instance of <a href="https://www.keycloak.org/">Keycloak</a> through docker, for example as follows:</p>
-
-<pre><code>docker run --rm -it -p 9090:8080 \
-    -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin \
-    jboss/keycloak:7.0.0
-
-</code></pre>
-<p>A detailed discussion of Keycloak is a bit out of scope for this walkthrough.
-The most important information is that it will act as an OAuth/OpenID Connect provider.
-Through the administration console (a <a href="http://localhost:9090/auth/admin/">http://localhost:9090/auth/admin/</a>), we:</p>
-<ul>
-<li>set up a client "pkce-test" (in the "master" realm) with access type "public" (to be able to use PKCE) and the catch-all "*" as valid redirect URIs (which is a required field).</li>
-<li>create a user "john" with non-temporary password.</li>
-</ul>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">provider</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:9090/auth/realms/master&quot;</span>
-<span class="n">client_id</span> <span class="o">=</span> <span class="s2">&quot;pkce-test&quot;</span>
-<span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;john&quot;</span>
-<span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;j0hn&quot;</span>
-<span class="n">redirect_uri</span> <span class="o">=</span> <span class="s2">&quot;http://localhost/foobar&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keycloak_root</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8642&quot;</span>
+<span class="n">keycloak_admin</span> <span class="o">=</span> <span class="s2">&quot;admin&quot;</span>
+<span class="n">keycloak_admin_password</span> <span class="o">=</span> <span class="s2">&quot;admin&quot;</span>
 </pre></div>
 
 </div>
@@ -1122,17 +1102,8 @@ Through the administration console (a <a href="http://localhost:9090/auth/admin/
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Connect-to-authentication-provider">Connect to authentication provider<a class="anchor-link" href="#Connect-to-authentication-provider">&#182;</a></h2><p>The first phase of the flow is to connect to the OAuth/OpenID Connect provider and authenticate.
-For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="PKCE-code-verifier-and-challenge">PKCE code verifier and challenge<a class="anchor-link" href="#PKCE-code-verifier-and-challenge">&#182;</a></h3><p>We need a <em>code verifier</em>, which is a long enough random alphanumeric string, only to be used "client side". We'll use a simple urandom/base64 trick to generate one:</p>
+<h2 id="Get-an-access-token">Get an access token<a class="anchor-link" href="#Get-an-access-token">&#182;</a></h2><p>First, we have to authenticate and get an access token for the admin user,
+which we'll need to do the administration operations.</p>
 
 </div>
 </div>
@@ -1142,9 +1113,25 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">code_verifier</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">40</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="n">code_verifier</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^a-zA-Z0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">code_verifier</span><span class="p">)</span>
-<span class="n">code_verifier</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">code_verifier</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">keycloak_root</span><span class="si">}</span><span class="s2">/realms/master/protocol/openid-connect/token&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;client_id&quot;</span><span class="p">:</span> <span class="s2">&quot;admin-cli&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">keycloak_admin</span><span class="p">,</span>
+        <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">keycloak_admin_password</span><span class="p">,</span>
+        <span class="s2">&quot;grant_type&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">access_token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;access_token&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">access_token</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">...</span><span class="si">{</span><span class="n">access_token</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expires in </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;expires_in&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+
+<span class="c1"># Predefine authorization headers for later use.</span>
+<span class="n">auth_headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">access_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 
 </div>
@@ -1157,15 +1144,14 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[3]:</div>
+<div class="prompt"></div>
 
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>(&#39;zo6yP8H9te4I0lk2Uclcry47yPbTT9jRbdnIZPdMUfazH5iD8vkNw&#39;, 53)</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>eyJhbGciOiJSUzI1NiIs...g4Fs83jFQO2ofLXeOHwQ
+Expires in 60s
+</pre>
 </div>
-
 </div>
 
 </div>
@@ -1176,7 +1162,12 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To create the PKCE <em>code challenge</em> we hash the code verifier with SHA256 and encode the result in URL-safe base64 (without padding)</p>
+<p>Note that the access token is only valid for a relatively short time (1 minute in this case).
+If you execute this notebook flow at your own pace,
+you might get <code>HTTPError: 401 Client Error: Unauthorized for url</code> errors when the access token expired
+and have to request new access tokens (e.g. by re-executing the cell above).</p>
+<p>Let's verify if we can use the access token (which we already wrapped in a headers dictionary),
+by trying to list the available realms (<code>GET /admin/realms</code> endpoint):</p>
 
 </div>
 </div>
@@ -1186,10 +1177,12 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">code_challenge</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">code_verifier</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
-<span class="n">code_challenge</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">code_challenge</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="n">code_challenge</span> <span class="o">=</span> <span class="n">code_challenge</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">code_challenge</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">code_challenge</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">keycloak_root</span><span class="si">}</span><span class="s2">/admin/realms&quot;</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">auth_headers</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
 </pre></div>
 
 </div>
@@ -1208,7 +1201,7 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(&#39;hjooUY_1tBlE_dBuCKGUK8XuSRrc_zNByH-roC5sIXA&#39;, 43)</pre>
+<pre>[&#39;master&#39;]</pre>
 </div>
 
 </div>
@@ -1221,7 +1214,8 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Request-login-page">Request login page<a class="anchor-link" href="#Request-login-page">&#182;</a></h3><p>We now have all the pieces for the initial request, which will give us the login page of the authentication provider. Adding the <em>code challenge</em> signals to the OAuth provider that we are expecting the PKCE based flow.</p>
+<h2 id="Create-a-new-realm">Create a new realm<a class="anchor-link" href="#Create-a-new-realm">&#182;</a></h2><p>The Keycloak documentation recommends against using the default realm "master" for your own applications, so we create a new realm first,
+with the <code>POST /admin/realms</code> endpoint:</p>
 
 </div>
 </div>
@@ -1231,88 +1225,32 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;fooobarbaz&quot;</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-    <span class="n">url</span><span class="o">=</span><span class="n">provider</span> <span class="o">+</span> <span class="s2">&quot;/protocol/openid-connect/auth&quot;</span><span class="p">,</span>
-    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;response_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;client_id&quot;</span><span class="p">:</span> <span class="n">client_id</span><span class="p">,</span>
-        <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;openid&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;redirect_uri&quot;</span><span class="p">:</span> <span class="n">redirect_uri</span><span class="p">,</span>
-        <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
-        <span class="s2">&quot;code_challenge&quot;</span><span class="p">:</span> <span class="n">code_challenge</span><span class="p">,</span>
-        <span class="s2">&quot;code_challenge_method&quot;</span><span class="p">:</span> <span class="s2">&quot;S256&quot;</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-<span class="n">resp</span><span class="o">.</span><span class="n">status_code</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Name of our fancy realm.</span>
+<span class="n">realm</span> <span class="o">=</span> <span class="s2">&quot;keldor&quot;</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>200</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Parse-login-page-(response)">Parse login page (response)<a class="anchor-link" href="#Parse-login-page-(response)">&#182;</a></h3><p>Get cookie data from response headers (requires a bit of manipulation).</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cookie</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Set-Cookie&#39;</span><span class="p">]</span>
-<span class="n">cookie</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cookie</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">))</span>
-<span class="n">cookie</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">keycloak_root</span><span class="si">}</span><span class="s2">/admin/realms&quot;</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">auth_headers</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;realm&quot;</span><span class="p">:</span> <span class="n">realm</span><span class="p">,</span>
+        <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;AUTH_SESSION_ID=af09d80d-9901-445f-b789-c6dfa33ec175.4a821131b1a5; KC_RESTART=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwZjBlNjZiZS1hOWNkLTRhMjktODdiNS00NTAwMGZjYzk1NjcifQ.eyJjaWQiOiJwa2NlLXRlc3QiLCJwdHkiOiJvcGVuaWQtY29ubmVjdCIsInJ1cmkiOiJodHRwOi8vbG9jYWxob3N0L2Zvb2JhciIsImFjdCI6IkFVVEhFTlRJQ0FURSIsIm5vdGVzIjp7InNjb3BlIjoib3BlbmlkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL2F1dGgvcmVhbG1zL21hc3RlciIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiY29kZV9jaGFsbGVuZ2VfbWV0aG9kIjoiUzI1NiIsInJlZGlyZWN0X3VyaSI6Imh0dHA6Ly9sb2NhbGhvc3QvZm9vYmFyIiwic3RhdGUiOiJmb29vYmFyYmF6IiwiY29kZV9jaGFsbGVuZ2UiOiJoam9vVVlfMXRCbEVfZEJ1Q0tHVUs4WHVTUnJjX3pOQnlILXJvQzVzSVhBIn19.fh7zYDiNvXtZrzAW9mfDp1PgoSkIWm_zZhQvZHPZ2NM&#39;</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -1321,8 +1259,7 @@ For a PKCE-enabled flow we need a some PKCE ingredients from the start.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Extract the login URL to post to from the page HTML code.
-Because the the Keycloak login page is straightforward HTML we can get away with some simple regexes.</p>
+<p>Let's see if that worked and list the realms again:</p>
 
 </div>
 </div>
@@ -1332,9 +1269,12 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">page</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span>
-<span class="n">form_action</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;form\s+.*?\s+action=&quot;(.*?)&quot;&#39;</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">form_action</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">keycloak_root</span><span class="si">}</span><span class="s2">/admin/realms&quot;</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">auth_headers</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
 </pre></div>
 
 </div>
@@ -1353,7 +1293,7 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;http://localhost:9090/auth/realms/master/login-actions/authenticate?session_code=CVE8m4drDjMKiwNLmEYR_iHsIoPIn45X9xBM38-U3Fc&amp;execution=368ecffb-b7a2-4c42-a339-53a88db0b897&amp;client_id=pkce-test&amp;tab_id=BkeNO89TWqw&#39;</pre>
+<pre>[&#39;keldor&#39;, &#39;master&#39;]</pre>
 </div>
 
 </div>
@@ -1366,15 +1306,8 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Do-the-login-(aka-authenticate)">Do the login (aka authenticate)<a class="anchor-link" href="#Do-the-login-(aka-authenticate)">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Now, we post the login form with the user we created earlier, passing it the extracted cookie as well.</p>
+<h2 id="Create-a-client">Create a client<a class="anchor-link" href="#Create-a-client">&#182;</a></h2><p>To create a client, we use the <code>POST /admin/realms/{realm}/clients</code> endpoint
+and pass it a bunch of desired settings (including but not limited to the settings below):</p>
 
 </div>
 </div>
@@ -1384,16 +1317,34 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-    <span class="n">url</span><span class="o">=</span><span class="n">form_action</span><span class="p">,</span> 
-    <span class="n">data</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
-        <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
-    <span class="p">},</span> 
-    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Cookie&quot;</span><span class="p">:</span> <span class="n">cookie</span><span class="p">},</span>
-    <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client_id</span> <span class="o">=</span> <span class="s2">&quot;fancy-client&quot;</span>
+
+<span class="n">client_settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;openid-connect&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;clientId&quot;</span><span class="p">:</span> <span class="n">client_id</span><span class="p">,</span>
+    <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># Public: no client secret. Non-public: &quot;confidential&quot; client with secret.</span>
+    <span class="s2">&quot;publicClient&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># Authorization Code Flow</span>
+    <span class="s2">&quot;standardFlowEnabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># Service accounts: Client Credentials Grant</span>
+    <span class="s2">&quot;serviceAccountsEnabled&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># Direct Access: Resource Owner Password Credentials Grant</span>
+    <span class="s2">&quot;directAccessGrantsEnabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="c1"># Device authorization grant</span>
+        <span class="s2">&quot;oauth2.device.authorization.grant.enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">keycloak_root</span><span class="si">}</span><span class="s2">/admin/realms/</span><span class="si">{</span><span class="n">realm</span><span class="si">}</span><span class="s2">/clients&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="n">client_settings</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">auth_headers</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">resp</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">location</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Location&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1406,15 +1357,13 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[8]:</div>
+<div class="prompt"></div>
 
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>302</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>http://localhost:8642/admin/realms/keldor/clients/6c624d00-c740-4bce-89e6-ba7e7a88858b
+</pre>
 </div>
-
 </div>
 
 </div>
@@ -1425,7 +1374,7 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As expected we are forwarded, let's get the redirect URL.</p>
+<p>We successfully created a client and received, with a <code>Location</code> header, a URL to look up its actual settings:</p>
 
 </div>
 </div>
@@ -1435,8 +1384,10 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">redirect</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Location&#39;</span><span class="p">]</span>
-<span class="n">redirect</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">location</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">auth_headers</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1455,7 +1406,36 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;http://localhost/foobar?state=fooobarbaz&amp;session_state=af09d80d-9901-445f-b789-c6dfa33ec175&amp;code=478296a3-c3ea-4a2f-bd2e-69f3181fb78c.af09d80d-9901-445f-b789-c6dfa33ec175.294e60a6-9596-406b-9eae-1912aebe04dd&#39;</pre>
+<pre>{&#39;id&#39;: &#39;6c624d00-c740-4bce-89e6-ba7e7a88858b&#39;,
+ &#39;clientId&#39;: &#39;fancy-client&#39;,
+ &#39;surrogateAuthRequired&#39;: False,
+ &#39;enabled&#39;: True,
+ &#39;alwaysDisplayInConsole&#39;: False,
+ &#39;clientAuthenticatorType&#39;: &#39;client-secret&#39;,
+ &#39;redirectUris&#39;: [],
+ &#39;webOrigins&#39;: [],
+ &#39;notBefore&#39;: 0,
+ &#39;bearerOnly&#39;: False,
+ &#39;consentRequired&#39;: False,
+ &#39;standardFlowEnabled&#39;: True,
+ &#39;implicitFlowEnabled&#39;: False,
+ &#39;directAccessGrantsEnabled&#39;: True,
+ &#39;serviceAccountsEnabled&#39;: False,
+ &#39;publicClient&#39;: True,
+ &#39;frontchannelLogout&#39;: False,
+ &#39;protocol&#39;: &#39;openid-connect&#39;,
+ &#39;attributes&#39;: {&#39;oauth2.device.authorization.grant.enabled&#39;: &#39;true&#39;,
+  &#39;backchannel.logout.session.required&#39;: &#39;true&#39;,
+  &#39;backchannel.logout.revoke.offline.tokens&#39;: &#39;false&#39;},
+ &#39;authenticationFlowBindingOverrides&#39;: {},
+ &#39;fullScopeAllowed&#39;: True,
+ &#39;nodeReRegistrationTimeout&#39;: -1,
+ &#39;defaultClientScopes&#39;: [&#39;web-origins&#39;, &#39;acr&#39;, &#39;roles&#39;, &#39;profile&#39;, &#39;email&#39;],
+ &#39;optionalClientScopes&#39;: [&#39;address&#39;,
+  &#39;phone&#39;,
+  &#39;offline_access&#39;,
+  &#39;microprofile-jwt&#39;],
+ &#39;access&#39;: {&#39;view&#39;: True, &#39;configure&#39;: True, &#39;manage&#39;: True}}</pre>
 </div>
 
 </div>
@@ -1463,33 +1443,74 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Create-a-user">Create a user<a class="anchor-link" href="#Create-a-user">&#182;</a></h2><p>Likewise, we can create a new user as follows.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">redirect</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">redirect_uri</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;alice&quot;</span>
+<span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;wonderland&quot;</span>
+
+<span class="n">user_settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+    <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;credentials&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+        <span class="s2">&quot;temporary&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">keycloak_root</span><span class="si">}</span><span class="s2">/admin/realms/</span><span class="si">{</span><span class="n">realm</span><span class="si">}</span><span class="s2">/users&quot;</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="n">user_settings</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">auth_headers</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">location</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Location&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>http://localhost:8642/admin/realms/keldor/users/fdd3d1f2-d7ee-4967-8d3a-919e95befa85
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Extract-authorization-code-from-redirect">Extract authorization code from redirect<a class="anchor-link" href="#Extract-authorization-code-from-redirect">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The redirect URL contains the authentication code.</p>
+<p>Again, using the <code>Location</code> header after successfully creating the user,
+we can inspect the actual user settings:</p>
 
 </div>
 </div>
@@ -1499,9 +1520,10 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">redirect</span><span class="p">)</span><span class="o">.</span><span class="n">query</span>
-<span class="n">redirect_params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qs</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-<span class="n">redirect_params</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">location</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">auth_headers</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1520,43 +1542,20 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;code&#39;: [&#39;478296a3-c3ea-4a2f-bd2e-69f3181fb78c.af09d80d-9901-445f-b789-c6dfa33ec175.294e60a6-9596-406b-9eae-1912aebe04dd&#39;],
- &#39;session_state&#39;: [&#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;],
- &#39;state&#39;: [&#39;fooobarbaz&#39;]}</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">auth_code</span> <span class="o">=</span> <span class="n">redirect_params</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">auth_code</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;478296a3-c3ea-4a2f-bd2e-69f3181fb78c.af09d80d-9901-445f-b789-c6dfa33ec175.294e60a6-9596-406b-9eae-1912aebe04dd&#39;</pre>
+<pre>{&#39;id&#39;: &#39;fdd3d1f2-d7ee-4967-8d3a-919e95befa85&#39;,
+ &#39;createdTimestamp&#39;: 1680599529413,
+ &#39;username&#39;: &#39;alice&#39;,
+ &#39;enabled&#39;: True,
+ &#39;totp&#39;: False,
+ &#39;emailVerified&#39;: False,
+ &#39;disableableCredentialTypes&#39;: [],
+ &#39;requiredActions&#39;: [],
+ &#39;notBefore&#39;: 0,
+ &#39;access&#39;: {&#39;manageGroupMembership&#39;: True,
+  &#39;view&#39;: True,
+  &#39;mapRoles&#39;: True,
+  &#39;impersonate&#39;: True,
+  &#39;manage&#39;: True}}</pre>
 </div>
 
 </div>
@@ -1569,7 +1568,51 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exchange-authorization-code-for-an-access-token">Exchange authorization code for an access token<a class="anchor-link" href="#Exchange-authorization-code-for-an-access-token">&#182;</a></h2><p>We can now exchange the authorization code for an access token. In the normal OAuth authorization flow we should include a static secret here, but instead we provide the <em>code verifier</em> here which acts proof that the initial request was done by us.</p>
+<h2 id="Authenticate-the-user">Authenticate the user<a class="anchor-link" href="#Authenticate-the-user">&#182;</a></h2><p>To put it all together, let's authenticate as the created user, using the created client, in the created realm.</p>
+<p>First, get the token endpoint of the realm:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">token_endpoint</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">keycloak_root</span><span class="si">}</span><span class="s2">/realms/</span><span class="si">{</span><span class="n">realm</span><span class="si">}</span><span class="s2">/.well-known/openid-configuration&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;token_endpoint&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">token_endpoint</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>http://localhost:8642/realms/keldor/protocol/openid-connect/token
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Do the token request (here using the password grant for simplicity):</p>
 
 </div>
 </div>
@@ -1580,17 +1623,16 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-    <span class="n">url</span><span class="o">=</span><span class="n">provider</span> <span class="o">+</span> <span class="s2">&quot;/protocol/openid-connect/token&quot;</span><span class="p">,</span>
+    <span class="n">token_endpoint</span><span class="p">,</span>
     <span class="n">data</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;grant_type&quot;</span><span class="p">:</span> <span class="s2">&quot;authorization_code&quot;</span><span class="p">,</span>
         <span class="s2">&quot;client_id&quot;</span><span class="p">:</span> <span class="n">client_id</span><span class="p">,</span>
-        <span class="s2">&quot;redirect_uri&quot;</span><span class="p">:</span> <span class="n">redirect_uri</span><span class="p">,</span>
-        <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">auth_code</span><span class="p">,</span>
-        <span class="s2">&quot;code_verifier&quot;</span><span class="p">:</span> <span class="n">code_verifier</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+        <span class="s2">&quot;grant_type&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 <span class="p">)</span>
-<span class="n">resp</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1609,58 +1651,14 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>200</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>In the response we get, among others, the access token and id token:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<span class="n">result</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;access_token&#39;: &#39;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjd05fNm5WaEQyM0U4WWVnUGJob1pBU2c2Ynd4a2ktSkNsMHJlWFdJUEE4In0.eyJqdGkiOiIyZDA3OTBhNS1hNjMwLTQ2MDYtOTI5Ni1kNGQ0Y2M4NDg5NDgiLCJleHAiOjE1NjkzOTg0OTksIm5iZiI6MCwiaWF0IjoxNTY5Mzk4NDM5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwOTAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjEwMzMzNmJmLWM0NzEtNGRkNS1iMzllLTQ2NTJhMDAzMmJlOCIsInR5cCI6IkJlYXJlciIsImF6cCI6InBrY2UtdGVzdCIsImF1dGhfdGltZSI6MTU2OTM5ODQzOCwic2Vzc2lvbl9zdGF0ZSI6ImFmMDlkODBkLTk5MDEtNDQ1Zi1iNzg5LWM2ZGZhMzNlYzE3NSIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImpvaG4ifQ.C0723Ejex8k8dVGzTT2IRtEYXymAONBMkpoRCAGwd_E253L8WZGsEJ5-qkGgzpafgen85XpAD6c_x44QsD_q0P74J_9FqQPikY6JmpcUMNYD9eXjzZo21USVD2DKV7JOZ9Wp3N9GwcV50KCYZIcoIgHfGpHbCnhVppdHn5tuH936WsBGQL7tQ5zDFuT3fO1Op01XdJBg77LT91HTDq1zh42kH1fzgTO3zDzKKxlOJN6d7yBiMDCSIdZ3CVDRMSl65FK-7433SLWoJmNAQHIlH8RYrtvkNIfUZmABXe3CVBWQ2HJXG4Y-gocxkaiFxDoRwoYC6YfwiXKmjnita2vfSw&#39;,
- &#39;expires_in&#39;: 60,
- &#39;id_token&#39;: &#39;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjd05fNm5WaEQyM0U4WWVnUGJob1pBU2c2Ynd4a2ktSkNsMHJlWFdJUEE4In0.eyJqdGkiOiI5NmFkMmFiOS02ZDU0LTRjYmItYTIzYi01Y2ZkYWY1MDI0OTciLCJleHAiOjE1NjkzOTg0OTksIm5iZiI6MCwiaWF0IjoxNTY5Mzk4NDM5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwOTAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoicGtjZS10ZXN0Iiwic3ViIjoiMTAzMzM2YmYtYzQ3MS00ZGQ1LWIzOWUtNDY1MmEwMDMyYmU4IiwidHlwIjoiSUQiLCJhenAiOiJwa2NlLXRlc3QiLCJhdXRoX3RpbWUiOjE1NjkzOTg0MzgsInNlc3Npb25fc3RhdGUiOiJhZjA5ZDgwZC05OTAxLTQ0NWYtYjc4OS1jNmRmYTMzZWMxNzUiLCJhY3IiOiIxIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIn0.HAPQmX_ZxmTNxhxOst4U5STJZEEP-GgSfOh303p5oCYZ4y-jhk1SG4BMXW1dU7GWaTh9ccI2aVt8kYjOOsqin3jYvELoZRUxnMk0VftgARNcmb0vb-v2uCdSftSYUGvxmqU0TXeYL2hz7lELIJQSbH3C_DGg476yvRzWh7LEk2bdx8K3yS07jA6w0clDoB79uztfSrwnmtsB1S0soIsE14CaNwI93kiD40m6p9WU5EdPfIu0VaNqQrsCzQrt4LojqN5zAIwDLdBScZBukhWYn0WKmTqcw1djGZBWKHvwV9kP4m27T_0DKpa9Bwi0AomlFjhDK_b41ERuE-3-7MNH5A&#39;,
- &#39;not-before-policy&#39;: 0,
+<pre>{&#39;access_token&#39;: &#39;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJLZG02R3pYT0hfNUNFTjlPVGFGS1RIajUxckRKbG9uZ1FydW4yQ0I1WU8wIn0.eyJleHAiOjE2ODA1OTk4MjksImlhdCI6MTY4MDU5OTUyOSwianRpIjoiODU5MTliOWQtYjQ0Mi00ZThhLWI3NTktYzBjNmQxOGM3NTM2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4NjQyL3JlYWxtcy9rZWxkb3IiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZmRkM2QxZjItZDdlZS00OTY3LThkM2EtOTE5ZTk1YmVmYTg1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZmFuY3ktY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6Ijk0NTQzMDFmLTdhNDYtNGUwYy1iNTNmLTVkNTIyYTI1YzQxOCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLWtlbGRvciIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiOTQ1NDMwMWYtN2E0Ni00ZTBjLWI1M2YtNWQ1MjJhMjVjNDE4IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhbGljZSJ9.j_fIy0jmQJF5hrUb_k6Tdf8SdyVwG2lYq8PUF_1M8UbEl2aHp7h1vMMlRh864JA84GoA_EK7CzVyQOrc0Uy9oILfvVpPukSZ9QEgbwjnCslJkLtw71080lGFpoAUa34wcomW6uaRfhf-1ldBtoQMzWuHmScnvSt9moQwTwRKE3xNW_CjEdl2lW3XqH0MOFnbadDI2QRIbnhYdKPGePFXeyDRxuq_8KoSVrU_DVSETxWG70CtUijZ8y3G9PkoYtsCUxD9_P4Ut1DgbQQnKOVbs51zwYMEjyTKizZc-z25C84FlOw6lCGQ1aKd1gkxfwuQp7BmlPuNHOih4lloHxYghg&#39;,
+ &#39;expires_in&#39;: 300,
  &#39;refresh_expires_in&#39;: 1800,
- &#39;refresh_token&#39;: &#39;eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwZjBlNjZiZS1hOWNkLTRhMjktODdiNS00NTAwMGZjYzk1NjcifQ.eyJqdGkiOiJiOGYxZDJmZi1mNmYzLTRiYTEtYjU3OC0zMmMxZDZlMjllN2IiLCJleHAiOjE1Njk0MDAyMzksIm5iZiI6MCwiaWF0IjoxNTY5Mzk4NDM5LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwOTAvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL2F1dGgvcmVhbG1zL21hc3RlciIsInN1YiI6IjEwMzMzNmJmLWM0NzEtNGRkNS1iMzllLTQ2NTJhMDAzMmJlOCIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJwa2NlLXRlc3QiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiJhZjA5ZDgwZC05OTAxLTQ0NWYtYjc4OS1jNmRmYTMzZWMxNzUiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUifQ.KmzF-T3meYK1m72ShHQGA3G0VGVA6GYXNIMZVoHkx9Q&#39;,
- &#39;scope&#39;: &#39;openid email profile&#39;,
- &#39;session_state&#39;: &#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;,
- &#39;token_type&#39;: &#39;bearer&#39;}</pre>
+ &#39;refresh_token&#39;: &#39;eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzNDIzOGUyYi1jM2ZhLTQ2NzUtYTY2My05ZWVhMTBlYjY1Y2YifQ.eyJleHAiOjE2ODA2MDEzMjksImlhdCI6MTY4MDU5OTUyOSwianRpIjoiYTFhOWFjOWUtMTQ0Ni00MTNjLWI1YzctYTYxYmRjZjgxZjU3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4NjQyL3JlYWxtcy9rZWxkb3IiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0Ojg2NDIvcmVhbG1zL2tlbGRvciIsInN1YiI6ImZkZDNkMWYyLWQ3ZWUtNDk2Ny04ZDNhLTkxOWU5NWJlZmE4NSIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJmYW5jeS1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiOTQ1NDMwMWYtN2E0Ni00ZTBjLWI1M2YtNWQ1MjJhMjVjNDE4Iiwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiOTQ1NDMwMWYtN2E0Ni00ZTBjLWI1M2YtNWQ1MjJhMjVjNDE4In0.pubX4yxAk_p0zpb9E2DOX8CpCplqHlbDOoLl4VuYcvM&#39;,
+ &#39;token_type&#39;: &#39;Bearer&#39;,
+ &#39;not-before-policy&#39;: 0,
+ &#39;session_state&#39;: &#39;9454301f-7a46-4e0c-b53f-5d522a25c418&#39;,
+ &#39;scope&#39;: &#39;profile email&#39;}</pre>
 </div>
 
 </div>
@@ -1673,140 +1671,7 @@ Because the the Keycloak login page is straightforward HTML we can get away with
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Decode-the-JWT-tokens">Decode the JWT tokens<a class="anchor-link" href="#Decode-the-JWT-tokens">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The access and id tokens are JWT tokens apparently. Let's decode the payload.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">_b64_decode</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="n">data</span> <span class="o">+=</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">jwt_payload_decode</span><span class="p">(</span><span class="n">jwt</span><span class="p">):</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">_b64_decode</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jwt_payload_decode</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;access_token&#39;</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;acr&#39;: &#39;1&#39;,
- &#39;aud&#39;: &#39;account&#39;,
- &#39;auth_time&#39;: 1569398438,
- &#39;azp&#39;: &#39;pkce-test&#39;,
- &#39;email_verified&#39;: False,
- &#39;exp&#39;: 1569398499,
- &#39;iat&#39;: 1569398439,
- &#39;iss&#39;: &#39;http://localhost:9090/auth/realms/master&#39;,
- &#39;jti&#39;: &#39;2d0790a5-a630-4606-9296-d4d4cc848948&#39;,
- &#39;nbf&#39;: 0,
- &#39;preferred_username&#39;: &#39;john&#39;,
- &#39;realm_access&#39;: {&#39;roles&#39;: [&#39;offline_access&#39;, &#39;uma_authorization&#39;]},
- &#39;resource_access&#39;: {&#39;account&#39;: {&#39;roles&#39;: [&#39;manage-account&#39;,
-    &#39;manage-account-links&#39;,
-    &#39;view-profile&#39;]}},
- &#39;scope&#39;: &#39;openid email profile&#39;,
- &#39;session_state&#39;: &#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;,
- &#39;sub&#39;: &#39;103336bf-c471-4dd5-b39e-4652a0032be8&#39;,
- &#39;typ&#39;: &#39;Bearer&#39;}</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">jwt_payload_decode</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;id_token&#39;</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;acr&#39;: &#39;1&#39;,
- &#39;aud&#39;: &#39;pkce-test&#39;,
- &#39;auth_time&#39;: 1569398438,
- &#39;azp&#39;: &#39;pkce-test&#39;,
- &#39;email_verified&#39;: False,
- &#39;exp&#39;: 1569398499,
- &#39;iat&#39;: 1569398439,
- &#39;iss&#39;: &#39;http://localhost:9090/auth/realms/master&#39;,
- &#39;jti&#39;: &#39;96ad2ab9-6d54-4cbb-a23b-5cfdaf502497&#39;,
- &#39;nbf&#39;: 0,
- &#39;preferred_username&#39;: &#39;john&#39;,
- &#39;session_state&#39;: &#39;af09d80d-9901-445f-b789-c6dfa33ec175&#39;,
- &#39;sub&#39;: &#39;103336bf-c471-4dd5-b39e-4652a0032be8&#39;,
- &#39;typ&#39;: &#39;ID&#39;}</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>That's it. We worked client-side-style and managed thanks to PKCE to do a non-implicit authorization flow without having to work with a static secret.</p>
+<p>The end.</p>
 
 </div>
 </div>
