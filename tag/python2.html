@@ -3,7 +3,7 @@
 <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>python - Stefaan Lippens inserts content here</title>
+        <title>Python - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -32,11 +32,37 @@
     </nav>
 
     <header class="page-header">
-    <h1>Articles tagged<br />&ldquo;python&rdquo;</h1>
+    <h1>Articles tagged<br />&ldquo;Python&rdquo;</h1>
     </header>
 
     <main class="content">
     <ul id="article-list">
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/python-determine-installation-prefix.html"
+                               title="link to Python: determine installation prefix">Python: determine installation prefix</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2012-04-18T00:00:00+02:00"> on 2012/04/18</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Here's a simple bash oneliner to determine the installation prefix (and more) of a python interpreter:</p>
+<div class="highlight"><pre><span></span><code>python -c &#39;import sys;print(&quot;\n&quot;.join(&quot;{0:16s}: {1!r}&quot;.format(x, getattr(sys, x)) for x in [&quot;executable&quot;, &quot;version&quot;, &quot;prefix&quot;, &quot;exec_prefix&quot;]))&#39;
+</code></pre></div>
+
+<p>(Replace "python" with the actual python executable you want to …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/python-determine-installation-prefix.html"
+                               title="link to Python: determine installation prefix">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
             <li class="article-list">
                 <article>
                     <header class="article-list">
@@ -281,37 +307,6 @@ I added a date tick locator and a date formatter to the mix as follows:</p>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/parsing-the-subversion-id-keyword-with-python.html"
                                title="link to Parsing the subversion Id keyword with python">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/non-root-installation-of-lp_solve-and-its-python-bindings.html"
-                               title="link to Non-root installation of lp_solve and its Python bindings">Non-root installation of lp_solve and its Python bindings</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2007-03-05T00:00:00+01:00"> on 2007/03/05</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>Howto install and use <code>lp_solve</code> and its Python extension module as non root on Linux?</p>
-<p>Compile and install the <code>lp_solve</code> shared library:</p>
-<ul>
-<li>
-<p>Download <code>lp_solve_5.5.0.10_source.tar.gz</code> from 
-    <a href="https://sourceforge.net/project/showfiles.php?group_id=145213&amp;package_id=159735"> SourceForge</a> 
-    and untar so you get a directory <code>lp_solve_5.5</code> with contents.</p>
-</li>
-<li>
-<p>Enter …</p></li></ul>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/non-root-installation-of-lp_solve-and-its-python-bindings.html"
-                               title="link to Non-root installation of lp_solve and its Python bindings">Read more</a>
                         </div>
                     </div>
                 </article>

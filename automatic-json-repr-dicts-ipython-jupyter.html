@@ -3,7 +3,7 @@
 <head>
             <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>Custom D3.js Visualization in a Jupyter Notebook - Stefaan Lippens inserts content here</title>
+        <title>Automatic JSON-formatted dictionaries in IPython/Jupyter - Stefaan Lippens inserts content here</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/theme/css/normalize.css">
         <link rel="stylesheet" href="/theme/css/styles.css">
@@ -15,8 +15,10 @@
 
 
 
-        <meta name="tags" contents="jupyter"/>
-        <meta name="tags" contents="d3.js"/>
+        <meta name="tags" contents="Python"/>
+        <meta name="tags" contents="IPython"/>
+        <meta name="tags" contents="Jupyter"/>
+        <meta name="tags" contents="JSON"/>
 </head>
 
 <body>
@@ -37,16 +39,16 @@
     </nav>
 
     <header class="page-header">
-    <h1>Custom D3.js Visualization in a Jupyter Notebook</h1>
+    <h1>Automatic JSON-formatted dictionaries in IPython/Jupyter</h1>
 
     <div class="article-meta">
                 <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2018-05-11T00:00:00+02:00"> on 2018/05/11</span>
+        <span class="publication-date" title="2023-04-05T00:00:00+02:00"> on 2023/04/05</span>
 
 
             <div class="tags">
                 Tagged:
-                    <a href="https://www.stefaanlippens.net/tag/jupyter.html">jupyter</a>,                    <a href="https://www.stefaanlippens.net/tag/d3js.html">d3.js</a>            </div>
+                    <a href="https://www.stefaanlippens.net/tag/python.html">Python</a>,                    <a href="https://www.stefaanlippens.net/tag/ipython.html">IPython</a>,                    <a href="https://www.stefaanlippens.net/tag/jupyter.html">Jupyter</a>,                    <a href="https://www.stefaanlippens.net/tag/json.html">JSON</a>            </div>
     </div>
 
     </header>
@@ -1029,60 +1031,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
 .ansi-bold { font-weight: bold; }
-</style>
+</style><body>
     <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>TL;DR: If you want to skip the detailed mumbo jumbo, go straight to the code example in the <a href="#All-together-now">conclusion</a>.</p>
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>When doing data science in a Jupyter notebook, there are plenty 
-of options for the standard data visualization needs:
-matplotlib, pandas, seaborn, bokeh, etc. 
-Occasionally you might be stuck in a situation where you can not 
-easily express the desired visualization with the 
-standard vocabulary provided by these tools.
-In these cases I like to leverage the flexibility
-of <a href="https://d3js.org/">D3.js</a> to build a custom graph or diagram.</p>
-<p>In this article, I'll discuss an approach how to 
-implement a <strong>custom do-it-yourself D3.js visualization</strong> in a <strong>Jupyter Notebook</strong>.
-This topic is covered in some other places around the web,
-but I couldn't find a complete approach that
-connects all the dots and isn't too hackish.</p>
-<p>In particular, I'll try to keep these things in mind here:</p>
-<ul>
-<li>Leverage the <a href="http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/JavaScript%20Notebook%20Extensions.html">existing Jupyter functionality</a>,
-like a <a href="http://requirejs.org/">RequireJS</a> environment 
-to have clean dependency handling 
-and to avoid <code>&lt;script src="..."&gt;</code> loading/order headaches.</li>
-<li>No additional packages or dependencies to install</li>
-<li>The visualisation should work both in an interactive notebook context
-and in the exported HTML version.</li>
-<li>Avoid the typical D3.js boilerplate to insert the drawing at the desired
-location (insert a <code>&lt;div id="..."&gt;</code> in the markup and use the corresponding id in the javascript code).
-Keeping these id's properly in sync is annoying to maintain, 
-especially if you iterate a lot or want multiple drawings in the same notebook.</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-basics-with-inline-%%javascript-snippets">The basics with inline <code>%%javascript</code> snippets<a class="anchor-link" href="#The-basics-with-inline-%%javascript-snippets">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To cover the basics, let's start simple with just inline <code>%%javascript</code> snippet cells.</p>
-<p>First, we tell the RequireJS environment where to find the version of D3.js we want.
-Note that the <code>.js</code> extension is <a href="http://requirejs.org/docs/api.html#config-paths">omitted</a> in the URL.</p>
+<p>IPython/Jupyter notebooks have built-in "pretty" formatting of dictionary (and related) constructs.
+For example, take this messy, nested dictionary construct:</p>
 
 </div>
 </div>
@@ -1092,44 +1049,16 @@ Note that the <code>.js</code> extension is <a href="http://requirejs.org/docs/a
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
-        <span class="nx">d3</span><span class="o">:</span> <span class="s1">&#39;https://d3js.org/d3.v5.min&#39;</span>
-    <span class="p">}</span>
-<span class="p">});</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span><span class="s2">&quot;city&quot;</span><span class="p">:</span><span class="s2">&quot;New York&quot;</span><span class="p">,</span>    <span class="s2">&quot;isMarried&quot;</span><span class="p">:</span> 
+  <span class="kc">True</span><span class="p">,</span>  <span class="s2">&quot;hobbies&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;reading&quot;</span><span class="p">,</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;painting&quot;</span><span class="p">],</span> <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;street&quot;</span><span class="p">:</span>
+          <span class="s2">&quot;123 Main St&quot;</span><span class="p">,</span>  <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;NY&quot;</span>
+      <span class="p">},</span> <span class="s2">&quot;pets&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Fluffy&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span>   <span class="p">:</span><span class="s2">&quot;cat&quot;</span><span class="p">,},{</span>
+ <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Rover&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dog&quot;</span> <span class="p">}</span> <span class="p">]}</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="84393e73-5d82-4dbe-84c4-0361223380e3"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#84393e73-5d82-4dbe-84c4-0361223380e3');
-require.config({
-    paths: {
-        d3: 'https://d3js.org/d3.v5.min'
-    }
-});
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -1138,7 +1067,8 @@ require.config({
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can now create a D3.js powered SVG drawing, for example as follows:</p>
+<p>Use that value as the last expression of a notebook cell,
+and it will be rendered automatically in a more readable format:</p>
 
 </div>
 </div>
@@ -1148,26 +1078,7 @@ require.config({
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">require</span><span class="p">([</span><span class="s1">&#39;d3&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d3</span><span class="p">)</span> <span class="p">{</span>   
-        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1</span><span class="p">,</span> <span class="mf">2</span><span class="p">,</span> <span class="mf">4</span><span class="p">,</span> <span class="mf">8</span><span class="p">,</span> <span class="mf">16</span><span class="p">,</span> <span class="mf">8</span><span class="p">,</span> <span class="mf">4</span><span class="p">,</span> <span class="mf">2</span><span class="p">,</span> <span class="mf">1</span><span class="p">]</span>
-
-        <span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mf">0</span><span class="p">)).</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mf">400</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mf">200</span><span class="p">);</span>
-        <span class="nx">svg</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s1">&#39;circle&#39;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">enter</span><span class="p">()</span>
-            <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;circle&#39;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;cx&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="mf">40</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mf">1</span><span class="p">);})</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;cy&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="mf">100</span> <span class="o">+</span> <span class="mf">30</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span> <span class="o">%</span> <span class="mf">3</span> <span class="o">-</span> <span class="mf">1</span><span class="p">);})</span>
-            <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="s2">&quot;#1570a4&quot;</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">transition</span><span class="p">().</span><span class="nx">duration</span><span class="p">(</span><span class="mf">2000</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="mf">2</span><span class="o">*</span><span class="nx">d</span><span class="p">;})</span>
-        <span class="p">;</span>
-    <span class="p">})</span>
-<span class="p">})(</span><span class="nx">element</span><span class="p">);</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span>
 </pre></div>
 
 </div>
@@ -1180,36 +1091,18 @@ require.config({
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[2]:</div>
 
 
 
 
-
-<div id="022c48d5-95d8-4a63-ac75-8150e23fa4e4"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#022c48d5-95d8-4a63-ac75-8150e23fa4e4');
-(function(element) {
-    require(['d3'], function(d3) {   
-        var data = [1, 2, 4, 8, 16, 8, 4, 2, 1]
-
-        var svg = d3.select(element.get(0)).append('svg')
-            .attr('width', 400)
-            .attr('height', 200);
-        svg.selectAll('circle')
-            .data(data)
-            .enter()
-            .append('circle')
-            .attr("cx", function(d, i) {return 40 * (i + 1);})
-            .attr("cy", function(d, i) {return 100 + 30 * (i % 3 - 1);})
-            .style("fill", "#1570a4")
-            .transition().duration(2000)
-            .attr("r", function(d) {return 2*d;})
-        ;
-    })
-})(element);
-</script>
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;name&#39;: &#39;Alice&#39;,
+ &#39;city&#39;: &#39;New York&#39;,
+ &#39;isMarried&#39;: True,
+ &#39;hobbies&#39;: [&#39;reading&#39;, &#39;running&#39;, &#39;painting&#39;],
+ &#39;address&#39;: {&#39;street&#39;: &#39;123 Main St&#39;, &#39;state&#39;: &#39;NY&#39;},
+ &#39;pets&#39;: [{&#39;name&#39;: &#39;Fluffy&#39;, &#39;type&#39;: &#39;cat&#39;}, {&#39;name&#39;: &#39;Rover&#39;, &#39;type&#39;: &#39;dog&#39;}]}</pre>
 </div>
 
 </div>
@@ -1222,16 +1115,18 @@ var element = $('#022c48d5-95d8-4a63-ac75-8150e23fa4e4');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Note:</p>
-<ul>
-<li>We leverage RequireJS to hand us a loaded <code>d3</code> library in a closure.</li>
-<li>The SVG drawing is appended to the current output cell:<ul>
-<li><code>element</code> is the jQuery powered wrapper for this</li>
-<li><code>element.get(0)</code> is the DOM node itself that can be handed to <code>d3.select()</code></li>
-</ul>
-</li>
-<li>The <code>element</code> variable is a global variable and overwritten on each rendering of a Javascript cell, so to make sure we capture the correct <code>element</code> inside our D3.js code (which could be executed in a different context), we wrap the whole thing in a closure.</li>
-</ul>
+<p>That's not only more readable,
+it's also still valid Python code, ready to be copy-pasted elsewhere.</p>
+<h2 id="Can-I-haz-JSON?">Can I haz JSON?<a class="anchor-link" href="#Can-I-haz-JSON?">&#182;</a></h2><p>However, this representation has some drawbacks too.
+While it looks quite a bit like JSON, there are some subtle incompatibilities,
+for example:
+strings use single quotes by default (JSON required double quotes)
+and boolean values are title-cased (JSON uses lower case).
+This can be quite annoying if you have to transfer these kind of data dumps
+to tools that only understand JSON.</p>
+<p>In this notebook I'll explore some solutions and tricks
+to automatically get JSON-style formatting for this kind of data,
+without having to manually sprinkle <code>json.dumps()</code> calls all over the place.</p>
 
 </div>
 </div>
@@ -1240,22 +1135,15 @@ var element = $('#022c48d5-95d8-4a63-ac75-8150e23fa4e4');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="And-now,-the-real-work">And now, the real work<a class="anchor-link" href="#And-now,-the-real-work">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Unless you're just toying around with simple visualizations,
-these D3.js scripts can get very extensive,
-which is not very ideal to work on directly in a interactive notebook.
-You probably want to develop the D3.js script in an editor or IDE 
-that gives you a bit more code intelligence.</p>
-<p>Let's cover how to get things working with an separate <code>.js</code> script
-and, additionally, with data that is initially defined or constructed in Python.</p>
-<p>First, we'll need these imports:</p>
+<h2 id="Automatically-try-a-JSON-dump">Automatically try a JSON dump<a class="anchor-link" href="#Automatically-try-a-JSON-dump">&#182;</a></h2><p>In this first trick, we override the IPython's "text/plain" formatter,
+which is used by default for rendering of notebook cell results,
+unless the data type provides a custom visualization hook
+(e.g. by defining <code>_repr_html_()</code> or something alike).
+We first try JSON serialization (with indentation),
+which will work for data constructs that only contain basic Python data types
+like dicts, lists, strings, integers, etc.
+If it fails because JSON serialization is not supported for some part of the data,
+we fall back on the default behavior (prettified Python <code>repr</code>).</p>
 
 </div>
 </div>
@@ -1265,8 +1153,21 @@ and, additionally, with data that is initially defined or constructed in Python.
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">HTML</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">IPython.core.formatters</span>
+
+<span class="k">class</span> <span class="nc">JsonDumpTryingFormatter</span><span class="p">(</span>
+    <span class="n">IPython</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">formatters</span><span class="o">.</span><span class="n">PlainTextFormatter</span>
+<span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+<span class="n">_ipy</span> <span class="o">=</span> <span class="n">IPython</span><span class="o">.</span><span class="n">get_ipython</span><span class="p">()</span>
+<span class="n">_formatters</span> <span class="o">=</span> <span class="n">_ipy</span><span class="o">.</span><span class="n">display_formatter</span><span class="o">.</span><span class="n">formatters</span>
+<span class="n">_formatters</span><span class="p">[</span><span class="s2">&quot;text/plain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">JsonDumpTryingFormatter</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1278,7 +1179,8 @@ and, additionally, with data that is initially defined or constructed in Python.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>and we set up the RequireJS search path (repeated here for completeness)</p>
+<p>If we now trigger the formatting of our original <code>data</code> value,
+we get its JSON serialization (note the double quotes, and lower case <code>true</code> boolean):</p>
 
 </div>
 </div>
@@ -1288,12 +1190,7 @@ and, additionally, with data that is initially defined or constructed in Python.
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span> 
-        <span class="nx">d3</span><span class="o">:</span> <span class="s1">&#39;https://d3js.org/d3.v5.min&#39;</span>
-    <span class="p">}</span>
-<span class="p">});</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span>
 </pre></div>
 
 </div>
@@ -1306,22 +1203,36 @@ and, additionally, with data that is initially defined or constructed in Python.
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[4]:</div>
 
 
 
 
-
-<div id="c0b5a2ba-2714-4b9f-ba38-85d98823c384"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#c0b5a2ba-2714-4b9f-ba38-85d98823c384');
-require.config({
-    paths: { 
-        d3: 'https://d3js.org/d3.v5.min'
+<div class="output_text output_subarea output_execute_result">
+<pre>{
+  &#34;name&#34;: &#34;Alice&#34;,
+  &#34;city&#34;: &#34;New York&#34;,
+  &#34;isMarried&#34;: true,
+  &#34;hobbies&#34;: [
+    &#34;reading&#34;,
+    &#34;running&#34;,
+    &#34;painting&#34;
+  ],
+  &#34;address&#34;: {
+    &#34;street&#34;: &#34;123 Main St&#34;,
+    &#34;state&#34;: &#34;NY&#34;
+  },
+  &#34;pets&#34;: [
+    {
+      &#34;name&#34;: &#34;Fluffy&#34;,
+      &#34;type&#34;: &#34;cat&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Rover&#34;,
+      &#34;type&#34;: &#34;dog&#34;
     }
-});
-</script>
+  ]
+}</pre>
 </div>
 
 </div>
@@ -1334,23 +1245,9 @@ require.config({
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's say we have a script <code>circles.js</code> that implements a certain visualisation, rougly with this structure:</p>
-
-<pre><code>define('circles', ['d3'], function (d3) {
-    function draw(container, data) {
-        var svg = d3.select(container).append("svg");
-        // D3.js drawing stuff here ...
-    }
-    return draw;
-});
-
-</code></pre>
-<p>In addition to declaring a dependency on the <code>d3</code> library like before, we now <code>define</code> a "module" called <code>circles</code>. 
-This explicit naming is <a href="http://requirejs.org/docs/api.html#modulename">not the standard RequireJS</a> way, 
-but we have to do it because we will embed the Javascript code in the HTML document directly, instead of loading the file with a separate request.
-For simplicity, the defined module is just a single function (internally called <code>draw</code>), 
-which expects a container to append the SVG element to and a data object.</p>
-<p>Assuming that this script <code>circles.js</code> lives alongside the notebook file, we can inject the javascript code in the notebook like this:</p>
+<p>Values containing data types that are not supported by default
+in <code>json.dumps</code> (e.g. Python sets, or custom classes),
+show up in classic Python <code>repr</code>-style:</p>
 
 </div>
 </div>
@@ -1360,7 +1257,10 @@ which expects a container to append the SVG element to and a data object.</p>
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Javascript</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;circles.js&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Pet</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="p">{</span><span class="s2">&quot;fib&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">},</span> <span class="s2">&quot;scruffy&quot;</span><span class="p">:</span> <span class="n">Pet</span><span class="p">()}</span>
 </pre></div>
 
 </div>
@@ -1378,61 +1278,8 @@ which expects a container to append the SVG element to and a data object.</p>
 
 
 
-
-<div id="f1592fd8-d328-4285-be0c-9b18b65f321d"></div>
-<div class="output_subarea output_javascript output_execute_result">
-<script type="text/javascript">
-var element = $('#f1592fd8-d328-4285-be0c-9b18b65f321d');
-// First undefine 'circles' so we can easily reload this file.
-require.undef('circles');
-
-define('circles', ['d3'], function (d3) {
-
-    function draw(container, data, width, height) {
-        width = width || 600;
-        height = height || 200;
-        var svg = d3.select(container).append("svg")
-            .attr('width', width)
-            .attr('height', height)
-            .append("g");
-
-        var x = d3.scaleLinear()
-            .domain([0, data.length - 1])
-            .range([50, width - 50]);
-
-        var circles = svg.selectAll('circle').data(data);
-
-        circles.enter()
-            .append('circle')
-            .attr("cx", function (d, i) {return x(i);})
-            .attr("cy", height / 2)
-            .attr("r", 20)
-            .style("fill", "#1f77b4")
-            .style("opacity", 0.7)
-            .on('mouseover', function() {
-                d3.select(this)
-                  .interrupt('fade')
-                  .style('fill', '#ff850e')
-                  .style("opacity", 1)
-                  .attr("r", function (d) {return 1.1 * d + 10;});
-            })
-            .on('mouseout', function() {
-                d3.select(this)
-                    .transition('fade').duration(500)
-                    .style("fill", "#1f77b4")
-                    .style("opacity", 0.7)
-                    .attr("r", function (d) {return d;});
-            })
-            .transition().duration(2000)
-            .attr("r", function (d) {return d;});
-    }
-
-    return draw;
-});
-
-element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x25CE; &#x25CF;</small>');
-
-</script>
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;fib&#39;: {2, 3, 5, 8}, &#39;scruffy&#39;: &lt;__main__.Pet at 0x7f3fb256d510&gt;}</pre>
 </div>
 
 </div>
@@ -1445,7 +1292,8 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now, we define some data in Python space:</p>
+<h2 id="Some-additional-type-coercion">Some additional type coercion<a class="anchor-link" href="#Some-additional-type-coercion">&#182;</a></h2><p>If allowed or necessary, it is also possible to add a bit
+of type coercion (e.g. convert sets to lists), like so:</p>
 
 </div>
 </div>
@@ -1455,7 +1303,30 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">IPython.core.formatters</span>
+
+<span class="k">class</span> <span class="nc">JsonDumpTryingFormatter</span><span class="p">(</span>
+    <span class="n">IPython</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">formatters</span><span class="o">.</span><span class="n">PlainTextFormatter</span>
+<span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="n">obj</span><span class="p">,</span>
+                <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_json_default</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_json_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">_ipy</span> <span class="o">=</span> <span class="n">IPython</span><span class="o">.</span><span class="n">get_ipython</span><span class="p">()</span>
+<span class="n">_formatters</span> <span class="o">=</span> <span class="n">_ipy</span><span class="o">.</span><span class="n">display_formatter</span><span class="o">.</span><span class="n">formatters</span>
+<span class="n">_formatters</span><span class="p">[</span><span class="s2">&quot;text/plain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">JsonDumpTryingFormatter</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -1467,7 +1338,7 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>And we draw the circles like this:</p>
+<p>See the <code>set</code> to <code>list</code> conversion in action:</p>
 
 </div>
 </div>
@@ -1477,13 +1348,8 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">(function(element){</span>
-<span class="s2">    require([&#39;circles&#39;], function(circles) {</span>
-<span class="s2">        circles(element.get(0), </span><span class="si">%s</span><span class="s2">)</span>
-<span class="s2">    });</span>
-<span class="s2">})(element);</span>
-<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">]</span>
+<span class="p">{</span><span class="s2">&quot;colors&quot;</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">colors</span><span class="p">)}</span>
 </pre></div>
 
 </div>
@@ -1501,19 +1367,14 @@ element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x
 
 
 
-
-<div id="e6174193-5c9a-4b21-8e98-24f22959446e"></div>
-<div class="output_subarea output_javascript output_execute_result">
-<script type="text/javascript">
-var element = $('#e6174193-5c9a-4b21-8e98-24f22959446e');
-
-(function(element){
-    require(['circles'], function(circles) {
-        circles(element.get(0), [5, 10, 20, 40, 50, 30, 10, 20, 40, 10, 5])
-    });
-})(element);
-
-</script>
+<div class="output_text output_subarea output_execute_result">
+<pre>{
+  &#34;colors&#34;: [
+    &#34;blue&#34;,
+    &#34;green&#34;,
+    &#34;red&#34;
+  ]
+}</pre>
 </div>
 
 </div>
@@ -1526,40 +1387,11 @@ var element = $('#e6174193-5c9a-4b21-8e98-24f22959446e');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Note:</p>
-<ul>
-<li>We use RequireJS again to get our <code>circles</code> "module" which is just our drawing function</li>
-<li>The container to add the drawing to is <code>element.get(0)</code> as discussed above</li>
-<li>We convert the data to JSON and inject it in the <code>circles</code> function call in Javascript. For simplicity, I used basic Python string formatting with <code>%</code>, but other templating solutions are possible of course.</li>
-<li>If you want multiple drawings for different data sets, you probably want to put the <code>Javascript</code> thing in a reusable function. Don't forget to return the <code>Javascript</code> object so it rendered properly.</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Some-additional-practical-details">Some additional practical details<a class="anchor-link" href="#Some-additional-practical-details">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Add-CSS">Add CSS<a class="anchor-link" href="#Add-CSS">&#182;</a></h3><p>Apart from your D3.js script, you usually also want to add some custom CSS to the mix, preferably in a separate file as well. Define the CSS in a HTML file, e.g. <code>circles.css.html</code> as follows</p>
-
-<pre><code>&lt;style&gt;
-svg circle {
-  stroke: #16527b;
-  stroke-width: 1px;
-}
-&lt;/style&gt;
-
-</code></pre>
-<p>and load it like this:</p>
+<h2 id="Enable-the-built-in-JSON-visualisation-on-dicts,-...">Enable the built-in JSON visualisation on dicts, ...<a class="anchor-link" href="#Enable-the-built-in-JSON-visualisation-on-dicts,-...">&#182;</a></h2><p>IPython/Jupyter also has built-in functionality
+to visualise JSON structures as an interactive tree
+where you can expand and collapse nodes.
+You can enable that visualization as
+the default rendering of dicts and lists with this snippet:</p>
 
 </div>
 </div>
@@ -1569,35 +1401,15 @@ svg circle {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;circles.css.html&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">IPython</span>
+<span class="n">_ipy</span> <span class="o">=</span> <span class="n">IPython</span><span class="o">.</span><span class="n">get_ipython</span><span class="p">()</span>
+<span class="n">_formatters</span> <span class="o">=</span> <span class="n">_ipy</span><span class="o">.</span><span class="n">display_formatter</span><span class="o">.</span><span class="n">formatters</span>
+<span class="n">_json_formatter</span> <span class="o">=</span> <span class="n">_formatters</span><span class="p">[</span><span class="s2">&quot;application/json&quot;</span><span class="p">]</span>
+<span class="n">_json_formatter</span><span class="o">.</span><span class="n">for_type</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="p">)</span>
+<span class="n">_json_formatter</span><span class="o">.</span><span class="n">for_type</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="p">)</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[8]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<style>
-svg circle {
-  stroke: #16527b;
-  stroke-width: 1px;
-}
-</style>
-
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -1606,263 +1418,18 @@ svg circle {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Easy-reloading">Easy reloading<a class="anchor-link" href="#Easy-reloading">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Reloading the code from the separate script while developing can be very cumbersome. RequireJS will not automatically "reload" a module that is already defined. For a full hard refresh you should: clear the output of the <code>Javascript(filename=..)</code> cell (or clear all outputs of the whole notebook), save the notebook and refresh the page in your browser.</p>
-<p>Luckily there is a much easier way using <a href="http://requirejs.org/docs/api.html#undef"><code>require.undef</code></a>. Put it at the top of the script file, before the <code>define</code> to "unload" the module before redefining it again. In our example:</p>
-
-<pre><code>require.undef('circles');
-
-define('circles', ['d3'], function (d3) {
-    // ...
-});
-
-</code></pre>
-<p>Now you just have the re-execute the <code>Javascript(filename=..)</code> cell and the code will be reloaded, which is a lot more intuitive during development.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="All-together-now">All together now<a class="anchor-link" href="#All-together-now">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To conclude, all the bits together, in a more compact way.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">HTML</span>
-<span class="kn">import</span> <span class="nn">json</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;require.config({paths: {d3: &#39;https://d3js.org/d3.v5.min&#39;}});&quot;</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;circles.js&quot;</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;circles.css.html&quot;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="fa1ee171-b4b0-4a36-82b4-c53d559399bd"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#fa1ee171-b4b0-4a36-82b4-c53d559399bd');
-require.config({paths: {d3: 'https://d3js.org/d3.v5.min'}});
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="b1643ca7-c28a-48cd-b0e1-97bc291157b8"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#b1643ca7-c28a-48cd-b0e1-97bc291157b8');
-// First undefine 'circles' so we can easily reload this file.
-require.undef('circles');
-
-define('circles', ['d3'], function (d3) {
-
-    function draw(container, data, width, height) {
-        width = width || 600;
-        height = height || 200;
-        var svg = d3.select(container).append("svg")
-            .attr('width', width)
-            .attr('height', height)
-            .append("g");
-
-        var x = d3.scaleLinear()
-            .domain([0, data.length - 1])
-            .range([50, width - 50]);
-
-        var circles = svg.selectAll('circle').data(data);
-
-        circles.enter()
-            .append('circle')
-            .attr("cx", function (d, i) {return x(i);})
-            .attr("cy", height / 2)
-            .attr("r", 20)
-            .style("fill", "#1f77b4")
-            .style("opacity", 0.7)
-            .on('mouseover', function() {
-                d3.select(this)
-                  .interrupt('fade')
-                  .style('fill', '#ff850e')
-                  .style("opacity", 1)
-                  .attr("r", function (d) {return 1.1 * d + 10;});
-            })
-            .on('mouseout', function() {
-                d3.select(this)
-                    .transition('fade').duration(500)
-                    .style("fill", "#1f77b4")
-                    .style("opacity", 0.7)
-                    .attr("r", function (d) {return d;});
-            })
-            .transition().duration(2000)
-            .attr("r", function (d) {return d;});
-    }
-
-    return draw;
-});
-
-element.append('<small>&#x25C9; &#x25CB; &#x25EF; Loaded circles.js &#x25CC; &#x25CE; &#x25CF;</small>');
-
-</script>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<style>
-svg circle {
-  stroke: #16527b;
-  stroke-width: 1px;
-}
-</style>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">draw_circles</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">):</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        (function(element){</span>
-<span class="s2">            require([&#39;circles&#39;], function(circles) {</span>
-<span class="s2">                circles(element.get(0), </span><span class="si">%s</span><span class="s2">, </span><span class="si">%d</span><span class="s2">, </span><span class="si">%d</span><span class="s2">);</span>
-<span class="s2">            });</span>
-<span class="s2">        })(element);</span>
-<span class="s2">    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">draw_circles</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="c86bb4d3-6c2a-4583-aab1-70fb60ebf3e7"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#c86bb4d3-6c2a-4583-aab1-70fb60ebf3e7');
-
-        (function(element){
-            require(['circles'], function(circles) {
-                circles(element.get(0), [10, 60, 40, 5, 30, 10], 500, 200);
-            });
-        })(element);
-    
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="References">References<a class="anchor-link" href="#References">&#182;</a></h2><ul>
-<li><a href="https://github.com/soxofaan/jupyter-playground/tree/master/jupyter-custom-d3-visualization">Source of this notebook on GitHub</a></li>
-<li><a href="https://nbviewer.jupyter.org/github/soxofaan/jupyter-playground/blob/master/jupyter-custom-d3-visualization/jupyter-custom-d3-visualization.ipynb">This notebook in NBViewer</a></li>
-</ul>
+<p>Unfortunately that widget seems to get corrupted
+when exporting to HTML for this blog,
+so I have to resort to a screenshot
+to illustrate it in action on our original data dictionary:</p>
+<p><img src="articles/2023/img/ipython-json-widget.png" ></p>
 
 </div>
 </div>
 </div>
  
 
-
+</body>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
