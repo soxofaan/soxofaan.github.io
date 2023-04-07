@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Packaging of single Python module projects with Hatch/Hatchling - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="hatch"/>
+        <meta name="tags" contents="packaging"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Packaging of single Python module projects with Hatch/Hatchling</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2023-04-07T00:00:00+02:00"> on 2023/04/07</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/hatch.html">hatch</a>,                    <a href="https://www.stefaanlippens.net/tag/packaging.html">packaging</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Sometimes you have these simple Python projects that are essentially just a single file.
+On the road to package your project "properly",
+you'll find a lot of documentation and tools
+pushing you towards a complex project layout with multiple folders
+(e.g. a generally recommended <code>src</code> layout) 
+and additional (empty) <code>__init__.py</code> files sprinkled all around.</p>
+<p>When that feels too much as overkill, 
+consider keeping your project layout simple 
+with your single python file just at the project root.</p>
+<h2>Single module packaging with classic <code>setup.py</code> and setuptools</h2>
+<p>With a classic setuptools-based <code>setup.py</code>, you can achieve this with
+the <a href="https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#py-modules"><code>py_modules</code> option</a>.
+For example, assuming your single Python file is called <code>snorfle.py</code></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;snorfle&quot;</span><span class="p">,</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="n">py_modules</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;snorfle&quot;</span><span class="p">],</span>
+    <span class="o">...</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>When building this project (e.g. <code>python -m build</code>), you get a wheel that will 
+install <code>snorfle.py</code> directly as a module under <code>site-packages</code> as desired. </p>
+<p>Note that, if you decide to switch to a more complex project layout after all,
+you have to switch over to other setuptools options and functionality 
+like <code>packages</code>, <code>find_packages()</code>, etc.</p>
+<h2>Single module packaging with Hatch/Hatchling</h2>
+<p>When I was playing around on some simple projects to switch over 
+to more modern packaging workflows, using <code>pyproject.toml</code> 
+and <a href="https://hatch.pypa.io/">Hatch/Hatchling</a>,
+I was a bit lost when looking for a <code>py_modules</code> equivalent. 
+However, after some more digging, it turned out that 
+Hatch/Hatchling makes it actually easier and more uniform 
+compared to use-case specific options of old-school <code>setup()</code>.</p>
+<p>All you need is the <a href="https://hatch.pypa.io/latest/config/build/#patterns">generic <code>include</code> build option</a>
+to list your single file:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[project]</span><span class="w"></span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;snorfle&quot;</span><span class="w"></span>
+
+<span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;hatchling&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hatchling.build&quot;</span><span class="w"></span>
+
+<span class="k">[tool.hatch.build]</span><span class="w"></span>
+<span class="n">include</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;snorfle.py&quot;</span><span class="p">]</span><span class="w"></span>
+</code></pre></div>
+
+<p>When your project grows more complex over time,
+you just have to adapt the <code>include</code> option appropriately
+(and possibly add some more 
+<a href="https://hatch.pypa.io/latest/config/build/#file-selection">file selection</a>
+related options).</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2023
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4807787-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-4807787-2');
+</script>
+
+</html>
