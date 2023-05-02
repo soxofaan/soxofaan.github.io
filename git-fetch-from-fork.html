@@ -59,13 +59,17 @@ created from another user's fork
 without explicitly adding that user's fork as a remote.</p>
 <ul>
 <li>Find out the PR's number (e.g. 123, given <code>https://github.com/username/frobnicator/pull/123</code>)</li>
-<li>Create a local branch, let's say <code>add-wibbles</code>:<div class="highlight"><pre><span></span><code>git fetch origin pull/123/head:add-wibbles
+<li>
+<p>Create a local branch, let's say <code>add-wibbles</code>:</p>
+<div class="highlight"><pre><span></span><code>git fetch origin pull/123/head:add-wibbles
 </code></pre></div>
 
+<p>(Note that <code>origin</code> is the remote the PR was made against, it doesn't refer to the user's fork)</p>
+</li>
+<li>
+<p>Checkout out that branch</p>
 </li>
 </ul>
-<p>(Note that <code>origin</code> is the remote the PR was made against, not the user's remote)
-- Checkout out that branch</p>
 <p>Fun fact: I learned this from ChatGPT
 (after a bit of back and forth to make it understand what I was looking for)
 and first thought it was hallucinating this solution,
