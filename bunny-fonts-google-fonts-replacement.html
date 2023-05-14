@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>TIL: Bunny Fonts as drop-in Google Fonts Replacement - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="TIL"/>
+        <meta name="tags" contents="fonts"/>
+        <meta name="tags" contents="Google"/>
+        <meta name="tags" contents="webdesign"/>
+        <meta name="tags" contents="privacy"/>
+        <meta name="tags" contents="tracking"/>
+        <meta name="tags" contents="CSS"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>TIL: Bunny Fonts as drop-in Google Fonts Replacement</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2023-05-14T00:00:00+02:00"> on 2023/05/14</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/til.html">TIL</a>,                    <a href="https://www.stefaanlippens.net/tag/fonts.html">fonts</a>,                    <a href="https://www.stefaanlippens.net/tag/google.html">Google</a>,                    <a href="https://www.stefaanlippens.net/tag/webdesign.html">webdesign</a>,                    <a href="https://www.stefaanlippens.net/tag/privacy.html">privacy</a>,                    <a href="https://www.stefaanlippens.net/tag/tracking.html">tracking</a>,                    <a href="https://www.stefaanlippens.net/tag/css.html">CSS</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Today I learned about a drop-in replacement
+for Google Fonts: <a href="https://fonts.bunny.net/">Bunny Fonts</a>.</p>
+<p>I've been using Google Fonts in some small side projects,
+because it was an easy way back in the days
+to sprinkle your website with a fancy font here and there.
+But it turns out (surprise?) that using Google Fonts
+induces Google tracking on your visitors
+and for example violates GDPR.
+Time to ditch yet another Google dependency.</p>
+<p>Of course, you can self-host the necessary files as a workaround,
+but there is also a drop-in replacement:
+<a href="https://fonts.bunny.net/">Bunny Fonts</a>.</p>
+<p>For example,
+on <a href="https://www.stefaanlippens.net/your-unbirthday/">it's your unbirthday</a>,
+where I use three custom fonts,
+I just had to replace</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://fonts.googleapis.com/css?family=Alegreya|Caveat|Oswald&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>with</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://fonts.bunny.net/css?family=Alegreya|Caveat|Oswald&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>nice.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2023
+    </footer>
+
+</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        $(function () {
+            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    $(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = $('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        $.getScript("https://code.jquery.com/color/jquery.color.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4807787-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-4807787-2');
+</script>
+
+</html>

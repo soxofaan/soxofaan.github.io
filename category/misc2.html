@@ -41,6 +41,34 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/hadoop-getmerge-spark-partitioned-csv.html"
+                               title="link to Header duplication in Spark partitioned CSV files">Header duplication in Spark partitioned CSV files</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2019-03-19T00:00:00+01:00"> on 2019/03/19</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>You are writing a Spark DataFrame to a CSV file with header line on HDFS.</p>
+<div class="highlight"><pre><span></span><code>df.write.csv(&#39;output_folder&#39;, header=True)
+</code></pre></div>
+
+<p>Because your DataFrame is partitioned, you get multiple CSV files
+in your output folder. Each file will get a header with column names.</p>
+<p>So far so good, but …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/hadoop-getmerge-spark-partitioned-csv.html"
+                               title="link to Header duplication in Spark partitioned CSV files">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/hiveserver2-impersonation-issues.html"
                                title="link to HiveServer2 User Impersonation Issues">HiveServer2 User Impersonation Issues</a>
                         </h2>
@@ -259,34 +287,6 @@ a <code>slug</code> metadata entry with the desired clean URL and setting up
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/dynamic-pelican-settings.html"
                                title="link to Dynamic Pelican settings">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/jupyter-notebook-dialog.html"
-                               title="link to Dialog popup in Jupyter notebook">Dialog popup in Jupyter notebook</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2016-09-28T00:00:00+02:00"> on 2016/09/28</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>While wrestling with a relatively large data set, visualised 
-with <a href="http://bokeh.pydata.org/">Bokeh</a> in an
-<a href="https://ipython.org/">IPython</a>/<a href="http://jupyter.org/">Jupyter</a> 
-notebook, I needed a way to show some "copy-pastable"
-text dump when making a box selection on the graph.
-Some kind of popup or dialog seemed ideal for this.</p>
-<p>I didn't want to spend too …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/jupyter-notebook-dialog.html"
-                               title="link to Dialog popup in Jupyter notebook">Read more</a>
                         </div>
                     </div>
                 </article>
