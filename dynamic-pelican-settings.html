@@ -146,25 +146,25 @@ For other articles we fall back on the normal <code>{slug}.html</code> way.</p>
     <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
     <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
     <script>
-        $(function () {
-            $('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        jQuery(function () {
+            jQuery('#menu').addClass("with-slicknav").slicknav({'label': ''});
         });
     </script>
 
 <script>
-    $(function () {
+    jQuery(function () {
         var duration = 5000;
         var delay = 5000;
-        var el = $('header.page-header');
+        var el = jQuery('header.page-header');
 
         function randomFade() {
             setTimeout(function () {
-                var color = $.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                var color = jQuery.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
                 el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
             }, delay);
         }
 
-        $.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
+        jQuery.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
             randomFade();
         });
     });
