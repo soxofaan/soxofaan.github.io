@@ -64,16 +64,20 @@ I didn't want to spend my time on setting up the necessary SSH pubkey configurat
 <div class="highlight"><pre><span></span><code>git format-patch origin/main
 </code></pre></div>
 
-<p>This created a patch file for each commit I did on top op <code>origin/main</code>, following an auto-increment prefix filename pattern (e.g. <code>0001-Fix-wibble.patch</code>).
--   Download the patch files to my local machine
-(just a right-click away in JupyterLab).
--   Apply the patch files to my local checkout of the repo, e.g.</p>
+<p>This created a patch file for each commit I did on top op <code>origin/main</code>, following an auto-increment prefix filename pattern (e.g. <code>0001-Fix-wibble.patch</code>).</p>
+</li>
+<li>
+<p>Download the patch files to my local machine
+    (just a right-click away in JupyterLab).</p>
+</li>
+<li>
+<p>Apply the patch files to my local clone of the repo, e.g.</p>
 <div class="highlight"><pre><span></span><code>git am 00*.patch
 </code></pre></div>
 
 </li>
 </ul>
-<p>This locally recreated the git history I created before remotely,
+<p>This locally recreated the git history I created remotely,
 ready to push.</p>
 <p>Note that it is also possible to achieve the same with <code>git diff</code> and <code>git apply</code>.
 However, with <code>git format-patch</code> and <code>git am</code> more metadata about
