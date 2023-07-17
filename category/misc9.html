@@ -41,6 +41,36 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/parsing-the-subversion-id-keyword-with-python.html"
+                               title="link to Parsing the subversion Id keyword with python">Parsing the subversion Id keyword with python</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2008-02-19T00:00:00+01:00"> on 2008/02/19</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Parsing a subversion Id keyword is just a matter of some regular expression magic:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># use the built in regular expression library</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1"># the subversion Id keyword</span>
+<span class="n">svnid</span> <span class="o">=</span> <span class="s1">&#39;$Id: svnidparse.py 1234 2008-02-19 09:59:27Z joske $&#39;</span>
+
+<span class="c1"># bow for the mighty regular expression</span>
+<span class="n">svnidrep</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^\$Id: (?P&lt;filename&gt;.+) (?P&lt;revision …</span></code></pre></div>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/parsing-the-subversion-id-keyword-with-python.html"
+                               title="link to Parsing the subversion Id keyword with python">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/yay-im-joining-krimson-to-drupalcon-boston-2008.html"
                                title="link to Yay, I'm joining Krimson to DrupalCon Boston 2008">Yay, I'm joining Krimson to DrupalCon Boston 2008</a>
                         </h2>
@@ -246,31 +276,6 @@
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/awaken-the-post-lunch-phd-that-lives-inside-you.html"
                                title="link to Awaken the post-lunch PhD that lives inside you.">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/accessing-a-svn-server-behind-a-firewall.html"
-                               title="link to Accessing a svn server behind a firewall">Accessing a svn server behind a firewall</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2007-02-05T00:00:00+01:00"> on 2007/02/05</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>Disclaimer: this entry is mainly a reminder to myself (the stuff you would write on a post-it), but maybe it's useful to someone else.</p>
-<p>The subversion server at my work is (currently) only accessible from 
-within the LAN, not directly reachable from the outside evil internet. T
-his makes it …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/accessing-a-svn-server-behind-a-firewall.html"
-                               title="link to Accessing a svn server behind a firewall">Read more</a>
                         </div>
                     </div>
                 </article>
