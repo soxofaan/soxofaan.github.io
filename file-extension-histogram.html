@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>File extension histogram - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="bash"/>
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="cli"/>
+        <meta name="tags" contents="ChatGPT"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>File extension histogram</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2023-07-17T00:00:00+02:00"> on 2023/07/17</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/bash.html">bash</a>,                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/cli.html">cli</a>,                    <a href="https://www.stefaanlippens.net/tag/chatgpt.html">ChatGPT</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>To get a quick overview of a git repo, I wanted to know what kind of files it contained,
+for example through a simple histogram of file extensions.</p>
+<p>I figured this would be a nice test for ChatGPT:</p>
+<blockquote>
+<p>Can you write me a bash script to walk the current directory recursively
+and build a histogram of the file extensions?</p>
+</blockquote>
+<p>and it returned me this bash script:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="c1"># Initialize an associative array to store the histogram</span>
+<span class="nb">declare</span> -A histogram
+
+<span class="c1"># Function to traverse directories recursively</span>
+walk_directory<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">local</span> <span class="nv">dir</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+    <span class="nb">local</span> file_extension
+
+    <span class="c1"># Loop through all files and directories in the current directory</span>
+    <span class="k">for</span> entry <span class="k">in</span> <span class="s2">&quot;</span><span class="nv">$dir</span><span class="s2">&quot;</span>/*<span class="p">;</span> <span class="k">do</span>
+        <span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;</span><span class="nv">$entry</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+            <span class="c1"># Get the file extension of the current file</span>
+            <span class="nv">file_extension</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">entry</span><span class="p">##*.</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="c1"># Increment the count for the file extension in the histogram</span>
+            <span class="o">((</span>histogram<span class="o">[</span><span class="nv">$file_extension</span><span class="o">]</span>++<span class="o">))</span>
+        <span class="k">elif</span> <span class="o">[</span> -d <span class="s2">&quot;</span><span class="nv">$entry</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+            <span class="c1"># If it&#39;s a directory, recursively call the function on it</span>
+            walk_directory <span class="s2">&quot;</span><span class="nv">$entry</span><span class="s2">&quot;</span>
+        <span class="k">fi</span>
+    <span class="k">done</span>
+<span class="o">}</span>
+
+<span class="c1"># Call the function with the current directory as an argument</span>
+walk_directory <span class="s2">&quot;.&quot;</span>
+
+<span class="c1"># Print the histogram</span>
+<span class="nb">echo</span> <span class="s2">&quot;Histogram of File Extensions:&quot;</span>
+<span class="k">for</span> ext <span class="k">in</span> <span class="s2">&quot;</span><span class="si">${</span><span class="p">!histogram[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$ext</span><span class="s2">: </span><span class="si">${</span><span class="nv">histogram</span><span class="p">[</span><span class="nv">$ext</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+
+<p>It kind of works, but it doesn't properly handle files without an extension or folders with an extension.
+And the size of the script doesn't feel proportional to the simplicity of the task.</p>
+<p>I asked a follow-up question to rewrite it in Python, which improved the extension handling,
+but the script still felt too bloated (explicit for loops, explicit recursion, ...).
+I tried to nudge ChatGPT to make it more concise, unfortunately without much success,
+so I finally decided to just go the old-fashioned way of hand-crafting something
+that can be copy-pasted as a command line oneliner.</p>
+<p>Basic version:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python -c <span class="s1">&#39;import pathlib, collections; print(collections.Counter(p.suffix for p in pathlib.Path(&quot;.&quot;).glob(&quot;**/*.*&quot;)))&#39;</span>
+<span class="go">Counter({&#39;.py&#39;: 17895, &#39;.pyc&#39;: 14187, &#39;.pyi&#39;: 2557, &#39;.dat&#39;: 2493, &#39;.mo&#39;: 949, &#39;.po&#39;: 949, ...</span>
+</code></pre></div>
+
+<p>Print the histogram line-by-line:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python -c <span class="s1">&#39;import pathlib, collections; print(&quot;\n&quot;.join(f&quot;{c:6d} {e}&quot; for (e, c) in collections.Counter(p.suffix for p in pathlib.Path(&quot;.&quot;).glob(&quot;**/*.*&quot;)).most_common()))&#39;</span>
+<span class="go"> 17895 .py</span>
+<span class="go"> 14187 .pyc</span>
+<span class="go">  2557 .pyi</span>
+<span class="go">  2493 .dat</span>
+<span class="go">   949 .mo</span>
+<span class="go">   949 .po</span>
+<span class="go">...</span>
+</code></pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2023
+    </footer>
+
+</div>
+</body>
+
+<script src="/theme/lib/jquery/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        jQuery(function () {
+            jQuery('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    jQuery(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = jQuery('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = jQuery.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        jQuery.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>
