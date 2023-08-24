@@ -63,7 +63,7 @@
 and operate them from muscle memory.
 But there are also these setup or maintenance tasks you only do
 every X months and their practical details are a bit hazy.</p>
-<p>This is a random, work-in-progress collection of cheat sheets 
+<p>This is a random, work-in-progress collection of cheat sheets
 for these commands or workflows I use too infrequently to remember.</p>
 <h2>Jupyter/JupyterLab</h2>
 <ul>
@@ -83,9 +83,9 @@ for these commands or workflows I use too infrequently to remember.</p>
 
 </li>
 </ul>
-<p>Optionally add <code>--display-name "Pretty Name"</code> 
+<p>Optionally add <code>--display-name "Pretty Name"</code>
   to give it a prettier name in the Jupyter(Lab) UI
-- Check that kernel is now listed at <code>jupyter kernelspec list</code> 
+- Check that kernel is now listed at <code>jupyter kernelspec list</code>
   (run this from env where you run Jupyter(Lab))</p>
 </li>
 </ul>
@@ -181,6 +181,13 @@ docker image prune
 <p>A bit more aggressive: prune all images (also tagged ones)
   that were created long enough ago</p>
 <div class="highlight"><pre><span></span><code>docker image prune -a --filter &quot;until=2022-01-01&quot;
+</code></pre></div>
+
+</li>
+<li>
+<p>Even more aggressive, suggested on <a href="https://adamj.eu/tech/2023/08/21/docker-clean-up/">Adam Johnson's blog</a>:</p>
+<div class="highlight"><pre><span></span><code>docker system prune --all --force --filter until=24h
+docker volume prune --force
 </code></pre></div>
 
 </li>
