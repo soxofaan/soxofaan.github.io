@@ -41,6 +41,35 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/pylab_date_tick_control/"
+                               title="link to Date tick control in pylab/matplotlib">Date tick control in pylab/matplotlib</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-05-18T00:00:00+02:00"> on 2009/05/18</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Today I struggled a bit with <a href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.plot_date">pylab's plot_date</a> function and overlapping date tick labels:</p>
+<p><img alt="overlapping plot_date xticks" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/data_critical_D7_issues_before.png"></p>
+<p>After some googling, I found that matplotlib offers 
+<a href="http://matplotlib.sourceforge.net/api/dates_api.html#date-tickers">nice flexible date tick control and formatting</a>. 
+I added a date tick locator and a date formatter to the mix as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pylab</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import …</span></code></pre></div>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/pylab_date_tick_control/"
+                               title="link to Date tick control in pylab/matplotlib">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/script-for-easier-adding-subversion-ignore-rules.html"
                                title="link to Script for easier adding subversion ignore rules">Script for easier adding subversion ignore rules</a>
                         </h2>
@@ -261,28 +290,6 @@ Handy for logging or debugging purposes. A simple script to illustrate:</p>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/python-pickling-and-dealing-with-attributeerror-module-object-has-no-attribute-thing.html"
                                title="link to Python: pickling and dealing with "AttributeError: 'module' object has no attribute 'Thing'"">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/redirect_python_print/"
-                               title="link to redirecting python's "print" statements to a file">redirecting python's "print" statements to a file</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2005-10-07T00:00:00+02:00"> on 2005/10/07</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>Something I find annoying about writing a program/script that writes to text files is that you explicitly have to write the linefeeds (things like "\n", "\r", "\r\n" or std::endl). I remember Pascal having something like a <code>writeln()</code> function, which was very handy when I spend my time …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/redirect_python_print/"
-                               title="link to redirecting python's "print" statements to a file">Read more</a>
                         </div>
                     </div>
                 </article>

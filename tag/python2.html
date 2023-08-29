@@ -41,6 +41,40 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/python-traceback-in-catch/"
+                               title="link to Get stacktrace in Python catch body">Get stacktrace in Python catch body</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2013-02-14T00:00:00+01:00"> on 2013/02/14</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>So you have some Python code in a try-catch, and you want the
+typical Python stacktrace (aka traceback, aka backtrace)
+in a way you can manipulate?</p>
+<p>Here are some ways to handle it:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">try</span><span class="p">:</span>
+     <span class="n">stuff</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+     <span class="c1"># Just print traceback</span>
+     <span class="k">print</span> <span class="s2">&quot;something went wrong, here is …</span></code></pre></div>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/python-traceback-in-catch/"
+                               title="link to Get stacktrace in Python catch body">Read more</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/check-itunes-library-for-inexistent-files-and-broken-links-with-python-and-pyobjc.html"
                                title="link to Check iTunes library for inexistent files and broken links with Python and PyObjC">Check iTunes library for inexistent files and broken links with Python and PyObjC</a>
                         </h2>
@@ -278,35 +312,6 @@ foofoo
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/jython_and_pythonpath/"
                                title="link to Jython and PYTHONPATH">Read more</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/pylab_date_tick_control/"
-                               title="link to Date tick control in pylab/matplotlib">Date tick control in pylab/matplotlib</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-05-18T00:00:00+02:00"> on 2009/05/18</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>Today I struggled a bit with <a href="http://matplotlib.sourceforge.net/api/pyplot_api.html#matplotlib.pyplot.plot_date">pylab's plot_date</a> function and overlapping date tick labels:</p>
-<p><img alt="overlapping plot_date xticks" src="https://www.stefaanlippens.net/articles/from-drupal-blog/images/data_critical_D7_issues_before.png"></p>
-<p>After some googling, I found that matplotlib offers 
-<a href="http://matplotlib.sourceforge.net/api/dates_api.html#date-tickers">nice flexible date tick control and formatting</a>. 
-I added a date tick locator and a date formatter to the mix as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pylab</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">import …</span></code></pre></div>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/pylab_date_tick_control/"
-                               title="link to Date tick control in pylab/matplotlib">Read more</a>
                         </div>
                     </div>
                 </article>

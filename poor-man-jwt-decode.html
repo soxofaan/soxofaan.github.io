@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Poor man's JWT decoder - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="python"/>
+        <meta name="tags" contents="cli"/>
+        <meta name="tags" contents="poorman"/>
+        <meta name="tags" contents="jwt"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+                <li><a href="/index.html">Blog of Stefaan Lippens</a>
+                </li>
+                <li><a href="/tags.html">Tags</a>
+                </li>
+                <li><a href="/archive.html">Archive</a>
+                </li>
+                <li><a href="/pages/about.html">About</a>
+                </li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Poor man's JWT decoder</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2023-08-29T00:00:00+02:00"> on 2023/08/29</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/python.html">python</a>,                    <a href="https://www.stefaanlippens.net/tag/cli.html">cli</a>,                    <a href="https://www.stefaanlippens.net/tag/poorman.html">poorman</a>,                    <a href="https://www.stefaanlippens.net/tag/jwt.html">jwt</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>There are plenty of tools and libraries out there to decode (and verify) JSON Web Tokens (JWT).
+But what if you are in a context where you can not or don't want to use these?</p>
+<p>Here is a simple command line one-liner to decode a JWT passed through standard input,
+using Python and just some standard library modules:</p>
+<div class="highlight"><pre><span></span><code>python -c <span class="s1">&#39;import base64,json,sys,pprint;pprint.pprint([json.loads(base64.urlsafe_b64decode(p+&quot;===&quot;)) for p in sys.stdin.read().strip().split(&quot;.&quot;)[:2]])&#39;</span>
+</code></pre></div>
+
+<p>&#x26A0;&#xFE0F; Important note: there is <strong>no JWT signature verification</strong> whatsoever here.
+Just use this for quick-and-dirty payload inspection and debugging purposes.
+Don't blindly trust the output.</p>
+<p>See it in action on a dummy JWT:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$</span>&gt; <span class="nb">echo</span> <span class="s1">&#39;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.Meh&#39;</span> <span class="se">\</span>
+    <span class="p">|</span> python -c <span class="s1">&#39;import base64,json,sys,pprint;pprint.pprint([json.loads(base64.urlsafe_b64decode(p+&quot;===&quot;)) for p in sys.stdin.read().strip().split(&quot;.&quot;)[:2]])&#39;</span>
+
+<span class="go">[{&#39;alg&#39;: &#39;HS256&#39;, &#39;typ&#39;: &#39;JWT&#39;},</span>
+<span class="go"> {&#39;iat&#39;: 1516239022, &#39;name&#39;: &#39;John Doe&#39;, &#39;sub&#39;: &#39;1234567890&#39;}]</span>
+</code></pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            &copy; Stefaan Lippens 2005-2023
+    </footer>
+
+</div>
+</body>
+
+<script src="/theme/lib/jquery/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/theme/lib/slicknav/slicknav.min.css">
+    <script src="/theme/lib/slicknav/jquery.slicknav.min.js"></script>
+    <script>
+        jQuery(function () {
+            jQuery('#menu').addClass("with-slicknav").slicknav({'label': ''});
+        });
+    </script>
+
+<script>
+    jQuery(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = jQuery('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = jQuery.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        jQuery.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>
