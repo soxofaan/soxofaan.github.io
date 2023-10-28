@@ -162,20 +162,20 @@ nav ul#menu {
 
 nav li {
     display: inline-block;
-    padding: 0 1ex 0 0;
+    padding: 0;
     margin: 0;
 }
 
 nav li a {
-    color: #888;
     text-decoration: none;
     display: inline-block;
-    padding: .5em;
+    padding: .5em 1em;
 }
 
-nav li.active a {
-    color: #222;
+nav li.active {
+    border-bottom: 3px solid black;
 }
+
 
 .article-list {
     border: 0;
@@ -300,6 +300,10 @@ header.page-header .article-meta {
     font-size: 12pt;
 }
 
+header.page-header a {
+    text-decoration: none;
+}
+
 div#content > h1:first-child {
     display: none;
 }
@@ -323,14 +327,6 @@ table.archive a {
     color: #ffffff;
     padding-left: 5px;
     overflow: scroll;
-}
-
-.slicknav_menu {
-    display: none;
-    position: fixed;
-    width: 100%;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
 }
 
 footer.page-footer {
@@ -391,7 +387,7 @@ div.text_cell .prompt {
 
     #wrapper {
         margin: 0 15px;
-        padding: 20px 0 0;
+        padding: 0;
     }
 
     header.page-header {
@@ -409,11 +405,13 @@ div.text_cell .prompt {
         border: 0;
     }
 
-    #menu.with-slicknav {
-        display: none;
+    nav {
+        letter-spacing: 0;
     }
 
-    .slicknav_menu {
-        display: block;
+    nav li a {
+        padding: .5em 1ex;
     }
+
+
 }
