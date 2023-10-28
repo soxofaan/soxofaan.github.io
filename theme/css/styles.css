@@ -151,7 +151,7 @@ header.page-header {
 nav {
     font-size: 12pt;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
 }
 
 nav ul#menu {
@@ -278,7 +278,7 @@ figcaption {
 .article-meta {
     font-size: 75%;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     line-height: 2;
     color: #444;
 }
@@ -286,7 +286,7 @@ figcaption {
 .read-more {
     font-size: 75%;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     line-height: 2;
     color: #444;
 }
@@ -330,7 +330,7 @@ table.archive a {
     position: fixed;
     width: 100%;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
 }
 
 footer.page-footer {
@@ -340,7 +340,7 @@ footer.page-footer {
     padding-bottom: 3em;
     font-size: 9pt;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     color: #666;
 }
 
