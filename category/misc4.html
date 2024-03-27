@@ -33,6 +33,40 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/python-traceback-in-catch/"
+                               title="link to Get stacktrace in Python catch body">Get stacktrace in Python catch body</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2013-02-14T00:00:00+01:00"> on 2013/02/14</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>So you have some Python code in a try-catch, and you want the
+typical Python stacktrace (aka traceback, aka backtrace)
+in a way you can manipulate?</p>
+<p>Here are some ways to handle it:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">try</span><span class="p">:</span>
+     <span class="n">stuff</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+     <span class="c1"># Just print traceback</span>
+     <span class="k">print</span> <span class="s2">&quot;something went wrong, here is …</span></code></pre></div>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/python-traceback-in-catch/"
+                               title="link to Get stacktrace in Python catch body">Read more &rarr;</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/check-itunes-library-for-inexistent-files-and-broken-links-with-python-and-pyobjc.html"
                                title="link to Check iTunes library for inexistent files and broken links with Python and PyObjC">Check iTunes library for inexistent files and broken links with Python and PyObjC</a>
                         </h2>
@@ -253,29 +287,6 @@ In Python, the <a href="http://docs.python.org/library/optparse.html" title="Opt
                     </div>
                 </article>
             </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/php-lint-multiple-files-parallel/"
-                               title="link to PHP lint checking multiple files in parallel">PHP lint checking multiple files in parallel</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2011-11-02T00:00:00+01:00"> on 2011/11/02</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>When programming, lint checking your source code can be useful to detect low level issues like syntax errors, undefined or unused variables. The PHP command line interpreter has an option <code>-l</code>/<code>--syntax-check</code> to do a syntax check of the provided PHP file, instead of executing it:</p>
-<div class="highlight"><pre><span></span><code>$ php -l file_with …</code></pre></div>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/php-lint-multiple-files-parallel/"
-                               title="link to PHP lint checking multiple files in parallel">Read more &rarr;</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
     </ul>
 
     <div class="pager">
@@ -289,7 +300,7 @@ In Python, the <a href="http://docs.python.org/library/optparse.html" title="Opt
     </main>
 
     <footer class="page-footer">
-            Copyright &copy; Stefaan Lippens 2005-2023. All rights reserved.
+            Copyright &copy; Stefaan Lippens 2005-2024. All rights reserved.
     </footer>
 
 </div>

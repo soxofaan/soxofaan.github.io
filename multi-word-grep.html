@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Multi-Word Grepping - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="grep"/>
+        <meta name="tags" contents="cli"/>
+        <meta name="tags" contents="xargs"/>
+        <meta name="tags" contents="ripgrep"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+<li><a href="/index.html">Home</a></li><li><a href="/tags.html">Tags</a></li><li><a href="/archive.html">Archive</a></li><li><a href="/pages/about.html">About</a></li>        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Multi-Word Grepping</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2024-03-27T00:00:00+01:00"> on 2024/03/27</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/grep.html">grep</a>,                    <a href="https://www.stefaanlippens.net/tag/cli.html">cli</a>,                    <a href="https://www.stefaanlippens.net/tag/xargs.html">xargs</a>,                    <a href="https://www.stefaanlippens.net/tag/ripgrep.html">ripgrep</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>If you're searching on the command line for files that contain a certain word or pattern,
+a tool like <code>grep</code> (or one of its descendants like <code>ripgrep</code>, <code>ack</code>, <code>ag</code>, ...) is your friend.
+But what if you want to find files containing multiple words?</p>
+<p>For example, you want to find all files containing both "foo" and "bar", possibly on different lines.</p>
+<p>In the most simple case, you might get away with a pattern along the lines of <code>foo.*bar|bar.*foo</code>,
+but that approach does not scale well,
+especially if the words might be multiple lines apart.</p>
+<h1>Basic Approach</h1>
+<p>An alternative is to chain multiple <code>grep</code> commands together.
+For example when searching for files that containing "foo", "bar" <em>and</em> "meh":</p>
+<div class="highlight"><pre><span></span><code>grep -rl foo . <span class="p">|</span> xargs grep -l bar <span class="p">|</span> xargs grep -l meh
+</code></pre></div>
+
+<p>The <code>-l</code> flag tells <code>grep</code> to only print the filenames of the files that match the pattern.
+The <code>xargs</code> command takes the output of the previous <code>grep</code> command and feeds it as file arguments to the next <code>grep</code> command.
+At the end if this pipeline, you get a list of files that contain all three words.
+Drop the <code>-l</code> from the last <code>grep</code> to see the actual lines containing the last words.</p>
+<p>FYI, if you prefer <code>ripgrep</code>, which supports the same <code>-l</code> flag,
+it's even a bit simpler as recursive search is its default behavior:</p>
+<div class="highlight"><pre><span></span><code>rg -l foo  <span class="p">|</span> xargs rg -l bar <span class="p">|</span> xargs rg -l meh
+</code></pre></div>
+
+<h1>Oh no, paths with spaces!</h1>
+<p>If you have directories or files with spaces in their names,
+the approach above might break down and you'll get errors like</p>
+<div class="highlight"><pre><span></span><code>No such file or directory (os error 2)
+</code></pre></div>
+
+<p>To work around this, you have to add some additional flags to keep the pipeline working.
+With <code>grep</code>:</p>
+<div class="highlight"><pre><span></span><code>grep -rlZ foo . <span class="p">|</span> xargs -0 grep -lZ bar <span class="p">|</span> xargs -0 grep -l meh
+</code></pre></div>
+
+<p>The <code>-Z</code> flag (<code>--null</code> in full) tells <code>grep</code> to separate the filenames with a null character (instead of a newline)
+and the <code>-0</code> flag for <code>xargs</code> makes sure it is adapted to that format.
+Note that the last <code>grep</code> does not need the <code>-Z</code> flag, to make the final output human readable.</p>
+<p>With <code>ripgrep</code> you have to use the <code>-0</code> flag instead of <code>-Z</code>:</p>
+<div class="highlight"><pre><span></span><code>rg -l0 foo <span class="p">|</span> xargs -0 rg -l0 bar <span class="p">|</span> xargs -0 rg -l meh
+</code></pre></div>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            Copyright &copy; Stefaan Lippens 2005-2024. All rights reserved.
+    </footer>
+
+</div>
+</body>
+
+<script src="/theme/lib/jquery/jquery.min.js"></script>
+
+
+<script>
+    jQuery(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = jQuery('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = jQuery.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        jQuery.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>
