@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Markdown-friendly Kibana URLs - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="markdown"/>
+        <meta name="tags" contents="kibana"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+<li><a href="/index.html">Home</a></li><li><a href="/tags.html">Tags</a></li><li><a href="/archive.html">Archive</a></li><li><a href="/pages/about.html">About</a></li>        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Markdown-friendly Kibana URLs</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2024-06-03T00:00:00+02:00"> on 2024/06/03</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/markdown.html">markdown</a>,                    <a href="https://www.stefaanlippens.net/tag/kibana.html">kibana</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Kibana (Discover) URLs look a bit funky.
+All the query information is encoded in the URL with a serialization format called RISON.
+This is a pretty obscure format (it doesn't even have a Wikipedia page at the moment)
+based on JSON but with some tweaks to make it more URL-compatible and compact.</p>
+<p>For example, instead of JSON's structural delimiters <code>{}</code> and <code>[]</code>, it uses <code>()</code>.
+Unfortunately, when working in a Markdown context,
+the abundance of parentheses in these Kibana URL will easily confuse a Markdown parser
+when you try to put such an URL in Markdown's basic link format <code>[title](url)</code>.
+The trick is URL-encoding the offending characters.
+However, generically URL-encoding all risky characters also doesn't work well
+as Kibana does not seem to decode that properly.</p>
+<p>At the moment, what seems to work for me is URL-encoding just <code>(</code>, <code>)</code> and <code>$</code>.
+For example with this Python snippet:</p>
+<div class="highlight"><pre><span></span><code><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://kibana.test/#/discover?_a=(columns:!(message),filters:!((&#39;$state&#39;:(store:appState),meta:(alias:!n,disabled:!f,index:&#39;907d8590-4f1b-11e...&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;%24&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;%28&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;%29&quot;</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Or this CLI one-liner to pipe the URL into
+(e.g. execute command, paste URL, press enter twice and close input with <code>CTRL-D</code> ):</p>
+<div class="highlight"><pre><span></span><code>python -c <span class="s1">&#39;import sys;print(sys.stdin.read().strip().replace(&quot;$&quot;,&quot;%24&quot;).replace(&quot;(&quot;,&quot;%28&quot;).replace(&quot;)&quot;,&quot;%29&quot;))&#39;</span>
+</code></pre></div>
+
+<p>Or use this minimal webapp</p>
+<form>
+<input type="text" id="inputKibanaUrl" placeholder="Enter original Kibana URL here" style="width: 100%">
+<input type="text" id="outputKibanaURL" placeholder="Re-encoded Kibana URL will go here" readonly style="width: 100%">
+</form>
+<script>document.getElementById("inputKibanaUrl").addEventListener("input", function() {document.getElementById("outputKibanaURL").value = this.value.replace("$", "%24").replace("(", "%28").replace(")", "%29");});</script>
+
+<p>(Old-school vanilla JavaScript applets FTW!)</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            Copyright &copy; Stefaan Lippens 2005-2024. All rights reserved.
+    </footer>
+
+</div>
+</body>
+
+<script src="/theme/lib/jquery/jquery.min.js"></script>
+
+
+<script>
+    jQuery(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = jQuery('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = jQuery.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        jQuery.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>

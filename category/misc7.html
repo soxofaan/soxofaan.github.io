@@ -33,6 +33,47 @@
                 <article>
                     <header class="article-list">
                         <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Python: hiding attribute getters and setters behind standard attribute access</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2009-09-22T00:00:00+02:00"> on 2009/09/22</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Look at this small snippet of Python code:</p>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">TooMuchAlcohol</span><span class="p">()</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+</code></pre></div>
+
+<p>Seems like nothing special, but look what it spits out:</p>
+<div class="highlight"><pre><span></span><code>20
+foofoo
+[1, 2, 3, 1, 2, 3]
+</code></pre></div>
+
+<p>Oh my …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/python-hiding-attribute-getters-and-setters-behind-standard-attribute-access.html"
+                               title="link to Python: hiding attribute getters and setters behind standard attribute access">Read more &rarr;</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
                             <a href="https://www.stefaanlippens.net/how-to-find-out-which-version-of-ubuntu-you-are-running.html"
                                title="link to How to find out which version of Ubuntu you are running?">How to find out which version of Ubuntu you are running?</a>
                         </h2>
@@ -239,33 +280,6 @@ I added a date tick locator and a date formatter to the mix as follows:</p>
                         <div class="read-more">
                             <a href="https://www.stefaanlippens.net/pylab_date_tick_control/"
                                title="link to Date tick control in pylab/matplotlib">Read more &rarr;</a>
-                        </div>
-                    </div>
-                </article>
-            </li>
-            <li class="article-list">
-                <article>
-                    <header class="article-list">
-                        <h2 class="article-title">
-                            <a href="https://www.stefaanlippens.net/setting-global-xfig-defaults-for-working-with-lyxlatex.html"
-                               title="link to Setting global XFig defaults for working with LyX/LaTeX">Setting global XFig defaults for working with LyX/LaTeX</a>
-                        </h2>
-                        <div class="article-meta">
-                                    <span class="author">By Stefaan Lippens</span>
-        <span class="publication-date" title="2009-05-15T00:00:00+02:00"> on 2009/05/15</span>
-
-                        </div>
-                    </header>
-                    <div class="article-content article-summary">
-                        <p>When making a document with <a href="http://www.lyx.org">Lyx</a> (or LaTeX), 
-I often create figures and diagrams in <a href="http://www.xfig.org/">XFig</a>. 
-I know, Xfig's user interface looks and feels very dated.
-(I tried the Java port <a href="http://tams-www.informatik.uni-hamburg.de/applets/jfig/">JFig</a>, 
-but that one even feels worse to me.) 
-However, the main reason I bite the bullet is that …</p>
-                        <div class="read-more">
-                            <a href="https://www.stefaanlippens.net/setting-global-xfig-defaults-for-working-with-lyxlatex.html"
-                               title="link to Setting global XFig defaults for working with LyX/LaTeX">Read more &rarr;</a>
                         </div>
                     </div>
                 </article>

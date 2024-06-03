@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>kibana - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+<li><a href="/index.html">Home</a></li><li><a href="/tags.html">Tags</a></li><li><a href="/archive.html">Archive</a></li><li><a href="/pages/about.html">About</a></li>        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Articles tagged &ldquo;kibana&rdquo;</h1>
+    </header>
+
+    <main class="content">
+    <ul id="article-list">
+            <li class="article-list">
+                <article>
+                    <header class="article-list">
+                        <h2 class="article-title">
+                            <a href="https://www.stefaanlippens.net/markdown-friendly-kibana-urls.html"
+                               title="link to Markdown-friendly Kibana URLs">Markdown-friendly Kibana URLs</a>
+                        </h2>
+                        <div class="article-meta">
+                                    <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2024-06-03T00:00:00+02:00"> on 2024/06/03</span>
+
+                        </div>
+                    </header>
+                    <div class="article-content article-summary">
+                        <p>Kibana (Discover) URLs look a bit funky.
+All the query information is encoded in the URL with a serialization format called RISON.
+This is a pretty obscure format (it doesn't even have a Wikipedia page at the moment)
+based on JSON but with some tweaks to make it more URL-compatible …</p>
+                        <div class="read-more">
+                            <a href="https://www.stefaanlippens.net/markdown-friendly-kibana-urls.html"
+                               title="link to Markdown-friendly Kibana URLs">Read more &rarr;</a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+    </ul>
+
+    <div class="pager">
+
+        page 1 / 1
+
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            Copyright &copy; Stefaan Lippens 2005-2024. All rights reserved.
+    </footer>
+
+</div>
+</body>
+
+<script src="/theme/lib/jquery/jquery.min.js"></script>
+
+
+<script>
+    jQuery(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = jQuery('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = jQuery.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        jQuery.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>
