@@ -73,7 +73,7 @@ For example with this Python snippet:</p>
 <input type="text" id="inputKibanaUrl" placeholder="Enter original Kibana URL here" style="width: 100%">
 <input type="text" id="outputKibanaURL" placeholder="Re-encoded Kibana URL will go here" readonly style="width: 100%">
 </form>
-<script>document.getElementById("inputKibanaUrl").addEventListener("input", function() {document.getElementById("outputKibanaURL").value = this.value.replace("$", "%24").replace("(", "%28").replace(")", "%29");});</script>
+<script>document.getElementById("inputKibanaUrl").addEventListener("input", function() {document.getElementById("outputKibanaURL").value = this.value.replaceAll("$", "%24").replaceAll("(", "%28").replaceAll(")", "%29");});</script>
 
 <p>(Old-school vanilla JavaScript applets FTW!)</p>
     </div>
