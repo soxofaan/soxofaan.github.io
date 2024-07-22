@@ -46,12 +46,12 @@
 
     <main class="content">
     <div class="article-content">
-        <p>Code blocks in Obsidian notes automatically render with line wrapping.
-A sensible default, of course, but in some cases the line wrapping can ruin a code snippet.
-Here is an approach to disable line wrapping on selected notes (using Obsidian 1.6.5 at time of this writing).</p>
+        <p>Code blocks in <a href="https://obsidian.md/">Obsidian</a> notes automatically render with line wrapping.
+A sensible default of course, but in some cases the line wrapping can ruin the look or legibility of a code snippet.
+Here is an approach to disable line wrapping on selected notes (using Obsidian 1.6.5 here).</p>
 <p>Create a new (or use an existing)
 <a href="https://help.obsidian.md/Extending+Obsidian/CSS+snippets">CSS snippet</a>
-in you Obsidian vault's snippets folder (<code>.obsidian/snippets</code>),
+in your Obsidian vault's snippets folder (<code>.obsidian/snippets</code>),
 for example <code>code-blocks.css</code>, with this CSS rule:</p>
 <div class="highlight"><pre><span></span><code><span class="c">/* Don&#39;t wrap codeblocks */</span><span class="w"></span>
 <span class="p">.</span><span class="nc">code-nowrap</span><span class="w"> </span><span class="p">.</span><span class="nc">HyperMD-codeblock</span><span class="o">,</span><span class="w"></span>
@@ -60,11 +60,11 @@ for example <code>code-blocks.css</code>, with this CSS rule:</p>
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<p>(To activate this snippet, you first might have to reload/enable it as explained in the <a href="https://help.obsidian.md/Extending+Obsidian/CSS+snippets">CSS snippet docs</a>)</p>
-<p>Then, on a note where you want to disable code block line wrapping:
-add a <code>cssclasses</code> <a href="https://help.obsidian.md/Editing+and+formatting/Properties">property</a>
-with value <code>code-nowrap</code>
-in the note's <a href="https://help.obsidian.md/Editing+and+formatting/Properties#Property%20format">frontmatter</a>.</p>
+<p>(To activate this snippet, you first might have to reload/enable it
+as explained in the <a href="https://help.obsidian.md/Extending+Obsidian/CSS+snippets">CSS snippet docs</a>)</p>
+<p>Then, on a note where you want to disable line wrapping of code blocks:
+add a <a href="https://help.obsidian.md/Editing+and+formatting/Properties">property</a> named "cssclasses"
+with value "code-nowrap".</p>
 <p>That should do the trick.</p>
     </div>
 
