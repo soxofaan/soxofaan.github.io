@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Disable code block wrapping in Obsidian - Stefaan Lippens inserts content here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/theme/css/normalize.css">
+        <link rel="stylesheet" href="/theme/css/styles.css">
+        <link rel="stylesheet" href="/theme/css/pygment.css">
+        
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+
+
+        <meta name="tags" contents="Obsidian"/>
+        <meta name="tags" contents="Markdown"/>
+        <meta name="tags" contents="CSS"/>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav>
+        <ul id="menu">
+<li><a href="/index.html">Home</a></li><li><a href="/tags.html">Tags</a></li><li><a href="/archive.html">Archive</a></li><li><a href="/pages/about.html">About</a></li>        </ul>
+    </nav>
+
+    <header class="page-header">
+    <h1>Disable code block wrapping in Obsidian</h1>
+
+    <div class="article-meta">
+                <span class="author">By Stefaan Lippens</span>
+        <span class="publication-date" title="2024-07-22T00:00:00+02:00"> on 2024/07/22</span>
+
+
+            <div class="tags">
+                Tagged:
+                    <a href="https://www.stefaanlippens.net/tag/obsidian.html">Obsidian</a>,                    <a href="https://www.stefaanlippens.net/tag/markdown.html">Markdown</a>,                    <a href="https://www.stefaanlippens.net/tag/css.html">CSS</a>            </div>
+    </div>
+
+    </header>
+
+    <main class="content">
+    <div class="article-content">
+        <p>Code blocks in Obsidian notes automatically render with line wrapping.
+A sensible default, of course, but in some cases the line wrapping can ruin a code snippet.
+Here is an approach to disable line wrapping on selected notes (using Obsidian 1.6.5 at time of this writing).</p>
+<p>Create a new (or use an existing)
+<a href="https://help.obsidian.md/Extending+Obsidian/CSS+snippets">CSS snippet</a>
+in you Obsidian vault's snippets folder (<code>.obsidian/snippets</code>),
+for example <code>code-blocks.css</code>, with this CSS rule:</p>
+<div class="highlight"><pre><span></span><code><span class="c">/* Don&#39;t wrap codeblocks */</span><span class="w"></span>
+<span class="p">.</span><span class="nc">code-nowrap</span><span class="w"> </span><span class="p">.</span><span class="nc">HyperMD-codeblock</span><span class="o">,</span><span class="w"></span>
+<span class="p">.</span><span class="nc">code-nowrap</span><span class="w"> </span><span class="nt">pre</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nt">code</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">white-space</span><span class="p">:</span><span class="w"> </span><span class="kc">pre</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>(To activate this snippet, you first might have to reload/enable it as explained in the <a href="https://help.obsidian.md/Extending+Obsidian/CSS+snippets">CSS snippet docs</a>)</p>
+<p>Then, on a note where you want to disable code block line wrapping:
+add a <code>cssclasses</code> <a href="https://help.obsidian.md/Editing+and+formatting/Properties">property</a>
+with value <code>code-nowrap</code>
+in the note's <a href="https://help.obsidian.md/Editing+and+formatting/Properties#Property%20format">frontmatter</a>.</p>
+<p>That should do the trick.</p>
+    </div>
+
+    </main>
+
+    <footer class="page-footer">
+            Copyright &copy; Stefaan Lippens 2005-2024. All rights reserved.
+    </footer>
+
+</div>
+</body>
+
+<script src="/theme/lib/jquery/jquery.min.js"></script>
+
+
+<script>
+    jQuery(function () {
+        var duration = 5000;
+        var delay = 5000;
+        var el = jQuery('header.page-header');
+
+        function randomFade() {
+            setTimeout(function () {
+                var color = jQuery.Color({hue: Math.random() * 360, saturation: 1, lightness: 1 - 0.03 * Math.random()});
+                el.animate({backgroundColor: color}, {duration: duration, complete: randomFade});
+            }, delay);
+        }
+
+        jQuery.getScript("/theme/lib/jquery/jquery.color.min.js", function () {
+            randomFade();
+        });
+    });
+</script>
+
+
+</html>
